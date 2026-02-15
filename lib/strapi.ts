@@ -454,7 +454,7 @@ export const getArtistsPage = cache(async (): Promise<ArtistsPage> => {
 });
 
 export const getSiteSettings = cache(async (): Promise<SiteSettings> => {
-  const data = await fetchStrapi<any>('/site-settings?populate=logo');
+  const data = await fetchStrapi<any>('/site-setting?populate=logo');
 
   const defaults: SiteSettings = {
     companyName: 'Cubita Producciones',
