@@ -56,7 +56,7 @@ export default function Navigation() {
           <div className="flex items-center">
             <Link href="/" className="flex items-center">
               <motion.span
-                className="text-2xl font-bold text-red-600"
+                className="text-2xl font-bold text-gray-900"
                 whileHover={{ scale: 1.02 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 10 }}
               >
@@ -71,7 +71,7 @@ export default function Navigation() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="relative text-gray-700 hover:text-red-600 font-medium transition-colors link-underline"
+                className="relative text-gray-700 hover:text-amber-600 font-medium transition-colors link-underline"
               >
                 {item.name}
               </Link>
@@ -81,7 +81,7 @@ export default function Navigation() {
             <div className="relative">
               <motion.button
                 onClick={() => setLangOpen(!langOpen)}
-                className="flex items-center gap-2 text-gray-700 hover:text-red-600 font-medium"
+                className="flex items-center gap-2 text-gray-700 hover:text-amber-600 font-medium"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -103,7 +103,7 @@ export default function Navigation() {
                         key={lang.code}
                         onClick={() => handleLanguageChange(lang.code)}
                         className={`w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-2 ${
-                          locale === lang.code ? 'bg-red-50 text-red-600' : 'text-gray-700'
+                          locale === lang.code ? 'bg-amber-50 text-amber-600' : 'text-gray-700'
                         }`}
                         whileHover={{ x: 4 }}
                         transition={{ type: 'spring', stiffness: 400, damping: 10 }}
@@ -122,7 +122,7 @@ export default function Navigation() {
           <div className="md:hidden flex items-center">
             <motion.button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-700 hover:text-red-600"
+              className="text-gray-700 hover:text-amber-600"
               whileTap={{ scale: 0.9 }}
             >
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -164,7 +164,7 @@ export default function Navigation() {
                 >
                   <Link
                     href={item.href}
-                    className="block px-3 py-2 text-gray-700 hover:text-red-600 hover:bg-gray-50 rounded-md font-medium"
+                    className="block px-3 py-2 text-gray-700 hover:text-amber-600 hover:bg-gray-50 rounded-md font-medium"
                     onClick={() => setIsOpen(false)}
                   >
                     {item.name}
@@ -187,7 +187,7 @@ export default function Navigation() {
                       setIsOpen(false);
                     }}
                     className={`w-full px-3 py-2 text-left flex items-center gap-2 rounded-md ${
-                      locale === lang.code ? 'bg-red-50 text-red-600' : 'text-gray-700 hover:bg-gray-50'
+                      locale === lang.code ? 'bg-amber-50 text-amber-600' : 'text-gray-700 hover:bg-gray-50'
                     }`}
                   >
                     <span className="font-semibold text-sm">{lang.flag}</span>

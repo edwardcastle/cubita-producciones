@@ -28,7 +28,7 @@ export default async function HomePage() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-red-600 via-red-700 to-orange-600 text-white py-24 px-4 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white py-24 px-4 overflow-hidden">
         <div className="max-w-7xl mx-auto">
           <div className="max-w-3xl">
             <FadeIn direction="up" delay={0}>
@@ -37,14 +37,14 @@ export default async function HomePage() {
               </h1>
             </FadeIn>
             <FadeIn direction="up" delay={0.15}>
-              <p className="text-xl md:text-2xl mb-8 text-red-100">
+              <p className="text-xl md:text-2xl mb-8 text-gray-300">
                 {pageContent.heroSubtitle[locale]}
               </p>
             </FadeIn>
             <FadeIn direction="up" delay={0.3}>
               <Link
                 href="/artistas"
-                className="inline-flex items-center gap-2 bg-white text-red-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-red-50 transition-colors btn-hover"
+                className="inline-flex items-center gap-2 bg-amber-500 text-black px-8 py-4 rounded-lg font-semibold text-lg hover:bg-amber-400 transition-colors btn-hover"
               >
                 {pageContent.ctaText[locale]}
                 <ArrowRight className="w-5 h-5" />
@@ -65,28 +65,28 @@ export default async function HomePage() {
           <StaggerContainer className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center" staggerDelay={0.1}>
             <StaggerItem>
               <div className="p-6">
-                <Award className="w-12 h-12 text-red-600 mx-auto mb-4" />
+                <Award className="w-12 h-12 text-amber-500 mx-auto mb-4" />
                 <div className="text-4xl font-bold text-gray-900 mb-2">{pageContent.stats.years}+</div>
                 <div className="text-gray-600">{t('about.experience')}</div>
               </div>
             </StaggerItem>
             <StaggerItem>
               <div className="p-6">
-                <Users className="w-12 h-12 text-red-600 mx-auto mb-4" />
+                <Users className="w-12 h-12 text-amber-500 mx-auto mb-4" />
                 <div className="text-4xl font-bold text-gray-900 mb-2">{pageContent.stats.artists}+</div>
                 <div className="text-gray-600">{t('artists.title')}</div>
               </div>
             </StaggerItem>
             <StaggerItem>
               <div className="p-6">
-                <Music2 className="w-12 h-12 text-red-600 mx-auto mb-4" />
+                <Music2 className="w-12 h-12 text-amber-500 mx-auto mb-4" />
                 <div className="text-4xl font-bold text-gray-900 mb-2">{pageContent.stats.festivals}+</div>
                 <div className="text-gray-600">{t('home.stats.festivals')}</div>
               </div>
             </StaggerItem>
             <StaggerItem>
               <div className="p-6">
-                <Award className="w-12 h-12 text-red-600 mx-auto mb-4" />
+                <Award className="w-12 h-12 text-amber-500 mx-auto mb-4" />
                 <div className="text-4xl font-bold text-gray-900 mb-2">{pageContent.stats.countries}+</div>
                 <div className="text-gray-600">{t('home.stats.countries')}</div>
               </div>
@@ -109,7 +109,7 @@ export default async function HomePage() {
                 </p>
                 <Link
                   href="/sobre-nosotros"
-                  className="inline-flex items-center gap-2 text-red-600 font-semibold hover:text-red-700 link-underline"
+                  className="inline-flex items-center gap-2 text-amber-600 font-semibold hover:text-amber-700 link-underline"
                 >
                   {t('home.about.learnMore')}
                   <ArrowRight className="w-5 h-5" />
@@ -117,8 +117,8 @@ export default async function HomePage() {
               </div>
             </FadeIn>
             <FadeIn direction="right" delay={0.2}>
-              <div className="bg-gradient-to-br from-red-100 to-orange-100 rounded-2xl p-12 text-center">
-                <Music2 className="w-32 h-32 text-red-600 mx-auto" />
+              <div className="bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl p-12 text-center">
+                <Music2 className="w-32 h-32 text-gray-800 mx-auto" />
               </div>
             </FadeIn>
           </div>
@@ -141,7 +141,7 @@ export default async function HomePage() {
           <FadeIn direction="up" delay={0.3}>
             <Link
               href="/contacto"
-              className="inline-flex items-center gap-2 bg-red-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-red-700 transition-colors btn-hover"
+              className="inline-flex items-center gap-2 bg-amber-500 text-black px-8 py-4 rounded-lg font-semibold text-lg hover:bg-amber-400 transition-colors btn-hover"
             >
               {t('nav.contact')}
               <ArrowRight className="w-5 h-5" />

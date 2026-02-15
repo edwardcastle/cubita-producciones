@@ -147,7 +147,7 @@ export default async function ArtistaPage({
             {/* Artist Info */}
             <div>
               <FadeIn direction="left" delay={0.1}>
-                <div className="inline-block bg-red-600 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+                <div className="inline-block bg-black px-4 py-2 rounded-full text-sm font-semibold mb-6">
                   {genreLabel}
                 </div>
               </FadeIn>
@@ -159,11 +159,11 @@ export default async function ArtistaPage({
               <FadeIn direction="left" delay={0.3}>
                 <div className="flex flex-wrap gap-6 mb-8 text-gray-300">
                   <div className="flex items-center gap-2">
-                    <Calendar className="w-5 h-5 text-red-500" />
+                    <Calendar className="w-5 h-5 text-amber-500" />
                     <span>{artist.availability}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Users className="w-5 h-5 text-red-500" />
+                    <Users className="w-5 h-5 text-amber-500" />
                     <span>{artist.travelParty} {t.travelTeamDesc}</span>
                   </div>
                 </div>
@@ -174,7 +174,7 @@ export default async function ArtistaPage({
                 <div className="flex flex-wrap gap-4">
                   <Link
                     href="/contacto"
-                    className="inline-flex items-center gap-2 bg-red-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-red-700 transition-colors btn-hover"
+                    className="inline-flex items-center gap-2 bg-amber-500 text-black px-8 py-4 rounded-lg font-semibold text-lg hover:bg-amber-400 transition-colors btn-hover"
                   >
                     <Mail className="w-5 h-5" />
                     {t.contact}
@@ -217,7 +217,7 @@ export default async function ArtistaPage({
                     priority
                   />
                 ) : (
-                  <div className="absolute inset-0 bg-gradient-to-br from-red-600 to-orange-600 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center">
                     <Music className="w-32 h-32 text-white/30" />
                   </div>
                 )}
@@ -253,20 +253,20 @@ export default async function ArtistaPage({
                 <div className="space-y-6">
                   {/* Availability */}
                   <div className="flex items-start gap-4">
-                    <div className="bg-red-100 p-3 rounded-lg shrink-0">
-                      <Calendar className="w-6 h-6 text-red-600" />
+                    <div className="bg-gray-100 p-3 rounded-lg shrink-0">
+                      <Calendar className="w-6 h-6 text-gray-800" />
                     </div>
                     <div>
                       <h4 className="font-semibold text-gray-900">{t.availability}</h4>
-                      <p className="text-red-600 font-medium">{artist.availability}</p>
+                      <p className="text-gray-800 font-medium">{artist.availability}</p>
                       <p className="text-sm text-gray-500 mt-1">{t.availableFor}</p>
                     </div>
                   </div>
 
                   {/* Travel Party */}
                   <div className="flex items-start gap-4">
-                    <div className="bg-red-100 p-3 rounded-lg shrink-0">
-                      <Users className="w-6 h-6 text-red-600" />
+                    <div className="bg-gray-100 p-3 rounded-lg shrink-0">
+                      <Users className="w-6 h-6 text-gray-800" />
                     </div>
                     <div>
                       <h4 className="font-semibold text-gray-900">{t.travelTeam}</h4>
@@ -276,8 +276,8 @@ export default async function ArtistaPage({
 
                   {/* Genre */}
                   <div className="flex items-start gap-4">
-                    <div className="bg-red-100 p-3 rounded-lg shrink-0">
-                      <Music className="w-6 h-6 text-red-600" />
+                    <div className="bg-gray-100 p-3 rounded-lg shrink-0">
+                      <Music className="w-6 h-6 text-gray-800" />
                     </div>
                     <div>
                       <h4 className="font-semibold text-gray-900">{t.genre}</h4>
@@ -289,7 +289,7 @@ export default async function ArtistaPage({
                 {/* Contact Button */}
                 <Link
                   href="/contacto"
-                  className="mt-6 w-full inline-flex items-center justify-center gap-2 bg-red-600 text-white px-6 py-4 rounded-lg font-semibold hover:bg-red-700 transition-colors btn-hover"
+                  className="mt-6 w-full inline-flex items-center justify-center gap-2 bg-black text-white px-6 py-4 rounded-lg font-semibold hover:bg-gray-800 transition-colors btn-hover"
                 >
                   <Mail className="w-5 h-5" />
                   {t.contact}
@@ -308,7 +308,7 @@ export default async function ArtistaPage({
                         href={artist.instagram}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-3 text-gray-600 hover:text-red-600 transition-colors"
+                        className="flex items-center gap-3 text-gray-600 hover:text-gray-800 transition-colors"
                       >
                         <Instagram className="w-5 h-5" />
                         <span>Instagram</span>
@@ -319,7 +319,7 @@ export default async function ArtistaPage({
                         href={artist.youtube}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-3 text-gray-600 hover:text-red-600 transition-colors"
+                        className="flex items-center gap-3 text-gray-600 hover:text-gray-800 transition-colors"
                       >
                         <Youtube className="w-5 h-5" />
                         <span>YouTube</span>
@@ -334,7 +334,7 @@ export default async function ArtistaPage({
       </div>
 
       {/* CTA Section */}
-      <div className="bg-gradient-to-r from-red-600 to-orange-600 text-white py-20 px-4">
+      <div className="bg-gradient-to-r from-black to-gray-800 text-white py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <FadeIn direction="up">
             <h2 className="text-4xl font-bold mb-4">
@@ -342,12 +342,12 @@ export default async function ArtistaPage({
             </h2>
           </FadeIn>
           <FadeIn direction="up" delay={0.15}>
-            <p className="text-xl text-red-100 mb-8 max-w-2xl mx-auto">{t.ctaText}</p>
+            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">{t.ctaText}</p>
           </FadeIn>
           <FadeIn direction="up" delay={0.3}>
             <Link
               href="/contacto"
-              className="inline-flex items-center gap-2 bg-white text-red-600 px-10 py-5 rounded-lg font-semibold text-lg hover:bg-red-50 transition-colors shadow-lg btn-hover"
+              className="inline-flex items-center gap-2 bg-amber-500 text-black px-10 py-5 rounded-lg font-semibold text-lg hover:bg-amber-400 transition-colors shadow-lg btn-hover"
             >
               <Mail className="w-5 h-5" />
               {t.ctaButton}

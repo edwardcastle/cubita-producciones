@@ -4,16 +4,12 @@
   --background: #ffffff;
   --foreground: #171717;
 
-  /* Cuban accent colors */
-  --cuban-gold: #D4AF37;
-  --cuban-gold-light: #F4E5B5;
-  --cuban-teal: #008080;
-  --cuban-teal-light: #E0F2F2;
-  --cuban-coral: #FF6B6B;
-
-  /* Primary red/orange palette */
-  --primary-red: #DC2626;
-  --primary-orange: #EA580C;
+  /* Brand colors - Black & White with Gold accent */
+  --brand-black: #000000;
+  --brand-charcoal: #1a1a1a;
+  --brand-dark: #2d2d2d;
+  --brand-gold: #D4AF37;
+  --brand-gold-light: #F4E5B5;
 
   /* Font */
   --font-poppins: 'Poppins', sans-serif;
@@ -22,8 +18,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-cuban-gold: var(--cuban-gold);
-  --color-cuban-teal: var(--cuban-teal);
+  --color-brand-gold: var(--brand-gold);
+  --color-brand-black: var(--brand-black);
   --font-sans: var(--font-poppins);
 }
 
@@ -109,9 +105,9 @@ body {
   }
 }
 
-/* Cuban gold accent border */
-.border-cuban-gold {
-  border-color: var(--cuban-gold);
+/* Brand gold accent border */
+.border-brand-gold {
+  border-color: var(--brand-gold);
 }
 
 /* Subtle gold glow effect */
@@ -127,12 +123,12 @@ body {
 
 /* Focus styles */
 :focus-visible {
-  outline: 2px solid var(--primary-red);
+  outline: 2px solid var(--brand-gold);
   outline-offset: 2px;
 }
 
 /* Selection color */
 ::selection {
-  background-color: rgba(220, 38, 38, 0.2);
+  background-color: rgba(212, 175, 55, 0.3);
   color: inherit;
 }

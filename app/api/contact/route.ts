@@ -29,12 +29,12 @@ export async function POST(request: Request) {
           <style>
             body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
             .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-            .header { background: linear-gradient(135deg, #DC2626, #EA580C); color: white; padding: 20px; border-radius: 8px 8px 0 0; }
+            .header { background: linear-gradient(135deg, #000000, #D4AF37); color: white; padding: 20px; border-radius: 8px 8px 0 0; }
             .content { background: #f9f9f9; padding: 20px; border: 1px solid #ddd; border-top: none; border-radius: 0 0 8px 8px; }
             .field { margin-bottom: 15px; }
-            .label { font-weight: bold; color: #DC2626; }
+            .label { font-weight: bold; color: #000000; }
             .value { margin-top: 5px; }
-            .message-box { background: white; padding: 15px; border-left: 4px solid #DC2626; margin-top: 10px; }
+            .message-box { background: white; padding: 15px; border-left: 4px solid #000000; margin-top: 10px; }
           </style>
         </head>
         <body>
@@ -86,7 +86,7 @@ export async function POST(request: Request) {
           <style>
             body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
             .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-            .header { background: linear-gradient(135deg, #DC2626, #EA580C); color: white; padding: 20px; border-radius: 8px 8px 0 0; text-align: center; }
+            .header { background: linear-gradient(135deg, #000000, #D4AF37); color: white; padding: 20px; border-radius: 8px 8px 0 0; text-align: center; }
             .content { background: #f9f9f9; padding: 20px; border: 1px solid #ddd; border-top: none; border-radius: 0 0 8px 8px; }
             .footer { text-align: center; margin-top: 20px; color: #666; font-size: 14px; }
           </style>

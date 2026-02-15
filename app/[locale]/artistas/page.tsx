@@ -36,7 +36,7 @@ export default async function ArtistasPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-red-600 to-orange-600 text-white py-16 px-4">
+      <div className="bg-gradient-to-r from-black to-gray-800 text-white py-16 px-4">
         <div className="max-w-7xl mx-auto">
           <FadeIn direction="down">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
@@ -44,7 +44,7 @@ export default async function ArtistasPage() {
             </h1>
           </FadeIn>
           <FadeIn direction="down" delay={0.15}>
-            <p className="text-xl text-red-100">{pageContent.subtitle[locale]}</p>
+            <p className="text-xl text-gray-300">{pageContent.subtitle[locale]}</p>
           </FadeIn>
         </div>
       </div>
@@ -59,7 +59,7 @@ export default async function ArtistasPage() {
                 className="block bg-white rounded-xl shadow-lg overflow-hidden card-hover"
               >
                 {/* Artist Image */}
-                <div className="relative aspect-[3/4] bg-gradient-to-br from-red-100 to-orange-100 img-zoom">
+                <div className="relative aspect-[3/4] bg-gradient-to-br from-gray-100 to-gray-200 img-zoom">
                   {artist.image ? (
                     <Image
                       src={artist.image}
@@ -70,10 +70,10 @@ export default async function ArtistasPage() {
                     />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <Music className="w-24 h-24 text-red-300" />
+                      <Music className="w-24 h-24 text-gray-400" />
                     </div>
                   )}
-                  <div className="absolute top-3 right-3 bg-white px-2.5 py-1 rounded-full text-xs font-semibold text-red-600">
+                  <div className="absolute top-3 right-3 bg-black px-2.5 py-1 rounded-full text-xs font-semibold text-white">
                     {artist.genre === 'salsa'
                       ? pageContent.salsaLabel[locale]
                       : pageContent.reggaetonLabel[locale]}
@@ -88,18 +88,18 @@ export default async function ArtistasPage() {
 
                   <div className="flex flex-wrap gap-3 mb-3 text-xs text-gray-600">
                     <div className="flex items-center gap-1">
-                      <Calendar className="w-3.5 h-3.5 text-red-600" />
+                      <Calendar className="w-3.5 h-3.5 text-amber-600" />
                       <span>{artist.availability}</span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <Users className="w-3.5 h-3.5 text-red-600" />
+                      <Users className="w-3.5 h-3.5 text-amber-600" />
                       <span>
                         {artist.travelParty} {personasText[locale]}
                       </span>
                     </div>
                   </div>
 
-                  <span className="block w-full text-center bg-red-600 text-white py-2.5 rounded-lg text-sm font-semibold group-hover:bg-red-700 transition-colors">
+                  <span className="block w-full text-center bg-black text-white py-2.5 rounded-lg text-sm font-semibold group-hover:bg-gray-800 transition-colors">
                     {pageContent.viewDetailsButton[locale]}
                   </span>
                 </div>
@@ -121,7 +121,7 @@ export default async function ArtistasPage() {
           <FadeIn direction="up" delay={0.3}>
             <Link
               href="/contacto"
-              className="inline-block bg-red-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-red-700 transition-colors btn-hover"
+              className="inline-block bg-amber-500 text-black px-8 py-4 rounded-lg font-semibold text-lg hover:bg-amber-400 transition-colors btn-hover"
             >
               {siteSettings.nav.contact[locale]}
             </Link>

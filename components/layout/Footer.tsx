@@ -42,7 +42,7 @@ export default function Footer() {
       >
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <motion.div variants={itemVariants}>
-            <h3 className="text-2xl font-bold text-red-500 mb-4">
+            <h3 className="text-2xl font-bold text-white mb-4">
               Cubita Producciones
             </h3>
             <p className="text-gray-400">
@@ -81,11 +81,11 @@ export default function Footer() {
             <ul className="space-y-2 text-gray-400">
               <li className="flex items-center gap-2">
                 <Mail className="w-4 h-4" />
-                <span>info@cubitaproducciones.com</span>
+                <span>booking@cubitaproducciones.com</span>
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="w-4 h-4" />
-                <span>+39 XXX XXX XXXX</span>
+                <span>+39 320 936 5048</span>
               </li>
             </ul>
           </motion.div>

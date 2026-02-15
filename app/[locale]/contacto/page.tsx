@@ -36,7 +36,7 @@ export default async function ContactoPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-red-600 to-orange-600 text-white py-16 px-4">
+      <div className="bg-gradient-to-r from-black to-gray-800 text-white py-16 px-4">
         <div className="max-w-7xl mx-auto">
           <FadeIn direction="down">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
@@ -44,7 +44,7 @@ export default async function ContactoPage() {
             </h1>
           </FadeIn>
           <FadeIn direction="down" delay={0.15}>
-            <p className="text-xl text-red-100">{pageContent.subtitle[locale]}</p>
+            <p className="text-xl text-gray-300">{pageContent.subtitle[locale]}</p>
           </FadeIn>
         </div>
       </div>
@@ -56,8 +56,8 @@ export default async function ContactoPage() {
             <FadeIn direction="left">
               <div className="bg-white rounded-xl shadow-lg p-6 card-hover">
                 <div className="flex items-start gap-4 mb-6">
-                  <div className="bg-red-100 p-3 rounded-lg">
-                    <Mail className="w-6 h-6 text-red-600" />
+                  <div className="bg-gray-100 p-3 rounded-lg">
+                    <Mail className="w-6 h-6 text-gray-800" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-1">Email</h3>
@@ -66,8 +66,8 @@ export default async function ContactoPage() {
                 </div>
 
                 <div className="flex items-start gap-4 mb-6">
-                  <div className="bg-red-100 p-3 rounded-lg">
-                    <Phone className="w-6 h-6 text-red-600" />
+                  <div className="bg-gray-100 p-3 rounded-lg">
+                    <Phone className="w-6 h-6 text-gray-800" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-1">
@@ -78,8 +78,8 @@ export default async function ContactoPage() {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="bg-red-100 p-3 rounded-lg">
-                    <MapPin className="w-6 h-6 text-red-600" />
+                  <div className="bg-gray-100 p-3 rounded-lg">
+                    <MapPin className="w-6 h-6 text-gray-800" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-1">
@@ -92,11 +92,11 @@ export default async function ContactoPage() {
             </FadeIn>
 
             <FadeIn direction="left" delay={0.15}>
-              <div className="bg-gradient-to-br from-red-600 to-orange-600 rounded-xl p-6 text-white card-hover">
+              <div className="bg-gradient-to-br from-black to-gray-800 rounded-xl p-6 text-white card-hover">
                 <h3 className="text-xl font-bold mb-2">
                   {pageContent.responseTimeTitle[locale]}
                 </h3>
-                <p className="text-red-100">{pageContent.responseTimeText[locale]}</p>
+                <p className="text-gray-300">{pageContent.responseTimeText[locale]}</p>
               </div>
             </FadeIn>
           </div>
