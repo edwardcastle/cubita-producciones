@@ -5,7 +5,15 @@ import {routing} from '@/i18n/routing';
 import Navigation from '@/components/layout/Navigation';
 import Footer from '@/components/layout/Footer';
 import type {Metadata} from 'next';
+import {Poppins} from 'next/font/google';
 import './globals.css';
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  display: 'swap',
+  variable: '--font-poppins',
+});
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({locale}));
@@ -65,8 +73,8 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale}>
-      <body className="antialiased bg-white">
+    <html lang={locale} className={poppins.variable}>
+      <body className={`${poppins.className} antialiased bg-white`}>
         <NextIntlClientProvider messages={messages}>
           <Navigation />
           <main className="min-h-screen">

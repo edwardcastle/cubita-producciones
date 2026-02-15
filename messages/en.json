@@ -13,7 +13,16 @@
     },
     "about": {
       "title": "About Cubita Producciones",
-      "description": "We are a booking agency with over 30 years of experience in the European market, specializing in the representation and promotion of international artists in salsa and reggaeton genres."
+      "description": "We are a booking agency with over 30 years of experience in the European market, specializing in the representation and promotion of international artists in salsa and reggaeton genres.",
+      "learnMore": "Learn more"
+    },
+    "stats": {
+      "festivals": "Festivals",
+      "countries": "Countries"
+    },
+    "cta": {
+      "title": "Ready to bring Cuban talent to your event?",
+      "subtitle": "Contact us and discover how we can make your event an unforgettable experience"
     }
   },
   "artists": {
@@ -47,7 +56,13 @@
     "experience": "years of experience",
     "description": "Cubita Producciones is a leading booking agency in representing Cuban artists in Europe. With over three decades of experience, we have consolidated relationships with major festivals and promoters across the continent.",
     "mission": "Our Mission",
-    "missionText": "Connecting top-tier Cuban talent with European audiences, offering authentic and memorable musical experiences."
+    "missionText": "Connecting top-tier Cuban talent with European audiences, offering authentic and memorable musical experiences.",
+    "services": "Our Services",
+    "professionalism": "Professionalism",
+    "response": "Response",
+    "years": "Years",
+    "ctaTitle": "Ready to work with us?",
+    "ctaSubtitle": "Contact us today and discover how we can make your event a success"
   },
   "footer": {
     "rights": "All rights reserved",

@@ -3,24 +3,136 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Cuban accent colors */
+  --cuban-gold: #D4AF37;
+  --cuban-gold-light: #F4E5B5;
+  --cuban-teal: #008080;
+  --cuban-teal-light: #E0F2F2;
+  --cuban-coral: #FF6B6B;
+
+  /* Primary red/orange palette */
+  --primary-red: #DC2626;
+  --primary-orange: #EA580C;
+
+  /* Font */
+  --font-poppins: 'Poppins', sans-serif;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-cuban-gold: var(--cuban-gold);
+  --color-cuban-teal: var(--cuban-teal);
+  --font-sans: var(--font-poppins);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-poppins);
+}
+
+/* Button hover effects */
+.btn-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-hover:hover {
+  transform: scale(1.02);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+}
+
+/* Card hover effects */
+.card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.15);
+}
+
+/* Link underline animation */
+.link-underline {
+  position: relative;
+}
+
+.link-underline::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background: currentColor;
+  transition: width 0.3s ease;
+}
+
+.link-underline:hover::after {
+  width: 100%;
+}
+
+/* Image hover zoom */
+.img-zoom {
+  overflow: hidden;
+}
+
+.img-zoom img {
+  transition: transform 0.5s ease;
+}
+
+.img-zoom:hover img {
+  transform: scale(1.05);
+}
+
+/* Gradient animation for hero sections */
+.gradient-animate {
+  background-size: 200% 200%;
+  animation: gradientShift 8s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Cuban gold accent border */
+.border-cuban-gold {
+  border-color: var(--cuban-gold);
+}
+
+/* Subtle gold glow effect */
+.gold-glow {
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+/* Navigation backdrop blur */
+.nav-blur {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Focus styles */
+:focus-visible {
+  outline: 2px solid var(--primary-red);
+  outline-offset: 2px;
+}
+
+/* Selection color */
+::selection {
+  background-color: rgba(220, 38, 38, 0.2);
+  color: inherit;
 }

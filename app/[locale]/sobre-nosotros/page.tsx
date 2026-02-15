@@ -1,158 +1,184 @@
-import {useTranslations} from 'next-intl';
-import {Award, Users, Globe, Music} from 'lucide-react';
-import {Link} from '@/i18n/routing';
+import { Metadata } from 'next';
+import { getLocale, getTranslations } from 'next-intl/server';
+import { Award, Users, Globe, Music } from 'lucide-react';
+import { Link } from '@/i18n/routing';
+import { getAboutPage, generateMetadataFromSEO } from '@/lib/strapi';
+import FadeIn from '@/components/ui/FadeIn';
+import StaggerContainer, { StaggerItem } from '@/components/ui/StaggerContainer';
 
-export default function SobreNosotrosPage() {
-  const t = useTranslations();
+type Locale = 'es' | 'en' | 'fr';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = (await getLocale()) as Locale;
+  const pageContent = await getAboutPage();
+
+  return generateMetadataFromSEO(pageContent.seo, locale, {
+    title: 'Sobre Nosotros - Cubita Producciones',
+    description: 'Mas de 30 anos de experiencia conectando el talento cubano con escenarios de todo el mundo.',
+  });
+}
+
+export default async function SobreNosotrosPage() {
+  const locale = (await getLocale()) as Locale;
+  const [pageContent, t] = await Promise.all([
+    getAboutPage(),
+    getTranslations(),
+  ]);
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-red-600 to-orange-600 text-white py-20 px-4">
         <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            {t('about.title')}
-          </h1>
-          <p className="text-xl text-red-100 max-w-3xl mx-auto">
-            {t('about.description')}
-          </p>
+          <FadeIn direction="down">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">
+              {pageContent.title[locale]}
+            </h1>
+          </FadeIn>
+          <FadeIn direction="down" delay={0.15}>
+            <p className="text-xl text-red-100 max-w-3xl mx-auto">
+              {pageContent.subtitle[locale]}
+            </p>
+          </FadeIn>
         </div>
       </div>
 
       {/* Stats */}
       <div className="max-w-7xl mx-auto px-4 -mt-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="bg-white rounded-xl shadow-lg p-6 text-center">
-            <Award className="w-12 h-12 text-red-600 mx-auto mb-3" />
-            <div className="text-4xl font-bold text-gray-900 mb-1">30+</div>
-            <div className="text-gray-600">{t('about.experience')}</div>
-          </div>
+        <StaggerContainer className="grid grid-cols-1 md:grid-cols-4 gap-6" staggerDelay={0.1}>
+          <StaggerItem>
+            <div className="bg-white rounded-xl shadow-lg p-6 text-center card-hover">
+              <Award className="w-12 h-12 text-red-600 mx-auto mb-3" />
+              <div className="text-4xl font-bold text-gray-900 mb-1">{pageContent.stats.years}+</div>
+              <div className="text-gray-600">{t('about.experience')}</div>
+            </div>
+          </StaggerItem>
 
-          <div className="bg-white rounded-xl shadow-lg p-6 text-center">
-            <Users className="w-12 h-12 text-red-600 mx-auto mb-3" />
-            <div className="text-4xl font-bold text-gray-900 mb-1">100+</div>
-            <div className="text-gray-600">Festivales</div>
-          </div>
+          <StaggerItem>
+            <div className="bg-white rounded-xl shadow-lg p-6 text-center card-hover">
+              <Users className="w-12 h-12 text-red-600 mx-auto mb-3" />
+              <div className="text-4xl font-bold text-gray-900 mb-1">{pageContent.stats.festivals}+</div>
+              <div className="text-gray-600">{t('home.stats.festivals')}</div>
+            </div>
+          </StaggerItem>
 
-          <div className="bg-white rounded-xl shadow-lg p-6 text-center">
-            <Globe className="w-12 h-12 text-red-600 mx-auto mb-3" />
-            <div className="text-4xl font-bold text-gray-900 mb-1">15+</div>
-            <div className="text-gray-600">Países</div>
-          </div>
+          <StaggerItem>
+            <div className="bg-white rounded-xl shadow-lg p-6 text-center card-hover">
+              <Globe className="w-12 h-12 text-red-600 mx-auto mb-3" />
+              <div className="text-4xl font-bold text-gray-900 mb-1">{pageContent.stats.countries}+</div>
+              <div className="text-gray-600">{t('home.stats.countries')}</div>
+            </div>
+          </StaggerItem>
 
-          <div className="bg-white rounded-xl shadow-lg p-6 text-center">
-            <Music className="w-12 h-12 text-red-600 mx-auto mb-3" />
-            <div className="text-4xl font-bold text-gray-900 mb-1">50+</div>
-            <div className="text-gray-600">Artistas</div>
-          </div>
-        </div>
+          <StaggerItem>
+            <div className="bg-white rounded-xl shadow-lg p-6 text-center card-hover">
+              <Music className="w-12 h-12 text-red-600 mx-auto mb-3" />
+              <div className="text-4xl font-bold text-gray-900 mb-1">{pageContent.stats.artists}+</div>
+              <div className="text-gray-600">{t('artists.title')}</div>
+            </div>
+          </StaggerItem>
+        </StaggerContainer>
       </div>
 
       {/* Mission */}
       <div className="max-w-7xl mx-auto px-4 py-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">
-              {t('about.mission')}
-            </h2>
-            <p className="text-xl text-gray-600 mb-6">
-              {t('about.missionText')}
-            </p>
-            <p className="text-lg text-gray-600">
-              Desde 1993, Cubita Producciones ha sido el puente entre el talento cubano 
-              y los escenarios europeos más prestigiosos. Nuestra experiencia nos permite 
-              ofrecer un servicio integral que garantiza el éxito de cada presentación.
-            </p>
-          </div>
-
-          <div className="bg-gradient-to-br from-red-100 to-orange-100 rounded-2xl p-12">
-            <div className="grid grid-cols-2 gap-6">
-              <div className="bg-white rounded-xl p-6 text-center">
-                <div className="text-3xl font-bold text-red-600 mb-2">100%</div>
-                <div className="text-sm text-gray-600">Profesionalidad</div>
-              </div>
-              <div className="bg-white rounded-xl p-6 text-center">
-                <div className="text-3xl font-bold text-red-600 mb-2">24h</div>
-                <div className="text-sm text-gray-600">Respuesta</div>
-              </div>
-              <div className="bg-white rounded-xl p-6 text-center">
-                <div className="text-3xl font-bold text-red-600 mb-2">30+</div>
-                <div className="text-sm text-gray-600">Años</div>
-              </div>
-              <div className="bg-white rounded-xl p-6 text-center">
-                <div className="text-3xl font-bold text-red-600 mb-2">Top</div>
-                <div className="text-sm text-gray-600">Artistas</div>
-              </div>
+          <FadeIn direction="left">
+            <div>
+              <h2 className="text-3xl font-bold text-gray-900 mb-6">
+                {pageContent.missionTitle[locale]}
+              </h2>
+              <p className="text-xl text-gray-600 mb-6">
+                {pageContent.missionText[locale]}
+              </p>
             </div>
-          </div>
+          </FadeIn>
+
+          <FadeIn direction="right" delay={0.2}>
+            <div className="bg-gradient-to-br from-red-100 to-orange-100 rounded-2xl p-12">
+              <StaggerContainer className="grid grid-cols-2 gap-6" staggerDelay={0.1}>
+                <StaggerItem>
+                  <div className="bg-white rounded-xl p-6 text-center card-hover">
+                    <div className="text-3xl font-bold text-red-600 mb-2">100%</div>
+                    <div className="text-sm text-gray-600">{t('about.professionalism')}</div>
+                  </div>
+                </StaggerItem>
+                <StaggerItem>
+                  <div className="bg-white rounded-xl p-6 text-center card-hover">
+                    <div className="text-3xl font-bold text-red-600 mb-2">24h</div>
+                    <div className="text-sm text-gray-600">{t('about.response')}</div>
+                  </div>
+                </StaggerItem>
+                <StaggerItem>
+                  <div className="bg-white rounded-xl p-6 text-center card-hover">
+                    <div className="text-3xl font-bold text-red-600 mb-2">{pageContent.stats.years}+</div>
+                    <div className="text-sm text-gray-600">{t('about.years')}</div>
+                  </div>
+                </StaggerItem>
+                <StaggerItem>
+                  <div className="bg-white rounded-xl p-6 text-center card-hover">
+                    <div className="text-3xl font-bold text-red-600 mb-2">Top</div>
+                    <div className="text-sm text-gray-600">{t('artists.title')}</div>
+                  </div>
+                </StaggerItem>
+              </StaggerContainer>
+            </div>
+          </FadeIn>
         </div>
       </div>
 
       {/* Services */}
       <div className="bg-white py-20 px-4">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
-            Nuestros Servicios
-          </h2>
+          <FadeIn direction="up">
+            <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
+              {t('about.services')}
+            </h2>
+          </FadeIn>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-gray-50 rounded-xl p-8">
-              <div className="bg-red-100 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                <Music className="w-6 h-6 text-red-600" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">
-                Booking de Artistas
-              </h3>
-              <p className="text-gray-600">
-                Representamos a los mejores artistas cubanos de salsa y reguetón, 
-                con disponibilidad para festivales y eventos en toda Europa.
-              </p>
-            </div>
-
-            <div className="bg-gray-50 rounded-xl p-8">
-              <div className="bg-red-100 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                <Users className="w-6 h-6 text-red-600" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">
-                Producción de Eventos
-              </h3>
-              <p className="text-gray-600">
-                Coordinamos todos los aspectos técnicos y logísticos para garantizar 
-                presentaciones impecables.
-              </p>
-            </div>
-
-            <div className="bg-gray-50 rounded-xl p-8">
-              <div className="bg-red-100 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                <Globe className="w-6 h-6 text-red-600" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">
-                Tours Internacionales
-              </h3>
-              <p className="text-gray-600">
-                Organizamos giras completas por Europa, optimizando rutas y 
-                maximizando la exposición de nuestros artistas.
-              </p>
-            </div>
-          </div>
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-8" staggerDelay={0.15}>
+            {pageContent.services.map((service, index) => (
+              <StaggerItem key={index}>
+                <div className="bg-gray-50 rounded-xl p-8 card-hover">
+                  <div className="bg-red-100 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                    {index === 0 ? (
+                      <Music className="w-6 h-6 text-red-600" />
+                    ) : index === 1 ? (
+                      <Users className="w-6 h-6 text-red-600" />
+                    ) : (
+                      <Globe className="w-6 h-6 text-red-600" />
+                    )}
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">
+                    {service.title[locale]}
+                  </h3>
+                  <p className="text-gray-600">
+                    {service.text[locale]}
+                  </p>
+                </div>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
         </div>
       </div>
 
       {/* CTA */}
       <div className="bg-gradient-to-r from-red-600 to-orange-600 text-white py-16 px-4">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-4">
-            ¿Listo para trabajar con nosotros?
-          </h2>
-          <p className="text-xl text-red-100 mb-8">
-            Contacta hoy mismo y descubre cómo podemos hacer de tu evento un éxito
-          </p>
-          <Link
-            href="/contacto"
-            className="inline-block bg-white text-red-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-red-50 transition-colors"
-          >
-            {t('nav.contact')}
-          </Link>
+          <FadeIn direction="up">
+            <h2 className="text-3xl font-bold mb-4">{t('about.ctaTitle')}</h2>
+          </FadeIn>
+          <FadeIn direction="up" delay={0.15}>
+            <p className="text-xl text-red-100 mb-8">{t('about.ctaSubtitle')}</p>
+          </FadeIn>
+          <FadeIn direction="up" delay={0.3}>
+            <Link
+              href="/contacto"
+              className="inline-block bg-white text-red-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-red-50 transition-colors btn-hover"
+            >
+              {t('nav.contact')}
+            </Link>
+          </FadeIn>
         </div>
       </div>
     </div>

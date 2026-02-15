@@ -27,6 +27,7 @@ export interface Artist {
   instagram?: string;
   youtube?: string;
   travelParty: number;
+  seo: SEO | null;
 }
 
 export interface HomePage {
@@ -41,6 +42,7 @@ export interface HomePage {
   aboutTitle: { es: string; en: string; fr: string };
   aboutText: { es: string; en: string; fr: string };
   ctaText: { es: string; en: string; fr: string };
+  seo: SEO | null;
 }
 
 export interface AboutPage {
@@ -58,6 +60,7 @@ export interface AboutPage {
     title: { es: string; en: string; fr: string };
     text: { es: string; en: string; fr: string };
   }>;
+  seo: SEO | null;
 }
 
 export interface ContactPage {
@@ -79,6 +82,7 @@ export interface ContactPage {
   };
   successMessage: { es: string; en: string; fr: string };
   errorMessage: { es: string; en: string; fr: string };
+  seo: SEO | null;
 }
 
 export interface ArtistsPage {
@@ -89,6 +93,7 @@ export interface ArtistsPage {
   ctaSubtitle: { es: string; en: string; fr: string };
   salsaLabel: { es: string; en: string; fr: string };
   reggaetonLabel: { es: string; en: string; fr: string };
+  seo: SEO | null;
 }
 
 export interface SiteSettings {
@@ -110,6 +115,64 @@ export interface SiteSettings {
   footerCopyright: { es: string; en: string; fr: string };
 }
 
+export interface SEO {
+  metaTitle: { es: string; en: string; fr: string };
+  metaDescription: { es: string; en: string; fr: string };
+  keywords: string | null;
+  ogImage: string | null;
+  canonicalUrl: string | null;
+  noIndex: boolean;
+}
+
+export interface PageWithSEO {
+  seo: SEO | null;
+}
+
+// Helper to generate metadata from SEO data
+export function generateMetadataFromSEO(
+  seo: SEO | null,
+  locale: 'es' | 'en' | 'fr',
+  fallback: { title: string; description: string }
+): {
+  title: string;
+  description: string;
+  keywords?: string;
+  openGraph?: {
+    title: string;
+    description: string;
+    images?: string[];
+  };
+  robots?: { index: boolean; follow: boolean };
+  alternates?: { canonical?: string };
+} {
+  const title = seo?.metaTitle[locale] || fallback.title;
+  const description = seo?.metaDescription[locale] || fallback.description;
+
+  const metadata: ReturnType<typeof generateMetadataFromSEO> = {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      ...(seo?.ogImage && { images: [seo.ogImage] }),
+    },
+  };
+
+  if (seo?.keywords) {
+    metadata.keywords = seo.keywords;
+  }
+
+  if (seo?.noIndex) {
+    metadata.robots = { index: false, follow: false };
+  }
+
+  if (seo?.canonicalUrl) {
+    metadata.alternates = { canonical: seo.canonicalUrl };
+  }
+
+  return metadata;
+}
+
 // ============ FETCH HELPER ============
 
 async function fetchStrapi<T>(endpoint: string): Promise<T | null> {
@@ -123,6 +186,8 @@ async function fetchStrapi<T>(endpoint: string): Promise<T | null> {
     headers['Authorization'] = `Bearer ${STRAPI_API_TOKEN}`;
   }
 
+  console.log('Fetching Strapi:', url);
+
   try {
     const response = await fetch(url, {
       headers,
@@ -135,6 +200,7 @@ async function fetchStrapi<T>(endpoint: string): Promise<T | null> {
     }
 
     const json = await response.json();
+    console.log('Strapi response:', JSON.stringify(json, null, 2));
     return json.data;
   } catch (error) {
     console.error('Strapi fetch error:', error);
@@ -161,10 +227,31 @@ function formatAvailability(start: string | null, end: string | null): string {
   return `${startEs} - ${endEs} ${year}`;
 }
 
+function parseSEO(seoData: any): SEO | null {
+  if (!seoData) return null;
+
+  return {
+    metaTitle: {
+      es: seoData.metaTitleEs || '',
+      en: seoData.metaTitleEn || '',
+      fr: seoData.metaTitleFr || '',
+    },
+    metaDescription: {
+      es: seoData.metaDescriptionEs || '',
+      en: seoData.metaDescriptionEn || '',
+      fr: seoData.metaDescriptionFr || '',
+    },
+    keywords: seoData.keywords || null,
+    ogImage: getImageUrl(seoData.ogImage),
+    canonicalUrl: seoData.canonicalUrl || null,
+    noIndex: seoData.noIndex || false,
+  };
+}
+
 // ============ DATA FETCHERS ============
 
 export const getArtists = cache(async (): Promise<Artist[]> => {
-  const data = await fetchStrapi<any[]>('/artists?populate=image&sort=name:asc');
+  const data = await fetchStrapi<any[]>('/artists?populate=*&sort=name:asc');
 
   if (!data) return [];
 
@@ -183,11 +270,12 @@ export const getArtists = cache(async (): Promise<Artist[]> => {
     instagram: item.instagram || undefined,
     youtube: item.youtube || undefined,
     travelParty: item.travelParty || 0,
+    seo: parseSEO(item.seo),
   }));
 });
 
 export const getArtistBySlug = cache(async (slug: string): Promise<Artist | null> => {
-  const data = await fetchStrapi<any[]>(`/artists?filters[slug][$eq]=${slug}&populate=image`);
+  const data = await fetchStrapi<any[]>(`/artists?filters[slug][$eq]=${slug}&populate=*`);
 
   if (!data || data.length === 0) return null;
 
@@ -207,6 +295,7 @@ export const getArtistBySlug = cache(async (slug: string): Promise<Artist | null
     instagram: item.instagram || undefined,
     youtube: item.youtube || undefined,
     travelParty: item.travelParty || 0,
+    seo: parseSEO(item.seo),
   };
 });
 
@@ -217,7 +306,7 @@ export const getAllArtistSlugs = cache(async (): Promise<string[]> => {
 });
 
 export const getHomePage = cache(async (): Promise<HomePage> => {
-  const data = await fetchStrapi<any>('/home-page');
+  const data = await fetchStrapi<any>('/home-page?populate=*');
 
   const defaults: HomePage = {
     heroTitle: { es: 'Booking de Artistas Cubanos', en: 'Cuban Artists Booking', fr: 'Réservation d\'Artistes Cubains' },
@@ -226,6 +315,7 @@ export const getHomePage = cache(async (): Promise<HomePage> => {
     aboutTitle: { es: 'Sobre Nosotros', en: 'About Us', fr: 'À Propos' },
     aboutText: { es: 'Somos una agencia de booking especializada en artistas cubanos.', en: 'We are a booking agency specialized in Cuban artists.', fr: 'Nous sommes une agence de booking spécialisée dans les artistes cubains.' },
     ctaText: { es: 'Ver Artistas', en: 'View Artists', fr: 'Voir les Artistes' },
+    seo: null,
   };
 
   if (!data) return defaults;
@@ -262,11 +352,12 @@ export const getHomePage = cache(async (): Promise<HomePage> => {
       en: data.ctaTextEn || defaults.ctaText.en,
       fr: data.ctaTextFr || defaults.ctaText.fr,
     },
+    seo: parseSEO(data.seo),
   };
 });
 
 export const getAboutPage = cache(async (): Promise<AboutPage> => {
-  const data = await fetchStrapi<any>('/about-page');
+  const data = await fetchStrapi<any>('/about-page?populate=*');
 
   const defaults: AboutPage = {
     title: { es: 'Sobre Nosotros', en: 'About Us', fr: 'À Propos' },
@@ -279,6 +370,7 @@ export const getAboutPage = cache(async (): Promise<AboutPage> => {
       { title: { es: 'Producción', en: 'Production', fr: 'Production' }, text: { es: 'Producción de eventos y conciertos', en: 'Event and concert production', fr: 'Production d\'événements et concerts' } },
       { title: { es: 'Tours', en: 'Tours', fr: 'Tournées' }, text: { es: 'Organización de giras internacionales', en: 'International tour organization', fr: 'Organisation de tournées internationales' } },
     ],
+    seo: null,
   };
 
   if (!data) return defaults;
@@ -324,11 +416,12 @@ export const getAboutPage = cache(async (): Promise<AboutPage> => {
         text: { es: data.service3TextEs || defaults.services[2].text.es, en: data.service3TextEn || defaults.services[2].text.en, fr: data.service3TextFr || defaults.services[2].text.fr },
       },
     ],
+    seo: parseSEO(data.seo),
   };
 });
 
 export const getContactPage = cache(async (): Promise<ContactPage> => {
-  const data = await fetchStrapi<any>('/contact-page');
+  const data = await fetchStrapi<any>('/contact-page?populate=*');
 
   const defaults: ContactPage = {
     title: { es: 'Contacto', en: 'Contact', fr: 'Contact' },
@@ -349,6 +442,7 @@ export const getContactPage = cache(async (): Promise<ContactPage> => {
     },
     successMessage: { es: 'Mensaje enviado correctamente', en: 'Message sent successfully', fr: 'Message envoyé avec succès' },
     errorMessage: { es: 'Error al enviar el mensaje', en: 'Error sending message', fr: 'Erreur lors de l\'envoi du message' },
+    seo: null,
   };
 
   if (!data) return defaults;
@@ -396,11 +490,12 @@ export const getContactPage = cache(async (): Promise<ContactPage> => {
       en: data.formErrorMessageEn || defaults.errorMessage.en,
       fr: data.formErrorMessageFr || defaults.errorMessage.fr,
     },
+    seo: parseSEO(data.seo),
   };
 });
 
 export const getArtistsPage = cache(async (): Promise<ArtistsPage> => {
-  const data = await fetchStrapi<any>('/artists-page');
+  const data = await fetchStrapi<any>('/artists-page?populate=*');
 
   const defaults: ArtistsPage = {
     title: { es: 'Nuestros Artistas', en: 'Our Artists', fr: 'Nos Artistes' },
@@ -410,6 +505,7 @@ export const getArtistsPage = cache(async (): Promise<ArtistsPage> => {
     ctaSubtitle: { es: 'Contacta con nosotros para más información', en: 'Contact us for more information', fr: 'Contactez-nous pour plus d\'informations' },
     salsaLabel: { es: 'Salsa', en: 'Salsa', fr: 'Salsa' },
     reggaetonLabel: { es: 'Reguetón', en: 'Reggaeton', fr: 'Reggaeton' },
+    seo: null,
   };
 
   if (!data) return defaults;
@@ -450,6 +546,7 @@ export const getArtistsPage = cache(async (): Promise<ArtistsPage> => {
       en: data.reggaetonLabelEn || defaults.reggaetonLabel.en,
       fr: data.reggaetonLabelFr || defaults.reggaetonLabel.fr,
     },
+    seo: parseSEO(data.seo),
   };
 });
 
