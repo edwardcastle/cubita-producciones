@@ -6,8 +6,13 @@ import {Menu, X, Globe} from 'lucide-react';
 import {useState, useEffect} from 'react';
 import {useRouter} from 'next/navigation';
 import {motion, AnimatePresence} from 'framer-motion';
+import Image from 'next/image';
 
-export default function Navigation() {
+interface NavigationProps {
+  logo: string | null;
+}
+
+export default function Navigation({ logo }: NavigationProps) {
   const t = useTranslations('nav');
   const locale = useLocale();
   const pathname = usePathname();
@@ -54,14 +59,26 @@ export default function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <Link href="/" className="flex items-center">
-              <motion.span
-                className="text-2xl font-bold text-gray-900"
+            <Link href="/" className="flex items-center gap-3">
+              <motion.div
+                className="flex items-center gap-3"
                 whileHover={{ scale: 1.02 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 10 }}
               >
-                Cubita Producciones
-              </motion.span>
+                {logo && (
+                  <Image
+                    src={logo}
+                    alt="Cubita Producciones"
+                    width={40}
+                    height={40}
+                    className="h-10 w-auto"
+                    priority
+                  />
+                )}
+                <span className="text-xl font-bold text-gray-900">
+                  Cubita Producciones
+                </span>
+              </motion.div>
             </Link>
           </div>
 

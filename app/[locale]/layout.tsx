@@ -6,6 +6,7 @@ import Navigation from '@/components/layout/Navigation';
 import Footer from '@/components/layout/Footer';
 import type {Metadata} from 'next';
 import {Poppins} from 'next/font/google';
+import {getSiteSettings} from '@/lib/strapi';
 import './globals.css';
 
 const poppins = Poppins({
@@ -43,6 +44,10 @@ export async function generateMetadata({
     description: descriptions[locale as keyof typeof descriptions] || descriptions.es,
     keywords: ['booking', 'artistas cubanos', 'salsa', 'reguetón', 'reggaeton', 'Jacob Forever', 'Manolín', 'festivales', 'Europa', 'conciertos'],
     authors: [{name: 'Cubita Producciones'}],
+    icons: {
+      icon: '/logo.jpeg',
+      apple: '/logo.jpeg',
+    },
     openGraph: {
       title: titles[locale as keyof typeof titles] || titles.es,
       description: descriptions[locale as keyof typeof descriptions] || descriptions.es,
@@ -65,18 +70,21 @@ export default async function LocaleLayout({
   params: Promise<{locale: string}>;
 }) {
   const {locale} = await params;
-  
+
   if (!routing.locales.includes(locale as any)) {
     notFound();
   }
 
-  const messages = await getMessages();
+  const [messages, siteSettings] = await Promise.all([
+    getMessages(),
+    getSiteSettings(),
+  ]);
 
   return (
     <html lang={locale} className={poppins.variable}>
       <body className={`${poppins.className} antialiased bg-white`}>
         <NextIntlClientProvider messages={messages}>
-          <Navigation />
+          <Navigation logo={siteSettings.logo} />
           <main className="min-h-screen">
             {children}
           </main>

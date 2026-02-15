@@ -36,67 +36,67 @@ export default async function ContactoPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-black to-gray-800 text-white py-16 px-4">
+      <div className="bg-gradient-to-r from-black to-gray-800 text-white py-6 md:py-16 px-4">
         <div className="max-w-7xl mx-auto">
           <FadeIn direction="down">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <h1 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-bold mb-1 md:mb-4">
               {pageContent.title[locale]}
             </h1>
           </FadeIn>
           <FadeIn direction="down" delay={0.15}>
-            <p className="text-xl text-gray-300">{pageContent.subtitle[locale]}</p>
+            <p className="text-sm md:text-xl text-gray-300">{pageContent.subtitle[locale]}</p>
           </FadeIn>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <div className="max-w-7xl mx-auto px-4 py-4 md:py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-12">
           {/* Contact Info */}
-          <div className="space-y-6">
+          <div className="space-y-3 md:space-y-6">
             <FadeIn direction="left">
-              <div className="bg-white rounded-xl shadow-lg p-6 card-hover">
-                <div className="flex items-start gap-4 mb-6">
-                  <div className="bg-gray-100 p-3 rounded-lg">
-                    <Mail className="w-6 h-6 text-gray-800" />
+              <div className="bg-white rounded-lg md:rounded-xl shadow-lg p-4 md:p-6 card-hover">
+                <div className="flex items-start gap-3 md:gap-4 mb-4 md:mb-6">
+                  <div className="bg-gray-100 p-2 md:p-3 rounded-lg">
+                    <Mail className="w-4 h-4 md:w-6 md:h-6 text-gray-800" />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">Email</h3>
-                    <p className="text-gray-600">{pageContent.email}</p>
+                  <div className="min-w-0">
+                    <h3 className="font-semibold text-gray-900 text-sm md:text-base mb-0.5 md:mb-1">Email</h3>
+                    <p className="text-gray-600 text-xs md:text-base truncate">{pageContent.email}</p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4 mb-6">
-                  <div className="bg-gray-100 p-3 rounded-lg">
-                    <Phone className="w-6 h-6 text-gray-800" />
+                <div className="flex items-start gap-3 md:gap-4 mb-4 md:mb-6">
+                  <div className="bg-gray-100 p-2 md:p-3 rounded-lg">
+                    <Phone className="w-4 h-4 md:w-6 md:h-6 text-gray-800" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">
+                    <h3 className="font-semibold text-gray-900 text-sm md:text-base mb-0.5 md:mb-1">
                       {locale === 'es' ? 'Telefono' : locale === 'en' ? 'Phone' : 'Telephone'}
                     </h3>
-                    <p className="text-gray-600">{pageContent.phone}</p>
+                    <p className="text-gray-600 text-xs md:text-base">{pageContent.phone}</p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="bg-gray-100 p-3 rounded-lg">
-                    <MapPin className="w-6 h-6 text-gray-800" />
+                <div className="flex items-start gap-3 md:gap-4">
+                  <div className="bg-gray-100 p-2 md:p-3 rounded-lg">
+                    <MapPin className="w-4 h-4 md:w-6 md:h-6 text-gray-800" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">
+                    <h3 className="font-semibold text-gray-900 text-sm md:text-base mb-0.5 md:mb-1">
                       {locale === 'es' ? 'Ubicacion' : locale === 'en' ? 'Location' : 'Emplacement'}
                     </h3>
-                    <p className="text-gray-600">{pageContent.location}</p>
+                    <p className="text-gray-600 text-xs md:text-base">{pageContent.location}</p>
                   </div>
                 </div>
               </div>
             </FadeIn>
 
             <FadeIn direction="left" delay={0.15}>
-              <div className="bg-gradient-to-br from-black to-gray-800 rounded-xl p-6 text-white card-hover">
-                <h3 className="text-xl font-bold mb-2">
+              <div className="bg-gradient-to-br from-black to-gray-800 rounded-lg md:rounded-xl p-4 md:p-6 text-white card-hover">
+                <h3 className="text-base md:text-xl font-bold mb-1 md:mb-2">
                   {pageContent.responseTimeTitle[locale]}
                 </h3>
-                <p className="text-gray-300">{pageContent.responseTimeText[locale]}</p>
+                <p className="text-gray-300 text-xs md:text-base">{pageContent.responseTimeText[locale]}</p>
               </div>
             </FadeIn>
           </div>
@@ -104,7 +104,7 @@ export default async function ContactoPage() {
           {/* Contact Form */}
           <div className="lg:col-span-2">
             <FadeIn direction="right">
-              <div className="bg-white rounded-xl shadow-lg p-8 card-hover">
+              <div className="bg-white rounded-lg md:rounded-xl shadow-lg p-4 md:p-8 card-hover">
                 <ContactForm
                   artists={artists.map((a) => ({ id: a.id, name: a.name }))}
                   labels={{

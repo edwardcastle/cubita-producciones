@@ -86,10 +86,10 @@ export default function ContactForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <form onSubmit={handleSubmit} className="space-y-3 md:space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6">
         <div>
-          <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
+          <label htmlFor="name" className="block text-xs md:text-sm font-semibold text-gray-700 mb-1 md:mb-2">
             {labels.name} *
           </label>
           <input
@@ -99,12 +99,12 @@ export default function ContactForm({
             required
             value={formData.name}
             onChange={handleChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+            className="w-full px-3 py-2 md:px-4 md:py-3 text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
           />
         </div>
 
         <div>
-          <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+          <label htmlFor="email" className="block text-xs md:text-sm font-semibold text-gray-700 mb-1 md:mb-2">
             {labels.email} *
           </label>
           <input
@@ -114,14 +114,14 @@ export default function ContactForm({
             required
             value={formData.email}
             onChange={handleChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+            className="w-full px-3 py-2 md:px-4 md:py-3 text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
           />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6">
         <div>
-          <label htmlFor="country" className="block text-sm font-semibold text-gray-700 mb-2">
+          <label htmlFor="country" className="block text-xs md:text-sm font-semibold text-gray-700 mb-1 md:mb-2">
             {labels.country} *
           </label>
           <input
@@ -131,12 +131,12 @@ export default function ContactForm({
             required
             value={formData.country}
             onChange={handleChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+            className="w-full px-3 py-2 md:px-4 md:py-3 text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
           />
         </div>
 
         <div>
-          <label htmlFor="eventDate" className="block text-sm font-semibold text-gray-700 mb-2">
+          <label htmlFor="eventDate" className="block text-xs md:text-sm font-semibold text-gray-700 mb-1 md:mb-2">
             {labels.date}
           </label>
           <input
@@ -145,13 +145,13 @@ export default function ContactForm({
             name="eventDate"
             value={formData.eventDate}
             onChange={handleChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+            className="w-full px-3 py-2 md:px-4 md:py-3 text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
           />
         </div>
       </div>
 
       <div>
-        <label htmlFor="artist" className="block text-sm font-semibold text-gray-700 mb-2">
+        <label htmlFor="artist" className="block text-xs md:text-sm font-semibold text-gray-700 mb-1 md:mb-2">
           {labels.artist}
         </label>
         <select
@@ -159,7 +159,7 @@ export default function ContactForm({
           name="artist"
           value={formData.artist}
           onChange={handleChange}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+          className="w-full px-3 py-2 md:px-4 md:py-3 text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
         >
           <option value="">{selectArtistPlaceholder}</option>
           {artists.map((artist) => (
@@ -171,28 +171,28 @@ export default function ContactForm({
       </div>
 
       <div>
-        <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">
+        <label htmlFor="message" className="block text-xs md:text-sm font-semibold text-gray-700 mb-1 md:mb-2">
           {labels.message} *
         </label>
         <textarea
           id="message"
           name="message"
           required
-          rows={6}
+          rows={4}
           value={formData.message}
           onChange={handleChange}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent resize-none"
+          className="w-full px-3 py-2 md:px-4 md:py-3 text-sm md:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent resize-none md:rows-6"
         />
       </div>
 
       {status === 'success' && (
-        <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg">
+        <div className="bg-green-50 border border-green-200 text-green-800 px-3 py-2 md:px-4 md:py-3 rounded-lg text-sm">
           {successMessage}
         </div>
       )}
 
       {status === 'error' && (
-        <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg">
+        <div className="bg-red-50 border border-red-200 text-red-800 px-3 py-2 md:px-4 md:py-3 rounded-lg text-sm">
           {errorMessage}
         </div>
       )}
@@ -200,13 +200,13 @@ export default function ContactForm({
       <button
         type="submit"
         disabled={status === 'sending'}
-        className="w-full bg-black text-white px-6 py-4 rounded-lg font-semibold text-lg hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        className="w-full bg-black text-white px-4 py-2.5 md:px-6 md:py-4 rounded-lg font-semibold text-sm md:text-lg hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
       >
         {status === 'sending' ? (
           sendingText
         ) : (
           <>
-            <Send className="w-5 h-5" />
+            <Send className="w-4 h-4 md:w-5 md:h-5" />
             {labels.submit}
           </>
         )}
