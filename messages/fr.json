@@ -1,0 +1,56 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "artists": "Artistes",
+    "about": "À Propos",
+    "contact": "Contact"
+  },
+  "home": {
+    "hero": {
+      "title": "Booking d'Artistes Cubains de Premier Plan",
+      "subtitle": "Plus de 30 ans de représentation de talents internationaux sur le marché européen",
+      "cta": "Voir les Artistes"
+    },
+    "about": {
+      "title": "À Propos de Cubita Producciones",
+      "description": "Nous sommes une agence de booking avec plus de 30 ans d'expérience sur le marché européen, spécialisée dans la représentation et la promotion d'artistes internationaux des genres salsa et reggaeton."
+    }
+  },
+  "artists": {
+    "title": "Nos Artistes",
+    "subtitle": "Artistes cubains de premier niveau avec une vaste expérience et une projection internationale",
+    "available": "Disponible",
+    "genre": "Genre",
+    "salsa": "Salsa",
+    "reggaeton": "Reggaeton",
+    "viewDetails": "Voir Détails",
+    "contact": "Contacter"
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Intéressé par un booking ? Contactez-nous",
+    "form": {
+      "name": "Nom",
+      "email": "Email",
+      "country": "Pays/Ville",
+      "eventDate": "Date de l'Événement",
+      "artist": "Artiste d'Intérêt",
+      "message": "Message",
+      "send": "Envoyer la Demande",
+      "sending": "Envoi...",
+      "success": "Message envoyé ! Nous vous contacterons bientôt.",
+      "error": "Erreur d'envoi. Veuillez réessayer."
+    }
+  },
+  "about": {
+    "title": "À Propos de Nous",
+    "experience": "ans d'expérience",
+    "description": "Cubita Producciones est une agence de booking leader dans la représentation d'artistes cubains en Europe. Avec plus de trois décennies d'expérience, nous avons consolidé des relations avec les principaux festivals et promoteurs du continent.",
+    "mission": "Notre Mission",
+    "missionText": "Connecter les talents cubains de premier plan avec les publics européens, en offrant des expériences musicales authentiques et mémorables."
+  },
+  "footer": {
+    "rights": "Tous droits réservés",
+    "contact": "Contact"
+  }
+}

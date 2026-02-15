@@ -1,0 +1,56 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "artists": "Artistas",
+    "about": "Sobre Nosotros",
+    "contact": "Contacto"
+  },
+  "home": {
+    "hero": {
+      "title": "Booking de Artistas Cubanos de Primera Clase",
+      "subtitle": "Más de 30 años representando talento internacional en el mercado europeo",
+      "cta": "Ver Artistas"
+    },
+    "about": {
+      "title": "Sobre Cubita Producciones",
+      "description": "Somos una compañía de booking con más de 30 años de experiencia en el mercado europeo, especializada en la representación y promoción de artistas internacionales de los géneros salsa y reguetón."
+    }
+  },
+  "artists": {
+    "title": "Nuestros Artistas",
+    "subtitle": "Artistas cubanos de primer nivel con amplia trayectoria y proyección internacional",
+    "available": "Disponible",
+    "genre": "Género",
+    "salsa": "Salsa",
+    "reggaeton": "Reguetón",
+    "viewDetails": "Ver Detalles",
+    "contact": "Contactar"
+  },
+  "contact": {
+    "title": "Contacto",
+    "subtitle": "¿Interesado en booking? Contáctanos",
+    "form": {
+      "name": "Nombre",
+      "email": "Email",
+      "country": "País/Ciudad",
+      "eventDate": "Fecha del Evento",
+      "artist": "Artista de Interés",
+      "message": "Mensaje",
+      "send": "Enviar Solicitud",
+      "sending": "Enviando...",
+      "success": "¡Mensaje enviado! Te contactaremos pronto.",
+      "error": "Error al enviar. Intenta de nuevo."
+    }
+  },
+  "about": {
+    "title": "Sobre Nosotros",
+    "experience": "años de experiencia",
+    "description": "Cubita Producciones es una agencia de booking líder en la representación de artistas cubanos en Europa. Con más de tres décadas de trayectoria, hemos consolidado relaciones con los principales festivales y promotores del continente.",
+    "mission": "Nuestra Misión",
+    "missionText": "Conectar el talento cubano de primera clase con audiencias europeas, ofreciendo experiencias musicales auténticas y memorables."
+  },
+  "footer": {
+    "rights": "Todos los derechos reservados",
+    "contact": "Contacto"
+  }
+}
