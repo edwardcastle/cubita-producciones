@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return generateMetadataFromSEO(pageContent.seo, locale, {
     title: 'Sobre Nosotros - Cubita Producciones',
     description: 'Mas de 30 anos de experiencia conectando el talento cubano con escenarios de todo el mundo.',
-  });
+  }, '/sobre-nosotros');
 }
 
 export default async function SobreNosotrosPage() {

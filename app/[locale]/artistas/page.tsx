@@ -16,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return generateMetadataFromSEO(pageContent.seo, locale, {
     title: 'Artistas - Cubita Producciones',
     description: 'Descubre los mejores artistas cubanos de salsa y regueton disponibles para booking en Europa.',
-  });
+  }, '/artistas');
 }
 
 export default async function ArtistasPage() {

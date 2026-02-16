@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return generateMetadataFromSEO(pageContent.seo, locale, {
     title: 'Contacto - Cubita Producciones',
     description: 'Contacta con Cubita Producciones para booking de artistas cubanos de salsa y regueton.',
-  });
+  }, '/contacto');
 }
 
 export default async function ContactoPage() {

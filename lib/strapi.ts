@@ -129,11 +129,15 @@ export interface PageWithSEO {
   seo: SEO | null;
 }
 
+const BASE_URL = 'https://cubitaproducciones.com';
+const LOCALES = ['es', 'en', 'fr', 'it'] as const;
+
 // Helper to generate metadata from SEO data
 export function generateMetadataFromSEO(
   seo: SEO | null,
   locale: 'es' | 'en' | 'fr' | 'it',
-  fallback: { title: string; description: string }
+  fallback: { title: string; description: string },
+  path: string = ''
 ): {
   title: string;
   description: string;
@@ -141,13 +145,25 @@ export function generateMetadataFromSEO(
   openGraph?: {
     title: string;
     description: string;
+    url: string;
+    type: string;
+    siteName: string;
+    locale: string;
+    images?: Array<{ url: string; width: number; height: number; alt: string }>;
+  };
+  twitter?: {
+    card: string;
+    title: string;
+    description: string;
     images?: string[];
   };
-  robots?: { index: boolean; follow: boolean };
-  alternates?: { canonical?: string };
+  robots?: { index: boolean; follow: boolean; googleBot?: { index: boolean; follow: boolean; 'max-image-preview': 'none' | 'standard' | 'large'; 'max-snippet': number } };
+  alternates?: { canonical: string; languages: Record<string, string> };
 } {
   const title = seo?.metaTitle[locale] || fallback.title;
   const description = seo?.metaDescription[locale] || fallback.description;
+  const pageUrl = `${BASE_URL}/${locale}${path}`;
+  const ogImage = seo?.ogImage || `${BASE_URL}/og-image.jpg`;
 
   const metadata: ReturnType<typeof generateMetadataFromSEO> = {
     title,
@@ -155,7 +171,30 @@ export function generateMetadataFromSEO(
     openGraph: {
       title,
       description,
-      ...(seo?.ogImage && { images: [seo.ogImage] }),
+      url: pageUrl,
+      type: 'website',
+      siteName: 'Cubita Producciones',
+      locale,
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [ogImage],
+    },
+    alternates: {
+      canonical: seo?.canonicalUrl || pageUrl,
+      languages: Object.fromEntries(
+        LOCALES.map((l) => [l, `${BASE_URL}/${l}${path}`])
+      ),
     },
   };
 
@@ -164,11 +203,27 @@ export function generateMetadataFromSEO(
   }
 
   if (seo?.noIndex) {
-    metadata.robots = { index: false, follow: false };
-  }
-
-  if (seo?.canonicalUrl) {
-    metadata.alternates = { canonical: seo.canonicalUrl };
+    metadata.robots = {
+      index: false,
+      follow: false,
+      googleBot: {
+        index: false,
+        follow: false,
+        'max-image-preview': 'none' as const,
+        'max-snippet': 0,
+      },
+    };
+  } else {
+    metadata.robots = {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-image-preview': 'large' as const,
+        'max-snippet': -1,
+      },
+    };
   }
 
   return metadata;

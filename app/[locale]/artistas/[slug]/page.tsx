@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { Music, Calendar, Users, Mail, Instagram, Youtube, ArrowLeft } from 'lucide-react';
 import FadeIn from '@/components/ui/FadeIn';
 import StaggerContainer, { StaggerItem } from '@/components/ui/StaggerContainer';
+import { ArtistJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 
 type Locale = 'es' | 'en' | 'fr' | 'it';
 
@@ -33,7 +34,7 @@ export async function generateMetadata({
   return generateMetadataFromSEO(artist.seo, locale, {
     title: `${artist.name} - Cubita Producciones`,
     description: artist.bio[locale]?.slice(0, 160) || `Booking de ${artist.name}, artista cubano de ${artist.genre}.`,
-  });
+  }, `/artistas/${slug}`);
 }
 
 export default async function ArtistaPage({
@@ -126,8 +127,26 @@ export default async function ArtistaPage({
 
   const t = texts[locale];
   const genreLabel = artist.genre === 'salsa' ? pageContent.salsaLabel[locale] : pageContent.reggaetonLabel[locale];
+  const baseUrl = 'https://cubitaproducciones.com';
+
+  const breadcrumbItems = [
+    { name: 'Home', url: `${baseUrl}/${locale}` },
+    { name: pageContent.title[locale], url: `${baseUrl}/${locale}/artistas` },
+    { name: artist.name, url: `${baseUrl}/${locale}/artistas/${artist.slug}` },
+  ];
 
   return (
+    <>
+      <ArtistJsonLd
+        name={artist.name}
+        description={artist.bio[locale]}
+        image={artist.image}
+        genre={genreLabel}
+        instagram={artist.instagram}
+        youtube={artist.youtube}
+        url={`${baseUrl}/${locale}/artistas/${artist.slug}`}
+      />
+      <BreadcrumbJsonLd items={breadcrumbItems} />
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
       <div className="relative bg-gray-900 text-white">
@@ -370,5 +389,6 @@ export default async function ArtistaPage({
         </div>
       </div>
     </div>
+    </>
   );
 }

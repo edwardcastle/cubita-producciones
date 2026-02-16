@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return generateMetadataFromSEO(pageContent.seo, locale, {
     title: 'Cubita Producciones - Booking de Artistas Cubanos',
     description: 'Agencia de booking de artistas cubanos de salsa y regueton para festivales y eventos en Europa.',
-  });
+  }, '');
 }
 
 export default async function HomePage() {
