@@ -30,13 +30,15 @@ export async function generateMetadata({
   const titles = {
     es: 'Cubita Producciones | Booking de Artistas Cubanos en Europa',
     en: 'Cubita Producciones | Cuban Artists Booking in Europe',
-    fr: 'Cubita Producciones | Booking d\'Artistes Cubains en Europe'
+    fr: 'Cubita Producciones | Booking d\'Artistes Cubains en Europe',
+    it: 'Cubita Producciones | Prenotazione Artisti Cubani in Europa'
   };
 
   const descriptions = {
     es: 'Agencia de booking con más de 30 años representando artistas cubanos de salsa y reguetón en Europa. Jacob Forever, Manolín, Charly & Johayron y más.',
     en: 'Booking agency with over 30 years representing Cuban salsa and reggaeton artists in Europe. Jacob Forever, Manolín, Charly & Johayron and more.',
-    fr: 'Agence de booking avec plus de 30 ans représentant des artistes cubains de salsa et reggaeton en Europe. Jacob Forever, Manolín, Charly & Johayron et plus.'
+    fr: 'Agence de booking avec plus de 30 ans représentant des artistes cubains de salsa et reggaeton en Europe. Jacob Forever, Manolín, Charly & Johayron et plus.',
+    it: 'Agenzia di booking con oltre 30 anni di rappresentanza di artisti cubani di salsa e reggaeton in Europa. Jacob Forever, Manolín, Charly & Johayron e altri.'
   };
 
   return {

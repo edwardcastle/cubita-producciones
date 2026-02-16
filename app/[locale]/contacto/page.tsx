@@ -5,7 +5,7 @@ import { getContactPage, getArtists, generateMetadataFromSEO } from '@/lib/strap
 import ContactForm from '@/components/ContactForm';
 import FadeIn from '@/components/ui/FadeIn';
 
-type Locale = 'es' | 'en' | 'fr';
+type Locale = 'es' | 'en' | 'fr' | 'it';
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = (await getLocale()) as Locale;
@@ -25,12 +25,14 @@ export default async function ContactoPage() {
     es: 'Enviando...',
     en: 'Sending...',
     fr: 'Envoi en cours...',
+    it: 'Invio in corso...',
   };
 
   const selectPlaceholders: Record<Locale, string> = {
     es: 'Seleccionar artista...',
     en: 'Select artist...',
     fr: 'Selectionner un artiste...',
+    it: 'Seleziona artista...',
   };
 
   return (
@@ -71,7 +73,7 @@ export default async function ContactoPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900 text-sm md:text-base mb-0.5 md:mb-1">
-                      {locale === 'es' ? 'Telefono' : locale === 'en' ? 'Phone' : 'Telephone'}
+                      {locale === 'es' ? 'Telefono' : locale === 'en' ? 'Phone' : locale === 'it' ? 'Telefono' : 'Telephone'}
                     </h3>
                     <p className="text-gray-600 text-xs md:text-base">{pageContent.phone}</p>
                   </div>
@@ -83,7 +85,7 @@ export default async function ContactoPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900 text-sm md:text-base mb-0.5 md:mb-1">
-                      {locale === 'es' ? 'Ubicacion' : locale === 'en' ? 'Location' : 'Emplacement'}
+                      {locale === 'es' ? 'Ubicacion' : locale === 'en' ? 'Location' : locale === 'it' ? 'Posizione' : 'Emplacement'}
                     </h3>
                     <p className="text-gray-600 text-xs md:text-base">{pageContent.location}</p>
                   </div>

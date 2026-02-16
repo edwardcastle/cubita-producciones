@@ -41,6 +41,7 @@ export default function Navigation({ logo }: NavigationProps) {
     { code: 'es', name: 'Espanol', flag: 'ES' },
     { code: 'en', name: 'English', flag: 'EN' },
     { code: 'fr', name: 'Francais', flag: 'FR' },
+    { code: 'it', name: 'Italiano', flag: 'IT' },
   ];
 
   const handleLanguageChange = (newLocale: string) => {

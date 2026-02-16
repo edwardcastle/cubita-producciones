@@ -7,7 +7,7 @@ import { Music, Calendar, Users } from 'lucide-react';
 import FadeIn from '@/components/ui/FadeIn';
 import StaggerContainer, { StaggerItem } from '@/components/ui/StaggerContainer';
 
-type Locale = 'es' | 'en' | 'fr';
+type Locale = 'es' | 'en' | 'fr' | 'it';
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = (await getLocale()) as Locale;
@@ -31,6 +31,7 @@ export default async function ArtistasPage() {
     es: 'personas',
     en: 'people',
     fr: 'personnes',
+    it: 'persone',
   };
 
   return (

@@ -8,7 +8,7 @@ import { Music, Calendar, Users, Mail, Instagram, Youtube, ArrowLeft } from 'luc
 import FadeIn from '@/components/ui/FadeIn';
 import StaggerContainer, { StaggerItem } from '@/components/ui/StaggerContainer';
 
-type Locale = 'es' | 'en' | 'fr';
+type Locale = 'es' | 'en' | 'fr' | 'it';
 
 export async function generateStaticParams() {
   const slugs = await getAllArtistSlugs();
@@ -107,6 +107,20 @@ export default async function ArtistaPage({
       cta: 'Interesse par',
       ctaText: 'Contactez-nous pour recevoir l\'EPK complet, le rider technique et un devis personnalise',
       ctaButton: 'Demander des Informations',
+    },
+    it: {
+      backToArtists: 'Torna agli Artisti',
+      contact: 'Richiedi Prenotazione',
+      biography: 'Biografia',
+      details: 'Informazioni di Prenotazione',
+      availability: 'Disponibilita Europa 2025',
+      availableFor: 'Disponibile per festival ed eventi',
+      travelTeam: 'Team di Viaggio',
+      travelTeamDesc: 'persone',
+      genre: 'Genere Musicale',
+      cta: 'Interessato a',
+      ctaText: 'Contattaci per ricevere l\'EPK completo, il rider tecnico e un preventivo personalizzato',
+      ctaButton: 'Richiedi Informazioni',
     },
   };
 

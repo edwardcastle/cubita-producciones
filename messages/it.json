@@ -1,0 +1,71 @@
+{
+  "nav": {
+    "home": "Home",
+    "artists": "Artisti",
+    "about": "Chi Siamo",
+    "contact": "Contatto"
+  },
+  "home": {
+    "hero": {
+      "title": "Prenotazione Artisti Cubani Premium",
+      "subtitle": "Oltre 30 anni di rappresentanza di talenti internazionali nel mercato europeo",
+      "cta": "Vedi Artisti"
+    },
+    "about": {
+      "title": "Su Cubita Producciones",
+      "description": "Siamo un'agenzia di booking con oltre 30 anni di esperienza nel mercato europeo, specializzata nella rappresentanza e promozione di artisti internazionali nei generi salsa e reggaeton.",
+      "learnMore": "Scopri di piu"
+    },
+    "stats": {
+      "festivals": "Festival",
+      "countries": "Paesi"
+    },
+    "cta": {
+      "title": "Pronto a portare il talento cubano al tuo evento?",
+      "subtitle": "Contattaci e scopri come possiamo rendere il tuo evento un'esperienza indimenticabile"
+    }
+  },
+  "artists": {
+    "title": "I Nostri Artisti",
+    "subtitle": "Artisti cubani di alto livello con vasta esperienza e portata internazionale",
+    "available": "Disponibile",
+    "genre": "Genere",
+    "salsa": "Salsa",
+    "reggaeton": "Reggaeton",
+    "viewDetails": "Vedi Dettagli",
+    "contact": "Contatto"
+  },
+  "contact": {
+    "title": "Contatto",
+    "subtitle": "Interessato a prenotare? Mettiti in contatto",
+    "form": {
+      "name": "Nome",
+      "email": "Email",
+      "country": "Paese/Citta",
+      "eventDate": "Data Evento",
+      "artist": "Artista di Interesse",
+      "message": "Messaggio",
+      "send": "Invia Richiesta",
+      "sending": "Invio in corso...",
+      "success": "Messaggio inviato! Ti contatteremo presto.",
+      "error": "Errore nell'invio. Per favore riprova."
+    }
+  },
+  "about": {
+    "title": "Chi Siamo",
+    "experience": "anni di esperienza",
+    "description": "Cubita Producciones e un'agenzia di booking leader nella rappresentanza di artisti cubani in Europa. Con oltre tre decenni di esperienza, abbiamo consolidato relazioni con i principali festival e promoter in tutto il continente.",
+    "mission": "La Nostra Missione",
+    "missionText": "Collegare i migliori talenti cubani con il pubblico europeo, offrendo esperienze musicali autentiche e memorabili.",
+    "services": "I Nostri Servizi",
+    "professionalism": "Professionalita",
+    "response": "Risposta",
+    "years": "Anni",
+    "ctaTitle": "Pronto a lavorare con noi?",
+    "ctaSubtitle": "Contattaci oggi e scopri come possiamo rendere il tuo evento un successo"
+  },
+  "footer": {
+    "rights": "Tutti i diritti riservati",
+    "contact": "Contatto"
+  }
+}
