@@ -242,8 +242,6 @@ async function fetchStrapi<T>(endpoint: string): Promise<T | null> {
     headers['Authorization'] = `Bearer ${STRAPI_API_TOKEN}`;
   }
 
-  console.log('Fetching Strapi:', url);
-
   try {
     const response = await fetch(url, {
       headers,
@@ -256,7 +254,6 @@ async function fetchStrapi<T>(endpoint: string): Promise<T | null> {
     }
 
     const json = await response.json();
-    console.log('Strapi response:', JSON.stringify(json, null, 2));
     return json.data;
   } catch (error) {
     console.error('Strapi fetch error:', error);
