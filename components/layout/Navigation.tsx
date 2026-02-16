@@ -38,10 +38,10 @@ export default function Navigation({ logo }: NavigationProps) {
   ];
 
   const languages = [
-    { code: 'es', name: 'Espanol', flag: 'ES' },
-    { code: 'en', name: 'English', flag: 'EN' },
-    { code: 'fr', name: 'Francais', flag: 'FR' },
-    { code: 'it', name: 'Italiano', flag: 'IT' },
+    { code: 'es', name: 'Espanol', flag: '🇪🇸' },
+    { code: 'en', name: 'English', flag: '🇬🇧' },
+    { code: 'fr', name: 'Francais', flag: '🇫🇷' },
+    { code: 'it', name: 'Italiano', flag: '🇮🇹' },
   ];
 
   const handleLanguageChange = (newLocale: string) => {
