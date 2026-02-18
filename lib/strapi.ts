@@ -1,17 +1,39 @@
+/**
+ * @fileoverview Strapi CMS integration layer for Cubita Producciones
+ * @description Provides typed data fetching functions for all content types from Strapi CMS.
+ * Includes caching, error handling, and SEO metadata generation.
+ * @module lib/strapi
+ */
+
 import { cache } from 'react';
 
+/** Base URL for Strapi API */
 const STRAPI_URL = process.env.STRAPI_URL || 'https://natural-dinosaurs-5b6cbd810f.strapiapp.com';
+
+/** API token for authenticated Strapi requests */
 const STRAPI_API_TOKEN = process.env.STRAPI_API_TOKEN;
 
 // ============ TYPES ============
 
+/**
+ * Represents an image from Strapi media library
+ * @interface StrapiImage
+ */
 export interface StrapiImage {
+  /** Full or relative URL to the image */
   url: string;
+  /** Alt text for accessibility */
   alternativeText?: string;
+  /** Image width in pixels */
   width?: number;
+  /** Image height in pixels */
   height?: number;
 }
 
+/**
+ * Represents a Cuban artist for booking
+ * @interface Artist
+ */
 export interface Artist {
   id: string;
   name: string;
@@ -130,10 +152,27 @@ export interface PageWithSEO {
   seo: SEO | null;
 }
 
+/** Production website base URL */
 const BASE_URL = 'https://cubitaproducciones.com';
+
+/** Supported locales for internationalization */
 const LOCALES = ['es', 'en', 'fr', 'it'] as const;
 
-// Helper to generate metadata from SEO data
+/**
+ * Generates Next.js Metadata object from SEO data
+ * @param seo - SEO data from Strapi or null
+ * @param locale - Current locale ('es' | 'en' | 'fr' | 'it')
+ * @param fallback - Fallback title and description if SEO is null
+ * @param path - URL path for canonical and alternate URLs
+ * @returns Complete metadata object for Next.js
+ * @example
+ * const metadata = generateMetadataFromSEO(
+ *   artist.seo,
+ *   'es',
+ *   { title: 'Artist Name', description: 'Artist bio' },
+ *   '/artistas/artist-slug'
+ * );
+ */
 export function generateMetadataFromSEO(
   seo: SEO | null,
   locale: 'es' | 'en' | 'fr' | 'it',
@@ -232,6 +271,13 @@ export function generateMetadataFromSEO(
 
 // ============ FETCH HELPER ============
 
+/**
+ * Generic fetch wrapper for Strapi API requests
+ * @template T - Expected response data type
+ * @param endpoint - API endpoint path (e.g., '/artists?populate=*')
+ * @returns Promise resolving to typed data or null on error
+ * @internal
+ */
 async function fetchStrapi<T>(endpoint: string): Promise<T | null> {
   const url = `${STRAPI_URL}/api${endpoint}`;
 
@@ -262,11 +308,24 @@ async function fetchStrapi<T>(endpoint: string): Promise<T | null> {
   }
 }
 
+/**
+ * Constructs full image URL from Strapi image object
+ * @param image - Strapi image object or null
+ * @returns Full URL string or null
+ * @internal
+ */
 function getImageUrl(image: StrapiImage | null): string | null {
   if (!image?.url) return null;
   return image.url.startsWith('http') ? image.url : `${STRAPI_URL}${image.url}`;
 }
 
+/**
+ * Formats availability date range for display
+ * @param start - Start date ISO string or null
+ * @param end - End date ISO string or null
+ * @returns Formatted date range string (e.g., "1 junio - 30 agosto 2025")
+ * @internal
+ */
 function formatAvailability(start: string | null, end: string | null): string {
   if (!start || !end) return 'Por confirmar / TBC / À confirmer';
 
@@ -306,6 +365,13 @@ function parseSEO(seoData: any): SEO | null {
 
 // ============ DATA FETCHERS ============
 
+/**
+ * Fetches all artists from Strapi CMS
+ * @returns Promise resolving to array of Artist objects, sorted by name
+ * @example
+ * const artists = await getArtists();
+ * artists.forEach(artist => console.log(artist.name));
+ */
 export const getArtists = cache(async (): Promise<Artist[]> => {
   const data = await fetchStrapi<any[]>('/artists?populate=*&sort=name:asc');
 
@@ -332,6 +398,14 @@ export const getArtists = cache(async (): Promise<Artist[]> => {
   }));
 });
 
+/**
+ * Fetches a single artist by their URL slug
+ * @param slug - URL-friendly artist identifier
+ * @returns Promise resolving to Artist object or null if not found
+ * @example
+ * const artist = await getArtistBySlug('jacob-forever');
+ * if (artist) console.log(artist.name);
+ */
 export const getArtistBySlug = cache(async (slug: string): Promise<Artist | null> => {
   const data = await fetchStrapi<any[]>(`/artists?filters[slug][$eq]=${slug}&populate=*`);
 
@@ -359,12 +433,24 @@ export const getArtistBySlug = cache(async (slug: string): Promise<Artist | null
   };
 });
 
+/**
+ * Fetches all artist slugs for static page generation
+ * @returns Promise resolving to array of slug strings
+ * @example
+ * // In generateStaticParams
+ * const slugs = await getAllArtistSlugs();
+ * return slugs.map(slug => ({ slug }));
+ */
 export const getAllArtistSlugs = cache(async (): Promise<string[]> => {
   const data = await fetchStrapi<any[]>('/artists?fields[0]=slug');
   if (!data) return [];
   return data.map((item) => item.slug).filter(Boolean);
 });
 
+/**
+ * Fetches home page content from Strapi CMS
+ * @returns Promise resolving to HomePage object with multilingual content
+ */
 export const getHomePage = cache(async (): Promise<HomePage> => {
   const data = await fetchStrapi<any>('/home-page?populate=*');
 
