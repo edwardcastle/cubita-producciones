@@ -4,10 +4,11 @@ import { getArtistBySlug, getAllArtistSlugs, getArtistsPage, generateMetadataFro
 import { notFound } from 'next/navigation';
 import { Link } from '@/i18n/routing';
 import Image from 'next/image';
-import { Music, Calendar, Users, Mail, Instagram, Youtube, ArrowLeft } from 'lucide-react';
+import { Music, Calendar, Users, Mail, Instagram, Youtube, ArrowLeft, Play } from 'lucide-react';
 import FadeIn from '@/components/ui/FadeIn';
 import StaggerContainer, { StaggerItem } from '@/components/ui/StaggerContainer';
 import { ArtistJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
+import YouTubeEmbed from '@/components/YouTubeEmbed';
 
 type Locale = 'es' | 'en' | 'fr' | 'it';
 
@@ -57,6 +58,8 @@ export default async function ArtistaPage({
     backToArtists: string;
     contact: string;
     biography: string;
+    video: string;
+    watchVideo: string;
     details: string;
     availability: string;
     availableFor: string;
@@ -71,6 +74,8 @@ export default async function ArtistaPage({
       backToArtists: 'Volver a Artistas',
       contact: 'Solicitar Booking',
       biography: 'Biografia',
+      video: 'Video Destacado',
+      watchVideo: 'Ver video de',
       details: 'Informacion de Booking',
       availability: 'Disponibilidad Europa 2025',
       availableFor: 'Disponible para festivales y eventos',
@@ -85,6 +90,8 @@ export default async function ArtistaPage({
       backToArtists: 'Back to Artists',
       contact: 'Request Booking',
       biography: 'Biography',
+      video: 'Featured Video',
+      watchVideo: 'Watch video of',
       details: 'Booking Information',
       availability: 'Europe Availability 2025',
       availableFor: 'Available for festivals and events',
@@ -99,6 +106,8 @@ export default async function ArtistaPage({
       backToArtists: 'Retour aux Artistes',
       contact: 'Demander Reservation',
       biography: 'Biographie',
+      video: 'Video en Vedette',
+      watchVideo: 'Voir la video de',
       details: 'Informations de Reservation',
       availability: 'Disponibilite Europe 2025',
       availableFor: 'Disponible pour festivals et evenements',
@@ -113,6 +122,8 @@ export default async function ArtistaPage({
       backToArtists: 'Torna agli Artisti',
       contact: 'Richiedi Prenotazione',
       biography: 'Biografia',
+      video: 'Video in Evidenza',
+      watchVideo: 'Guarda il video di',
       details: 'Informazioni di Prenotazione',
       availability: 'Disponibilita Europa 2025',
       availableFor: 'Disponibile per festival ed eventi',
@@ -263,18 +274,37 @@ export default async function ArtistaPage({
       {/* Content Section */}
       <div className="max-w-7xl mx-auto px-4 py-6 md:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-12">
-          {/* Biography */}
-          <div className="lg:col-span-2">
+          {/* Biography & Video */}
+          <div className="lg:col-span-2 space-y-8 md:space-y-12">
+            {/* Biography */}
             <FadeIn direction="up">
-              <h2 className="text-xl md:text-3xl font-bold text-gray-900 mb-3 md:mb-6">{t.biography}</h2>
-              <div className="prose prose-sm md:prose-lg max-w-none text-gray-600">
-                {artist.bio[locale]?.split('\n').map((paragraph, index) => (
-                  <p key={index} className="mb-3 md:mb-4 text-sm md:text-base">{paragraph}</p>
-                )) || (
-                  <p className="text-sm md:text-base">{artist.bio[locale]}</p>
-                )}
+              <div>
+                <h2 className="text-xl md:text-3xl font-bold text-gray-900 mb-3 md:mb-6">{t.biography}</h2>
+                <div className="prose prose-sm md:prose-lg max-w-none text-gray-600">
+                  {artist.bio[locale]?.split('\n').map((paragraph, index) => (
+                    <p key={index} className="mb-3 md:mb-4 text-sm md:text-base leading-relaxed">{paragraph}</p>
+                  )) || (
+                    <p className="text-sm md:text-base leading-relaxed">{artist.bio[locale]}</p>
+                  )}
+                </div>
               </div>
             </FadeIn>
+
+            {/* YouTube Video */}
+            {artist.youtubeVideoId && (
+              <FadeIn direction="up" delay={0.2}>
+                <div>
+                  <h2 className="text-xl md:text-3xl font-bold text-gray-900 mb-3 md:mb-6 flex items-center gap-3">
+                    <Play className="w-6 h-6 md:w-8 md:h-8 text-red-600" />
+                    {t.video}
+                  </h2>
+                  <YouTubeEmbed
+                    videoId={artist.youtubeVideoId}
+                    title={`${t.watchVideo} ${artist.name}`}
+                  />
+                </div>
+              </FadeIn>
+            )}
           </div>
 
           {/* Booking Info Sidebar */}

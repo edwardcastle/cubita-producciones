@@ -27,6 +27,7 @@ export interface Artist {
   image: string | null;
   instagram?: string;
   youtube?: string;
+  youtubeVideoId?: string;
   travelParty: number;
   seo: SEO | null;
 }
@@ -325,6 +326,7 @@ export const getArtists = cache(async (): Promise<Artist[]> => {
     image: getImageUrl(item.image),
     instagram: item.instagram || undefined,
     youtube: item.youtube || undefined,
+    youtubeVideoId: item.youtubeVideoId || undefined,
     travelParty: item.travelParty || 0,
     seo: parseSEO(item.seo),
   }));
@@ -351,6 +353,7 @@ export const getArtistBySlug = cache(async (slug: string): Promise<Artist | null
     image: getImageUrl(item.image),
     instagram: item.instagram || undefined,
     youtube: item.youtube || undefined,
+    youtubeVideoId: item.youtubeVideoId || undefined,
     travelParty: item.travelParty || 0,
     seo: parseSEO(item.seo),
   };
