@@ -12,8 +12,12 @@ interface YouTubeEmbedProps {
 
 export default function YouTubeEmbed({ videoId, title = 'YouTube video', className = '' }: YouTubeEmbedProps) {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [thumbnailError, setThumbnailError] = useState(false);
 
-  const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+  // maxresdefault.jpg is not always available, fallback to hqdefault.jpg
+  const thumbnailUrl = thumbnailError
+    ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
+    : `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
   const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
 
   if (isLoaded) {
@@ -43,6 +47,8 @@ export default function YouTubeEmbed({ videoId, title = 'YouTube video', classNa
         fill
         className="object-cover transition-transform duration-300 group-hover:scale-105"
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 50vw"
+        onError={() => setThumbnailError(true)}
+        unoptimized
       />
 
       {/* Overlay */}
