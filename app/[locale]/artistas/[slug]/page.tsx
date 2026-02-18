@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { getLocale } from 'next-intl/server';
 import { getArtistBySlug, getAllArtistSlugs, getArtistsPage, generateMetadataFromSEO } from '@/lib/strapi';
+import { stripMarkdown } from '@/lib/utils';
 import { notFound } from 'next/navigation';
 import { Link } from '@/i18n/routing';
 import Image from 'next/image';
@@ -35,7 +36,7 @@ export async function generateMetadata({
 
   return generateMetadataFromSEO(artist.seo, locale, {
     title: `${artist.name} - Cubita Producciones`,
-    description: artist.bio[locale]?.slice(0, 160) || `Booking de ${artist.name}, artista cubano de ${artist.genre}.`,
+    description: stripMarkdown(artist.bio[locale])?.slice(0, 160) || `Booking de ${artist.name}, artista cubano de ${artist.genre}.`,
   }, `/artistas/${slug}`);
 }
 
@@ -151,7 +152,7 @@ export default async function ArtistaPage({
     <>
       <ArtistJsonLd
         name={artist.name}
-        description={artist.bio[locale]}
+        description={stripMarkdown(artist.bio[locale])}
         image={artist.image}
         genre={genreLabel}
         instagram={artist.instagram}

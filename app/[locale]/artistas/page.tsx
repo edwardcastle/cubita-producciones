@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { getLocale } from 'next-intl/server';
 import { getArtists, getArtistsPage, getSiteSettings, generateMetadataFromSEO } from '@/lib/strapi';
+import { stripMarkdown } from '@/lib/utils';
 import Image from 'next/image';
 import { Link } from '@/i18n/routing';
 import { Music, Calendar, Users } from 'lucide-react';
@@ -85,7 +86,7 @@ export default async function ArtistasPage() {
                 <div className="p-2 md:p-4">
                   <h3 className="text-sm md:text-xl font-bold text-gray-900 mb-0.5 md:mb-1 truncate">{artist.name}</h3>
 
-                  <p className="text-gray-600 text-xs md:text-sm mb-2 md:mb-3 line-clamp-1 md:line-clamp-2">{artist.bio[locale]}</p>
+                  <p className="text-gray-600 text-xs md:text-sm mb-2 md:mb-3 line-clamp-1 md:line-clamp-2">{stripMarkdown(artist.bio[locale])}</p>
 
                   <div className="hidden md:flex flex-wrap gap-3 mb-3 text-xs text-gray-600">
                     <div className="flex items-center gap-1">
