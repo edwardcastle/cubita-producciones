@@ -9,6 +9,7 @@ import FadeIn from '@/components/ui/FadeIn';
 import StaggerContainer, { StaggerItem } from '@/components/ui/StaggerContainer';
 import { ArtistJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import YouTubeEmbed from '@/components/YouTubeEmbed';
+import RichText from '@/components/RichText';
 
 type Locale = 'es' | 'en' | 'fr' | 'it';
 
@@ -280,13 +281,7 @@ export default async function ArtistaPage({
             <FadeIn direction="up">
               <div>
                 <h2 className="text-xl md:text-3xl font-bold text-gray-900 mb-3 md:mb-6">{t.biography}</h2>
-                <div className="prose prose-sm md:prose-lg max-w-none text-gray-600">
-                  {artist.bio[locale]?.split('\n').map((paragraph, index) => (
-                    <p key={index} className="mb-3 md:mb-4 text-sm md:text-base leading-relaxed">{paragraph}</p>
-                  )) || (
-                    <p className="text-sm md:text-base leading-relaxed">{artist.bio[locale]}</p>
-                  )}
-                </div>
+                <RichText content={artist.bio[locale] || ''} />
               </div>
             </FadeIn>
 
