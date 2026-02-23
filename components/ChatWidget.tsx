@@ -30,6 +30,7 @@ export default function ChatWidget() {
 
     const btn = document.createElement('button');
     btn.className = 'chat-bubble';
+    btn.style.display = 'none';
     btn.setAttribute('aria-label', 'Chat');
     btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>`;
     document.body.appendChild(btn);
@@ -39,18 +40,41 @@ export default function ChatWidget() {
       setIsOpen(true);
     });
 
+    // Show only after page is fully loaded
+    const show = () => {
+      if (bubbleRef.current && !isOpen) {
+        bubbleRef.current.style.display = 'flex';
+      }
+    };
+
+    if (document.readyState === 'complete') {
+      setTimeout(show, 800);
+    } else {
+      window.addEventListener('load', () => setTimeout(show, 800), { once: true });
+    }
+
     return () => {
       btn.remove();
       bubbleRef.current = null;
     };
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Sync bubble visibility with isOpen state
+  // Sync bubble visibility with isOpen state and page navigation
   useEffect(() => {
-    if (bubbleRef.current) {
-      bubbleRef.current.style.display = isOpen ? 'none' : 'flex';
+    if (!bubbleRef.current) return;
+    if (isOpen) {
+      bubbleRef.current.style.display = 'none';
+      return;
     }
-  }, [isOpen]);
+    // Hide during navigation, show after page settles
+    bubbleRef.current.style.display = 'none';
+    const timer = setTimeout(() => {
+      if (bubbleRef.current && !isOpen) {
+        bubbleRef.current.style.display = 'flex';
+      }
+    }, 800);
+    return () => clearTimeout(timer);
+  }, [isOpen, pathname]);
 
   // Initialize greeting on first open
   useEffect(() => {
@@ -68,7 +92,7 @@ export default function ChatWidget() {
   }, [messages, scrollToBottom]);
 
   useEffect(() => {
-    if (isOpen && inputRef.current) {
+    if (isOpen && inputRef.current && window.innerWidth >= 640) {
       inputRef.current.focus();
     }
   }, [isOpen]);
