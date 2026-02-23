@@ -79,9 +79,9 @@ export default function Footer() {
           <motion.div variants={itemVariants}>
             <h4 className="font-semibold mb-4">{t('footer.contact')}</h4>
             <ul className="space-y-2 text-gray-400">
-              <li className="flex items-center gap-2">
-                <Mail className="w-4 h-4" />
-                <span>booking@cubitaproducciones.com</span>
+              <li className="flex items-center gap-2 min-w-0">
+                <Mail className="w-4 h-4 shrink-0" />
+                <span className="truncate">booking@cubitaproducciones.com</span>
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="w-4 h-4" />

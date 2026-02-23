@@ -29,10 +29,28 @@ export default function ChatWidget() {
     if (bubbleRef.current) return;
 
     const btn = document.createElement('button');
-    btn.className = 'chat-bubble';
-    btn.style.display = 'none';
     btn.setAttribute('aria-label', 'Chat');
     btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>`;
+    btn.setAttribute('style', [
+      'display:flex',
+      'position:fixed',
+      'top:calc(100svh - 80px)',  // svh = small viewport, always visible area
+      'right:24px',
+      'z-index:9999',
+      'width:56px',
+      'height:56px',
+      'border-radius:9999px',
+      'border:none',
+      'background-color:#f59e0b',
+      'color:white',
+      'cursor:pointer',
+      'align-items:center',
+      'justify-content:center',
+      'box-shadow:0 0 0 4px rgba(245,158,11,0.3),0 25px 50px -12px rgba(0,0,0,0.25)',
+      'opacity:0',
+      'pointer-events:none',
+      'transition:opacity 0.3s ease',
+    ].join(';'));
     document.body.appendChild(btn);
     bubbleRef.current = btn;
 
@@ -40,17 +58,17 @@ export default function ChatWidget() {
       setIsOpen(true);
     });
 
-    // Show only after page is fully loaded
     const show = () => {
-      if (bubbleRef.current && !isOpen) {
-        bubbleRef.current.style.display = 'flex';
+      if (bubbleRef.current) {
+        bubbleRef.current.style.opacity = '1';
+        bubbleRef.current.style.pointerEvents = 'auto';
       }
     };
 
     if (document.readyState === 'complete') {
-      setTimeout(show, 800);
+      setTimeout(show, 1500);
     } else {
-      window.addEventListener('load', () => setTimeout(show, 800), { once: true });
+      window.addEventListener('load', () => setTimeout(show, 1500), { once: true });
     }
 
     return () => {
@@ -63,16 +81,19 @@ export default function ChatWidget() {
   useEffect(() => {
     if (!bubbleRef.current) return;
     if (isOpen) {
-      bubbleRef.current.style.display = 'none';
+      bubbleRef.current.style.opacity = '0';
+      bubbleRef.current.style.pointerEvents = 'none';
       return;
     }
-    // Hide during navigation, show after page settles
-    bubbleRef.current.style.display = 'none';
+    // Hide during navigation, fade in after page settles
+    bubbleRef.current.style.opacity = '0';
+    bubbleRef.current.style.pointerEvents = 'none';
     const timer = setTimeout(() => {
       if (bubbleRef.current && !isOpen) {
-        bubbleRef.current.style.display = 'flex';
+        bubbleRef.current.style.opacity = '1';
+        bubbleRef.current.style.pointerEvents = 'auto';
       }
-    }, 800);
+    }, 1500);
     return () => clearTimeout(timer);
   }, [isOpen, pathname]);
 
@@ -245,8 +266,8 @@ export default function ChatWidget() {
           </div>
 
           {/* Input */}
-          <div className="p-4 sm:p-3 border-t border-gray-200 bg-white">
-            <div className="flex items-center gap-3 sm:gap-2">
+          <div className="p-3 border-t border-gray-200 bg-white">
+            <div className="flex items-center gap-3">
               <input
                 ref={inputRef}
                 type="text"
@@ -255,7 +276,7 @@ export default function ChatWidget() {
                 onKeyDown={handleKeyDown}
                 placeholder={t('placeholder')}
                 disabled={isLoading}
-                className="flex-1 rounded-xl bg-gray-100 px-4 py-2.5 text-sm text-gray-800 placeholder-gray-400 outline-none focus:ring-2 focus:ring-amber-500/50 disabled:opacity-50"
+                className="min-w-0 flex-1 rounded-xl bg-gray-100 px-3 sm:px-4 py-2.5 text-sm text-gray-800 placeholder-gray-400 outline-none focus:ring-2 focus:ring-amber-500/50 disabled:opacity-50"
               />
               <button
                 onClick={handleSend}
