@@ -4,6 +4,7 @@ import {notFound} from 'next/navigation';
 import {routing} from '@/i18n/routing';
 import Navigation from '@/components/layout/Navigation';
 import Footer from '@/components/layout/Footer';
+import ChatWidget from '@/components/ChatWidget';
 import type {Metadata} from 'next';
 import {Poppins} from 'next/font/google';
 import {getSiteSettings} from '@/lib/strapi';
@@ -150,6 +151,7 @@ export default async function LocaleLayout({
             {children}
           </main>
           <Footer />
+          <ChatWidget />
         </NextIntlClientProvider>
       </body>
     </html>

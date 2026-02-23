@@ -67,5 +67,14 @@
   "footer": {
     "rights": "All rights reserved",
     "contact": "Contact"
+  },
+  "chat": {
+    "title": "Chat with us",
+    "placeholder": "Type your question...",
+    "send": "Send",
+    "close": "Close",
+    "clear": "Clear",
+    "greeting": "Hello! I'm the Cubita Producciones assistant. How can I help you? You can ask me about our artists, services, or how to contact us.",
+    "error": "Sorry, there was an error. Please try again."
   }
 }

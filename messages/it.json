@@ -67,5 +67,14 @@
   "footer": {
     "rights": "Tutti i diritti riservati",
     "contact": "Contatto"
+  },
+  "chat": {
+    "title": "Chatta con noi",
+    "placeholder": "Scrivi la tua domanda...",
+    "send": "Invia",
+    "close": "Chiudi",
+    "clear": "Cancella",
+    "greeting": "Ciao! Sono l'assistente di Cubita Producciones. Come posso aiutarti? Puoi chiedermi informazioni sui nostri artisti, servizi o come contattarci.",
+    "error": "Ci dispiace, si è verificato un errore. Per favore riprova."
   }
 }
