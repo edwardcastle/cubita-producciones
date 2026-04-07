@@ -180,10 +180,10 @@ export default async function ArtistaPage({
           {artist.image && (
             <Image
               src={artist.image}
-              alt={artist.name}
+              alt=""
               fill
               className="object-cover opacity-30"
-              priority
+              aria-hidden="true"
             />
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/80 to-gray-900/60" />
@@ -272,7 +272,7 @@ export default async function ArtistaPage({
                 {artist.image ? (
                   <Image
                     src={artist.image}
-                    alt={artist.name}
+                    alt={`${artist.name} - ${genreLabel}`}
                     fill
                     className="object-cover"
                     priority

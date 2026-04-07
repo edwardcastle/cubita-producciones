@@ -86,15 +86,23 @@ export default function Navigation({ logo }: NavigationProps) {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex md:items-center md:space-x-8">
-            {navigation.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="relative text-gray-700 hover:text-amber-600 font-medium transition-colors link-underline"
-              >
-                {item.name}
-              </Link>
-            ))}
+            {navigation.map((item) => {
+              const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`relative font-medium transition-colors ${
+                    isActive
+                      ? 'text-amber-600'
+                      : 'text-gray-700 hover:text-amber-600 link-underline'
+                  }`}
+                  aria-current={isActive ? 'page' : undefined}
+                >
+                  {item.name}
+                </Link>
+              );
+            })}
 
             {/* Language Selector */}
             <div className="relative">
@@ -177,23 +185,31 @@ export default function Navigation({ logo }: NavigationProps) {
                 }
               }}
             >
-              {navigation.map((item) => (
-                <motion.div
-                  key={item.href}
-                  variants={{
-                    open: { y: 0, opacity: 1 },
-                    closed: { y: -10, opacity: 0 }
-                  }}
-                >
-                  <Link
-                    href={item.href}
-                    className="block px-3 py-2 text-gray-700 hover:text-amber-600 hover:bg-gray-50 rounded-md font-medium"
-                    onClick={() => setIsOpen(false)}
+              {navigation.map((item) => {
+                const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
+                return (
+                  <motion.div
+                    key={item.href}
+                    variants={{
+                      open: { y: 0, opacity: 1 },
+                      closed: { y: -10, opacity: 0 }
+                    }}
                   >
-                    {item.name}
-                  </Link>
-                </motion.div>
-              ))}
+                    <Link
+                      href={item.href}
+                      className={`block px-3 py-2 rounded-md font-medium ${
+                        isActive
+                          ? 'text-amber-600 bg-amber-50'
+                          : 'text-gray-700 hover:text-amber-600 hover:bg-gray-50'
+                      }`}
+                      onClick={() => setIsOpen(false)}
+                      aria-current={isActive ? 'page' : undefined}
+                    >
+                      {item.name}
+                    </Link>
+                  </motion.div>
+                );
+              })}
 
               <motion.div
                 className="border-t pt-2 mt-2"

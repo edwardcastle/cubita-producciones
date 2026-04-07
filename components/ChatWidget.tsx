@@ -20,82 +20,21 @@ export default function ChatWidget() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showBubble, setShowBubble] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const bubbleRef = useRef<HTMLButtonElement | null>(null);
 
-  // Inject the bubble directly into document.body via DOM API — outside React's tree
+  // Show bubble after page loads with delay
   useEffect(() => {
-    if (bubbleRef.current) return;
-
-    const btn = document.createElement('button');
-    btn.setAttribute('aria-label', 'Chat');
-    btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>`;
-    btn.setAttribute('style', [
-      'display:flex',
-      'position:fixed',
-      'top:calc(100svh - 80px)',  // svh = small viewport, always visible area
-      'right:24px',
-      'z-index:9999',
-      'width:56px',
-      'height:56px',
-      'border-radius:9999px',
-      'border:none',
-      'background-color:#f59e0b',
-      'color:white',
-      'cursor:pointer',
-      'align-items:center',
-      'justify-content:center',
-      'box-shadow:0 0 0 4px rgba(245,158,11,0.3),0 25px 50px -12px rgba(0,0,0,0.25)',
-      'opacity:0',
-      'pointer-events:none',
-      'transition:opacity 0.3s ease',
-    ].join(';'));
-    document.body.appendChild(btn);
-    bubbleRef.current = btn;
-
-    btn.addEventListener('click', () => {
-      setIsOpen(true);
-    });
-
-    const show = () => {
-      if (bubbleRef.current) {
-        bubbleRef.current.style.opacity = '1';
-        bubbleRef.current.style.pointerEvents = 'auto';
-      }
-    };
+    setShowBubble(false);
+    const show = () => setTimeout(() => setShowBubble(true), 1500);
 
     if (document.readyState === 'complete') {
-      setTimeout(show, 1500);
+      show();
     } else {
-      window.addEventListener('load', () => setTimeout(show, 1500), { once: true });
+      window.addEventListener('load', () => show(), { once: true });
     }
-
-    return () => {
-      btn.remove();
-      bubbleRef.current = null;
-    };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Sync bubble visibility with isOpen state and page navigation
-  useEffect(() => {
-    if (!bubbleRef.current) return;
-    if (isOpen) {
-      bubbleRef.current.style.opacity = '0';
-      bubbleRef.current.style.pointerEvents = 'none';
-      return;
-    }
-    // Hide during navigation, fade in after page settles
-    bubbleRef.current.style.opacity = '0';
-    bubbleRef.current.style.pointerEvents = 'none';
-    const timer = setTimeout(() => {
-      if (bubbleRef.current && !isOpen) {
-        bubbleRef.current.style.opacity = '1';
-        bubbleRef.current.style.pointerEvents = 'auto';
-      }
-    }, 1500);
-    return () => clearTimeout(timer);
-  }, [isOpen, pathname]);
+  }, [pathname]);
 
   // Initialize greeting on first open
   useEffect(() => {
@@ -199,10 +138,23 @@ export default function ChatWidget() {
     }
   };
 
-  if (!isOpen) return null;
-
   return (
-    <AnimatePresence>
+    <>
+      {/* Chat Bubble */}
+      {!isOpen && showBubble && (
+        <button
+          onClick={() => setIsOpen(true)}
+          aria-label="Open chat"
+          className="fixed z-[9999] flex items-center justify-center w-14 h-14 rounded-full border-none bg-amber-500 text-white cursor-pointer shadow-[0_0_0_4px_rgba(245,158,11,0.3),0_25px_50px_-12px_rgba(0,0,0,0.25)] transition-opacity duration-300"
+          style={{ top: 'calc(100svh - 80px)', right: '24px' }}
+          data-nosnippet
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+        </button>
+      )}
+
+      {/* Chat Dialog */}
+      <AnimatePresence>
       {isOpen && (
         <motion.div
           initial={{ opacity: 0, y: 20, scale: 0.95 }}
@@ -290,6 +242,7 @@ export default function ChatWidget() {
           </div>
         </motion.div>
       )}
-    </AnimatePresence>
+      </AnimatePresence>
+    </>
   );
 }

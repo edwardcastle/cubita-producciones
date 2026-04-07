@@ -170,6 +170,7 @@ export default async function LocaleLayout({
         {process.env.NEXT_PUBLIC_META_PIXEL_ID && (
           <>
             <script
+              async
               dangerouslySetInnerHTML={{
                 __html: `
                   !function(f,b,e,v,n,t,s)

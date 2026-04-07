@@ -86,10 +86,11 @@ export default async function ArtistasPage() {
                   {artist.image ? (
                     <Image
                       src={artist.image}
-                      alt={artist.name}
+                      alt={`${artist.name} - ${artist.genre === 'salsa' ? pageContent.salsaLabel[locale] : pageContent.reggaetonLabel[locale]}`}
                       fill
                       className="object-cover object-top"
                       sizes="(max-width: 768px) 50vw, (max-width: 1024px) 50vw, 33vw"
+                      loading="lazy"
                     />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center">
@@ -105,7 +106,7 @@ export default async function ArtistasPage() {
 
                 {/* Artist Info */}
                 <div className="p-2 md:p-4">
-                  <h3 className="text-sm md:text-xl font-bold text-gray-900 mb-0.5 md:mb-1 truncate">{artist.name}</h3>
+                  <h2 className="text-base md:text-xl font-bold text-gray-900 mb-0.5 md:mb-1 truncate">{artist.name}</h2>
 
                   <p className="text-gray-600 text-xs md:text-sm mb-2 md:mb-3 line-clamp-1 md:line-clamp-2">{stripMarkdown(artist.bio[locale])}</p>
 

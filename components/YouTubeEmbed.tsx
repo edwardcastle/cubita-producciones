@@ -18,7 +18,7 @@ export default function YouTubeEmbed({ videoId, title = 'YouTube video', classNa
   const thumbnailUrl = thumbnailError
     ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
     : `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-  const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+  const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
 
   if (isLoaded) {
     return (
