@@ -169,10 +169,9 @@ const OG_LOCALES: Record<string, string> = {
   it: 'it_IT',
 };
 
-/** Build a locale-aware URL respecting localePrefix: 'as-needed' */
+/** Build a locale-aware URL with locale prefix */
 export function buildLocalizedUrl(locale: string, path: string = ''): string {
-  const prefix = locale === DEFAULT_LOCALE ? '' : `/${locale}`;
-  return `${BASE_URL}${prefix}${path}`;
+  return `${BASE_URL}/${locale}${path}`;
 }
 
 /**

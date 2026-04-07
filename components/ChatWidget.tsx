@@ -145,8 +145,8 @@ export default function ChatWidget() {
         <button
           onClick={() => setIsOpen(true)}
           aria-label="Open chat"
-          className="fixed z-[9999] flex items-center justify-center w-14 h-14 rounded-full border-none bg-amber-500 text-white cursor-pointer shadow-[0_0_0_4px_rgba(245,158,11,0.3),0_25px_50px_-12px_rgba(0,0,0,0.25)] transition-opacity duration-300"
-          style={{ top: 'calc(100svh - 80px)', right: '24px' }}
+          className="fixed z-[9999] flex items-center justify-center w-16 h-16 rounded-full border-none bg-amber-500 text-white cursor-pointer transition-opacity duration-300"
+          style={{ top: 'calc(100svh - 88px)', right: '24px', boxShadow: '0 0 0 5px rgba(245,158,11,0.3), 0 25px 50px -12px rgba(0,0,0,0.25)' }}
           data-nosnippet
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
