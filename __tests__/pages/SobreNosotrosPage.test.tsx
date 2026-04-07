@@ -92,7 +92,7 @@ describe('SobreNosotrosPage', () => {
 
       render(await SobreNosotrosPage());
 
-      expect(screen.getByText('Sobre Nosotros')).toBeInTheDocument();
+      expect(screen.getByRole('heading', { level: 1, name: 'Sobre Nosotros' })).toBeInTheDocument();
     });
 
     it('renders page subtitle', async () => {

@@ -113,7 +113,7 @@ describe('Strapi Library', () => {
       it('includes locale', () => {
         const result = generateMetadataFromSEO(mockSEO, 'es', fallback);
 
-        expect(result.openGraph?.locale).toBe('es');
+        expect(result.openGraph?.locale).toBe('es_ES');
       });
 
       it('includes OG image when available', () => {
@@ -262,9 +262,10 @@ describe('Strapi Library', () => {
       it('handles all locales correctly', () => {
         const locales: ('es' | 'en' | 'fr' | 'it')[] = ['es', 'en', 'fr', 'it'];
 
+        const ogLocales: Record<string, string> = { es: 'es_ES', en: 'en_US', fr: 'fr_FR', it: 'it_IT' };
         locales.forEach((locale) => {
           const result = generateMetadataFromSEO(mockSEO, locale, fallback);
-          expect(result.openGraph?.locale).toBe(locale);
+          expect(result.openGraph?.locale).toBe(ogLocales[locale]);
         });
       });
     });

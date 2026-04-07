@@ -118,7 +118,7 @@ describe('ArtistasPage', () => {
 
       render(await ArtistasPage());
 
-      expect(screen.getByText('Nuestros Artistas')).toBeInTheDocument();
+      expect(screen.getByRole('heading', { level: 1, name: 'Nuestros Artistas' })).toBeInTheDocument();
     });
 
     it('renders page subtitle', async () => {
@@ -189,7 +189,7 @@ describe('ArtistasPage', () => {
 
       render(await ArtistasPage());
 
-      const artistImage = screen.getByAltText('Artist One');
+      const artistImage = screen.getByAltText('Artist One - Salsa');
       expect(artistImage).toBeInTheDocument();
     });
 

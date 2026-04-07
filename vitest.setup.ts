@@ -25,39 +25,44 @@ vi.mock('next-intl/server', () => ({
 }));
 
 // Mock @/i18n/routing
-vi.mock('@/i18n/routing', () => ({
-  Link: ({ children, href, ...props }: any) => {
-    const React = require('react');
-    return React.createElement('a', { href, ...props }, children);
-  },
-  usePathname: () => '/',
-}));
+vi.mock('@/i18n/routing', async () => {
+  const React = await import('react');
+  return {
+    Link: ({ children, href, ...props }: Record<string, unknown> & { children?: React.ReactNode; href: string }) => {
+      return React.createElement('a', { href, ...props }, children);
+    },
+    usePathname: () => '/',
+  };
+});
 
 // Mock next/image
-vi.mock('next/image', () => ({
-  default: ({ src, alt, ...props }: any) => {
-    const React = require('react');
-    return React.createElement('img', { src, alt, ...props });
-  },
-}));
+vi.mock('next/image', async () => {
+  const React = await import('react');
+  return {
+    default: ({ src, alt, ...props }: Record<string, unknown> & { src: string; alt: string }) => {
+      return React.createElement('img', { src, alt, ...props });
+    },
+  };
+});
 
-// Mock framer-motion
-vi.mock('framer-motion', () => ({
-  motion: {
-    div: ({ children, ...props }: any) => {
-      const React = require('react');
-      const { initial, animate, exit, variants, whileHover, whileTap, transition, ...rest } = props;
-      return React.createElement('div', rest, children);
+// Mock framer-motion — Proxy handles any motion.X element (div, nav, button, etc.)
+vi.mock('framer-motion', async () => {
+  const React = await import('react');
+  const motionProps = ['initial', 'animate', 'exit', 'variants', 'whileHover', 'whileTap', 'transition'];
+  const handler: ProxyHandler<Record<string, never>> = {
+    get(_target, prop: string) {
+      return ({ children, ...props }: Record<string, unknown> & { children?: React.ReactNode }) => {
+        const filtered = Object.fromEntries(Object.entries(props).filter(([k]) => !motionProps.includes(k)));
+        return React.createElement(prop, filtered, children);
+      };
     },
-    button: ({ children, ...props }: any) => {
-      const React = require('react');
-      const { initial, animate, exit, variants, whileHover, whileTap, transition, ...rest } = props;
-      return React.createElement('button', rest, children);
-    },
-  },
-  AnimatePresence: ({ children }: any) => children,
-  useInView: () => true,
-}));
+  };
+  return {
+    motion: new Proxy({}, handler),
+    AnimatePresence: ({ children }: { children: React.ReactNode }) => children,
+    useInView: () => true,
+  };
+});
 
 // Mock IntersectionObserver
 class MockIntersectionObserver {

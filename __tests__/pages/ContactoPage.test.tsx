@@ -84,7 +84,7 @@ describe('ContactoPage', () => {
 
       render(await ContactoPage());
 
-      expect(screen.getByText('Contacto')).toBeInTheDocument();
+      expect(screen.getByRole('heading', { level: 1, name: 'Contacto' })).toBeInTheDocument();
     });
 
     it('renders page subtitle', async () => {
