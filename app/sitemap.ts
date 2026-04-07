@@ -1,24 +1,29 @@
 import {MetadataRoute} from 'next';
-import {getAllArtistSlugs} from '@/lib/strapi';
+import {getAllArtistSlugs, buildLocalizedUrl} from '@/lib/strapi';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://cubitaproducciones.com';
-
   const routes = ['', '/artistas', '/sobre-nosotros', '/contacto'];
   const locales = ['es', 'en', 'fr', 'it'];
+
+  function buildAlternates(path: string) {
+    return {
+      languages: {
+        ...Object.fromEntries(
+          locales.map((l) => [l, buildLocalizedUrl(l, path)])
+        ),
+        'x-default': buildLocalizedUrl('es', path),
+      },
+    };
+  }
 
   // Static pages with alternates for each language
   const staticPages = locales.flatMap((locale) =>
     routes.map((route) => ({
-      url: `${baseUrl}/${locale}${route}`,
+      url: buildLocalizedUrl(locale, route),
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: route === '' ? 1 : 0.8,
-      alternates: {
-        languages: Object.fromEntries(
-          locales.map((l) => [l, `${baseUrl}/${l}${route}`])
-        ),
-      },
+      alternates: buildAlternates(route),
     }))
   );
 
@@ -27,15 +32,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const artistPages = locales.flatMap((locale) =>
     artistSlugs.map((slug) => ({
-      url: `${baseUrl}/${locale}/artistas/${slug}`,
+      url: buildLocalizedUrl(locale, `/artistas/${slug}`),
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.7,
-      alternates: {
-        languages: Object.fromEntries(
-          locales.map((l) => [l, `${baseUrl}/${l}/artistas/${slug}`])
-        ),
-      },
+      alternates: buildAlternates(`/artistas/${slug}`),
     }))
   );
 

@@ -29,14 +29,25 @@ export async function generateMetadata({
   const artist = await getArtistBySlug(slug);
 
   if (!artist) {
-    return {
-      title: 'Artista no encontrado - Cubita Producciones',
+    const notFoundTitles: Record<Locale, string> = {
+      es: 'Artista no encontrado - Cubita Producciones',
+      en: 'Artist not found - Cubita Producciones',
+      fr: 'Artiste non trouvé - Cubita Producciones',
+      it: 'Artista non trovato - Cubita Producciones',
     };
+    return { title: notFoundTitles[locale] };
   }
+
+  const descriptionFallbacks: Record<Locale, string> = {
+    es: `Booking de ${artist.name}, artista cubano de ${artist.genre}. Disponible para festivales y eventos en Europa.`,
+    en: `Book ${artist.name}, Cuban ${artist.genre} artist. Available for festivals and events in Europe.`,
+    fr: `Réservation de ${artist.name}, artiste cubain de ${artist.genre}. Disponible pour festivals et événements en Europe.`,
+    it: `Prenotazione di ${artist.name}, artista cubano di ${artist.genre}. Disponibile per festival ed eventi in Europa.`,
+  };
 
   return generateMetadataFromSEO(artist.seo, locale, {
     title: `${artist.name} - Cubita Producciones`,
-    description: stripMarkdown(artist.bio[locale])?.slice(0, 160) || `Booking de ${artist.name}, artista cubano de ${artist.genre}.`,
+    description: stripMarkdown(artist.bio[locale])?.slice(0, 160) || descriptionFallbacks[locale],
   }, `/artistas/${slug}`);
 }
 

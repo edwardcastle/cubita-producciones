@@ -7,7 +7,7 @@ import Footer from '@/components/layout/Footer';
 import ChatWidget from '@/components/ChatWidget';
 import type {Metadata} from 'next';
 import {Poppins} from 'next/font/google';
-import {getSiteSettings} from '@/lib/strapi';
+import {getSiteSettings, buildLocalizedUrl} from '@/lib/strapi';
 import {OrganizationJsonLd, LocalBusinessJsonLd, WebsiteJsonLd} from '@/components/seo/JsonLd';
 import './globals.css';
 
@@ -48,13 +48,28 @@ export async function generateMetadata({
   const title = titles[locale as keyof typeof titles] || titles.es;
   const description = descriptions[locale as keyof typeof descriptions] || descriptions.es;
 
+  const ogLocales: Record<string, string> = {
+    es: 'es_ES',
+    en: 'en_US',
+    fr: 'fr_FR',
+    it: 'it_IT',
+  };
+
+  const localeKeywords: Record<string, string[]> = {
+    es: ['booking', 'artistas cubanos', 'salsa', 'reguetón', 'reggaeton', 'Jacob Forever', 'Manolín', 'Charly & Johayron', 'festivales', 'Europa', 'conciertos', 'agencia de booking', 'música en vivo', 'eventos', 'cubanos en Europa'],
+    en: ['booking', 'Cuban artists', 'salsa', 'reggaeton', 'Jacob Forever', 'Manolín', 'Charly & Johayron', 'festivals', 'Europe', 'concerts', 'booking agency', 'live music', 'events', 'Cuban music Europe'],
+    fr: ['booking', 'artistes cubains', 'salsa', 'reggaeton', 'Jacob Forever', 'Manolín', 'Charly & Johayron', 'festivals', 'Europe', 'concerts', 'agence de booking', 'musique live', 'événements', 'musique cubaine Europe'],
+    it: ['booking', 'artisti cubani', 'salsa', 'reggaeton', 'Jacob Forever', 'Manolín', 'Charly & Johayron', 'festival', 'Europa', 'concerti', 'agenzia di booking', 'musica dal vivo', 'eventi', 'musica cubana Europa'],
+  };
+
   return {
     title,
     description,
-    keywords: ['booking', 'artistas cubanos', 'Cuban artists', 'salsa', 'reguetón', 'reggaeton', 'Jacob Forever', 'Manolín', 'Charly & Johayron', 'festivales', 'Europa', 'conciertos', 'booking agency', 'music booking', 'live music'],
+    keywords: localeKeywords[locale] || localeKeywords.es,
     authors: [{name: 'Cubita Producciones'}],
     creator: 'Cubita Producciones',
     publisher: 'Cubita Producciones',
+    category: 'entertainment',
     metadataBase: new URL(baseUrl),
     icons: {
       icon: [
@@ -74,16 +89,17 @@ export async function generateMetadata({
     openGraph: {
       title,
       description,
-      url: `${baseUrl}/${locale}`,
+      url: buildLocalizedUrl(locale),
       type: 'website',
-      locale: locale,
+      locale: ogLocales[locale] || 'es_ES',
+      alternateLocale: locales.filter(l => l !== locale).map(l => ogLocales[l]),
       siteName: 'Cubita Producciones',
       images: [
         {
           url: '/og-image.jpg',
           width: 1200,
           height: 630,
-          alt: 'Cubita Producciones - Cuban Artists Booking Agency',
+          alt: title,
         },
       ],
     },
@@ -106,10 +122,13 @@ export async function generateMetadata({
       },
     },
     alternates: {
-      canonical: `${baseUrl}/${locale}`,
-      languages: Object.fromEntries(
-        locales.map((l) => [l, `${baseUrl}/${l}`])
-      ),
+      canonical: buildLocalizedUrl(locale),
+      languages: {
+        ...Object.fromEntries(
+          locales.map((l) => [l, buildLocalizedUrl(l)])
+        ),
+        'x-default': buildLocalizedUrl('es'),
+      },
     },
     verification: {
       // Add your verification codes here when you have them
@@ -143,6 +162,36 @@ export default async function LocaleLayout({
         <OrganizationJsonLd locale={locale} />
         <LocalBusinessJsonLd locale={locale} />
         <WebsiteJsonLd locale={locale} />
+        {/* Meta Pixel */}
+        {process.env.NEXT_PUBLIC_META_PIXEL_ID && (
+          <>
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+                  !function(f,b,e,v,n,t,s)
+                  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+                  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+                  n.queue=[];t=b.createElement(e);t.async=!0;
+                  t.src=v;s=b.getElementsByTagName(e)[0];
+                  s.parentNode.insertBefore(t,s)}(window, document,'script',
+                  'https://connect.facebook.net/en_US/fbevents.js');
+                  fbq('init', '${process.env.NEXT_PUBLIC_META_PIXEL_ID}');
+                  fbq('track', 'PageView');
+                `,
+              }}
+            />
+            <noscript>
+              <img
+                height="1"
+                width="1"
+                style={{ display: 'none' }}
+                src={`https://www.facebook.com/tr?id=${process.env.NEXT_PUBLIC_META_PIXEL_ID}&ev=PageView&noscript=1`}
+                alt=""
+              />
+            </noscript>
+          </>
+        )}
       </head>
       <body className={`${poppins.className} antialiased bg-white`}>
         <NextIntlClientProvider messages={messages}>

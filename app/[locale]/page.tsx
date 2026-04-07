@@ -12,10 +12,14 @@ export async function generateMetadata(): Promise<Metadata> {
   const locale = (await getLocale()) as Locale;
   const pageContent = await getHomePage();
 
-  return generateMetadataFromSEO(pageContent.seo, locale, {
-    title: 'Cubita Producciones - Booking de Artistas Cubanos',
-    description: 'Agencia de booking de artistas cubanos de salsa y regueton para festivales y eventos en Europa.',
-  }, '');
+  const fallbacks: Record<Locale, { title: string; description: string }> = {
+    es: { title: 'Cubita Producciones - Booking de Artistas Cubanos', description: 'Agencia de booking de artistas cubanos de salsa y reguetón para festivales y eventos en Europa.' },
+    en: { title: 'Cubita Producciones - Cuban Artists Booking', description: 'Booking agency for Cuban salsa and reggaeton artists for festivals and events in Europe.' },
+    fr: { title: 'Cubita Producciones - Booking d\'Artistes Cubains', description: 'Agence de booking d\'artistes cubains de salsa et reggaeton pour festivals et événements en Europe.' },
+    it: { title: 'Cubita Producciones - Prenotazione Artisti Cubani', description: 'Agenzia di booking di artisti cubani di salsa e reggaeton per festival ed eventi in Europa.' },
+  };
+
+  return generateMetadataFromSEO(pageContent.seo, locale, fallbacks[locale], '');
 }
 
 export default async function HomePage() {

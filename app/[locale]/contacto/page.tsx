@@ -4,6 +4,7 @@ import { Mail, Phone, MapPin } from 'lucide-react';
 import { getContactPage, getArtists, generateMetadataFromSEO } from '@/lib/strapi';
 import ContactForm from '@/components/ContactForm';
 import FadeIn from '@/components/ui/FadeIn';
+import { FAQJsonLd } from '@/components/seo/JsonLd';
 
 type Locale = 'es' | 'en' | 'fr' | 'it';
 
@@ -11,10 +12,14 @@ export async function generateMetadata(): Promise<Metadata> {
   const locale = (await getLocale()) as Locale;
   const pageContent = await getContactPage();
 
-  return generateMetadataFromSEO(pageContent.seo, locale, {
-    title: 'Contacto - Cubita Producciones',
-    description: 'Contacta con Cubita Producciones para booking de artistas cubanos de salsa y regueton.',
-  }, '/contacto');
+  const fallbacks: Record<Locale, { title: string; description: string }> = {
+    es: { title: 'Contacto - Cubita Producciones', description: 'Contacta con Cubita Producciones para booking de artistas cubanos de salsa y reguetón en Europa.' },
+    en: { title: 'Contact - Cubita Producciones', description: 'Contact Cubita Producciones for booking Cuban salsa and reggaeton artists in Europe.' },
+    fr: { title: 'Contact - Cubita Producciones', description: 'Contactez Cubita Producciones pour réserver des artistes cubains de salsa et reggaeton en Europe.' },
+    it: { title: 'Contatti - Cubita Producciones', description: 'Contatta Cubita Producciones per prenotare artisti cubani di salsa e reggaeton in Europa.' },
+  };
+
+  return generateMetadataFromSEO(pageContent.seo, locale, fallbacks[locale], '/contacto');
 }
 
 export default async function ContactoPage() {
@@ -36,6 +41,8 @@ export default async function ContactoPage() {
   };
 
   return (
+    <>
+    <FAQJsonLd locale={locale} />
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-gradient-to-r from-black to-gray-800 text-white py-6 md:py-16 px-4">
@@ -129,5 +136,6 @@ export default async function ContactoPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

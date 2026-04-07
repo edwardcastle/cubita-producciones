@@ -12,10 +12,14 @@ export async function generateMetadata(): Promise<Metadata> {
   const locale = (await getLocale()) as Locale;
   const pageContent = await getAboutPage();
 
-  return generateMetadataFromSEO(pageContent.seo, locale, {
-    title: 'Sobre Nosotros - Cubita Producciones',
-    description: 'Mas de 30 anos de experiencia conectando el talento cubano con escenarios de todo el mundo.',
-  }, '/sobre-nosotros');
+  const fallbacks: Record<Locale, { title: string; description: string }> = {
+    es: { title: 'Sobre Nosotros - Cubita Producciones', description: 'Más de 30 años de experiencia conectando el talento cubano con escenarios de toda Europa.' },
+    en: { title: 'About Us - Cubita Producciones', description: 'Over 30 years of experience connecting Cuban talent with stages across Europe.' },
+    fr: { title: 'À Propos - Cubita Producciones', description: 'Plus de 30 ans d\'expérience à connecter le talent cubain avec les scènes de toute l\'Europe.' },
+    it: { title: 'Chi Siamo - Cubita Producciones', description: 'Oltre 30 anni di esperienza nel collegare il talento cubano con i palcoscenici di tutta Europa.' },
+  };
+
+  return generateMetadataFromSEO(pageContent.seo, locale, fallbacks[locale], '/sobre-nosotros');
 }
 
 export default async function SobreNosotrosPage() {

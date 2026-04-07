@@ -158,6 +158,23 @@ const BASE_URL = 'https://cubitaproducciones.com';
 /** Supported locales for internationalization */
 const LOCALES = ['es', 'en', 'fr', 'it'] as const;
 
+/** Default locale (no prefix in URL with localePrefix: 'as-needed') */
+const DEFAULT_LOCALE = 'es';
+
+/** OpenGraph locale format mapping */
+const OG_LOCALES: Record<string, string> = {
+  es: 'es_ES',
+  en: 'en_US',
+  fr: 'fr_FR',
+  it: 'it_IT',
+};
+
+/** Build a locale-aware URL respecting localePrefix: 'as-needed' */
+export function buildLocalizedUrl(locale: string, path: string = ''): string {
+  const prefix = locale === DEFAULT_LOCALE ? '' : `/${locale}`;
+  return `${BASE_URL}${prefix}${path}`;
+}
+
 /**
  * Generates Next.js Metadata object from SEO data
  * @param seo - SEO data from Strapi or null
@@ -202,7 +219,7 @@ export function generateMetadataFromSEO(
 } {
   const title = seo?.metaTitle[locale] || fallback.title;
   const description = seo?.metaDescription[locale] || fallback.description;
-  const pageUrl = `${BASE_URL}/${locale}${path}`;
+  const pageUrl = buildLocalizedUrl(locale, path);
   const ogImage = seo?.ogImage || `${BASE_URL}/og-image.jpg`;
 
   const metadata: ReturnType<typeof generateMetadataFromSEO> = {
@@ -214,7 +231,7 @@ export function generateMetadataFromSEO(
       url: pageUrl,
       type: 'website',
       siteName: 'Cubita Producciones',
-      locale,
+      locale: OG_LOCALES[locale] || 'es_ES',
       images: [
         {
           url: ogImage,
@@ -232,9 +249,12 @@ export function generateMetadataFromSEO(
     },
     alternates: {
       canonical: seo?.canonicalUrl || pageUrl,
-      languages: Object.fromEntries(
-        LOCALES.map((l) => [l, `${BASE_URL}/${l}${path}`])
-      ),
+      languages: {
+        ...Object.fromEntries(
+          LOCALES.map((l) => [l, buildLocalizedUrl(l, path)])
+        ),
+        'x-default': buildLocalizedUrl(DEFAULT_LOCALE, path),
+      },
     },
   };
 
