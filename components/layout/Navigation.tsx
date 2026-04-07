@@ -51,6 +51,7 @@ export default function Navigation({ logo }: NavigationProps) {
 
   return (
     <nav
+      aria-label="Main navigation"
       className={`sticky top-0 z-50 transition-all duration-300 ${
         scrolled
           ? 'bg-white/95 nav-blur shadow-md'
@@ -102,6 +103,8 @@ export default function Navigation({ logo }: NavigationProps) {
                 className="flex items-center gap-2 text-gray-700 hover:text-amber-600 font-medium"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                aria-label="Select language"
+                aria-expanded={langOpen}
               >
                 <Globe className="w-5 h-5" />
                 {locale.toUpperCase()}
@@ -142,6 +145,8 @@ export default function Navigation({ logo }: NavigationProps) {
               onClick={() => setIsOpen(!isOpen)}
               className="text-gray-700 hover:text-amber-600"
               whileTap={{ scale: 0.9 }}
+              aria-label={isOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={isOpen}
             >
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </motion.button>

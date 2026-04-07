@@ -4,7 +4,8 @@ import { Mail, Phone, MapPin } from 'lucide-react';
 import { getContactPage, getArtists, generateMetadataFromSEO } from '@/lib/strapi';
 import ContactForm from '@/components/ContactForm';
 import FadeIn from '@/components/ui/FadeIn';
-import { FAQJsonLd } from '@/components/seo/JsonLd';
+import { FAQJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 
 type Locale = 'es' | 'en' | 'fr' | 'it';
 
@@ -40,13 +41,26 @@ export default async function ContactoPage() {
     it: 'Seleziona artista...',
   };
 
+  const baseUrl = 'https://cubitaproducciones.com';
+  const breadcrumbItems = [
+    { name: 'Home', url: `${baseUrl}/${locale}` },
+    { name: pageContent.title[locale], url: `${baseUrl}/${locale}/contacto` },
+  ];
+
   return (
     <>
     <FAQJsonLd locale={locale} />
+    <BreadcrumbJsonLd items={breadcrumbItems} />
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-gradient-to-r from-black to-gray-800 text-white py-6 md:py-16 px-4">
         <div className="max-w-7xl mx-auto">
+          <div className="mb-3">
+            <Breadcrumbs variant="dark" items={[
+              { label: 'Home', href: '/' },
+              { label: pageContent.title[locale] },
+            ]} />
+          </div>
           <FadeIn direction="down">
             <h1 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-bold mb-1 md:mb-4">
               {pageContent.title[locale]}
@@ -64,12 +78,15 @@ export default async function ContactoPage() {
           <div className="space-y-3 md:space-y-6">
             <FadeIn direction="left">
               <div className="bg-white rounded-lg md:rounded-xl shadow-lg p-4 md:p-6 card-hover">
+                <h2 className="sr-only">
+                  {locale === 'es' ? 'Información de contacto' : locale === 'en' ? 'Contact information' : locale === 'fr' ? 'Coordonnées' : 'Informazioni di contatto'}
+                </h2>
                 <div className="flex items-start gap-3 md:gap-4 mb-4 md:mb-6">
                   <div className="bg-gray-100 p-2 md:p-3 rounded-lg">
                     <Mail className="w-4 h-4 md:w-6 md:h-6 text-gray-800" />
                   </div>
                   <div className="min-w-0">
-                    <h3 className="font-semibold text-gray-900 text-sm md:text-base mb-0.5 md:mb-1">Email</h3>
+                    <p className="font-semibold text-gray-900 text-sm md:text-base mb-0.5 md:mb-1">Email</p>
                     <p className="text-gray-600 text-xs md:text-base truncate">{pageContent.email}</p>
                   </div>
                 </div>
@@ -79,9 +96,9 @@ export default async function ContactoPage() {
                     <Phone className="w-4 h-4 md:w-6 md:h-6 text-gray-800" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 text-sm md:text-base mb-0.5 md:mb-1">
+                    <p className="font-semibold text-gray-900 text-sm md:text-base mb-0.5 md:mb-1">
                       {locale === 'es' ? 'Telefono' : locale === 'en' ? 'Phone' : locale === 'it' ? 'Telefono' : 'Telephone'}
-                    </h3>
+                    </p>
                     <p className="text-gray-600 text-xs md:text-base">{pageContent.phone}</p>
                   </div>
                 </div>
@@ -91,9 +108,9 @@ export default async function ContactoPage() {
                     <MapPin className="w-4 h-4 md:w-6 md:h-6 text-gray-800" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 text-sm md:text-base mb-0.5 md:mb-1">
+                    <p className="font-semibold text-gray-900 text-sm md:text-base mb-0.5 md:mb-1">
                       {locale === 'es' ? 'Ubicacion' : locale === 'en' ? 'Location' : locale === 'it' ? 'Posizione' : 'Emplacement'}
-                    </h3>
+                    </p>
                     <p className="text-gray-600 text-xs md:text-base">{pageContent.location}</p>
                   </div>
                 </div>
@@ -102,9 +119,9 @@ export default async function ContactoPage() {
 
             <FadeIn direction="left" delay={0.15}>
               <div className="bg-gradient-to-br from-black to-gray-800 rounded-lg md:rounded-xl p-4 md:p-6 text-white card-hover">
-                <h3 className="text-base md:text-xl font-bold mb-1 md:mb-2">
+                <p className="text-base md:text-xl font-bold mb-1 md:mb-2">
                   {pageContent.responseTimeTitle[locale]}
-                </h3>
+                </p>
                 <p className="text-gray-300 text-xs md:text-base">{pageContent.responseTimeText[locale]}</p>
               </div>
             </FadeIn>

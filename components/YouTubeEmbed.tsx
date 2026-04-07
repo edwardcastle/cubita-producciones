@@ -48,7 +48,7 @@ export default function YouTubeEmbed({ videoId, title = 'YouTube video', classNa
         className="object-cover transition-transform duration-300 group-hover:scale-105"
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 50vw"
         onError={() => setThumbnailError(true)}
-        unoptimized
+        loading="lazy"
       />
 
       {/* Overlay */}

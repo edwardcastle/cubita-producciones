@@ -7,6 +7,8 @@ import { Link } from '@/i18n/routing';
 import { Music, Calendar, Users } from 'lucide-react';
 import FadeIn from '@/components/ui/FadeIn';
 import StaggerContainer, { StaggerItem } from '@/components/ui/StaggerContainer';
+import { ArtistsListJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 
 type Locale = 'es' | 'en' | 'fr' | 'it';
 
@@ -39,11 +41,26 @@ export default async function ArtistasPage() {
     it: 'persone',
   };
 
+  const baseUrl = 'https://cubitaproducciones.com';
+  const breadcrumbSchemaItems = [
+    { name: 'Home', url: `${baseUrl}/${locale}` },
+    { name: pageContent.title[locale], url: `${baseUrl}/${locale}/artistas` },
+  ];
+
   return (
+    <>
+    <ArtistsListJsonLd artists={artists} locale={locale} />
+    <BreadcrumbJsonLd items={breadcrumbSchemaItems} />
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-black to-gray-800 text-white py-10 md:py-16 px-4">
+      <header className="bg-gradient-to-r from-black to-gray-800 text-white py-10 md:py-16 px-4">
         <div className="max-w-7xl mx-auto">
+          <div className="mb-3">
+            <Breadcrumbs variant="dark" items={[
+              { label: 'Home', href: '/' },
+              { label: pageContent.title[locale] },
+            ]} />
+          </div>
           <FadeIn direction="down">
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 md:mb-4">
               {pageContent.title[locale]}
@@ -53,7 +70,7 @@ export default async function ArtistasPage() {
             <p className="text-base md:text-xl text-gray-300">{pageContent.subtitle[locale]}</p>
           </FadeIn>
         </div>
-      </div>
+      </header>
 
       {/* Artists Grid */}
       <div className="max-w-7xl mx-auto px-4 py-6 md:py-16">
@@ -135,5 +152,6 @@ export default async function ArtistasPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

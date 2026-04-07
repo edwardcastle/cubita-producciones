@@ -5,10 +5,11 @@ import { stripMarkdown } from '@/lib/utils';
 import { notFound } from 'next/navigation';
 import { Link } from '@/i18n/routing';
 import Image from 'next/image';
-import { Music, Calendar, Users, Mail, Instagram, Youtube, ArrowLeft, Play } from 'lucide-react';
+import { Music, Calendar, Users, Mail, Instagram, Youtube, Play } from 'lucide-react';
 import FadeIn from '@/components/ui/FadeIn';
 import StaggerContainer, { StaggerItem } from '@/components/ui/StaggerContainer';
 import { ArtistJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import YouTubeEmbed from '@/components/YouTubeEmbed';
 import RichText from '@/components/RichText';
 
@@ -189,15 +190,18 @@ export default async function ArtistaPage({
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 py-4 md:py-8">
-          {/* Back Link */}
+          {/* Breadcrumbs */}
           <FadeIn direction="down">
-            <Link
-              href="/artistas"
-              className="inline-flex items-center gap-2 text-gray-300 hover:text-white transition-colors mb-4 md:mb-8 text-sm md:text-base"
-            >
-              <ArrowLeft className="w-3 h-3 md:w-4 md:h-4" />
-              {t.backToArtists}
-            </Link>
+            <div className="mb-4 md:mb-8">
+              <Breadcrumbs
+                variant="dark"
+                items={[
+                  { label: 'Home', href: '/' },
+                  { label: pageContent.title[locale], href: '/artistas' },
+                  { label: artist.name },
+                ]}
+              />
+            </div>
           </FadeIn>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12 items-center py-4 md:py-8">

@@ -159,6 +159,10 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className={poppins.variable}>
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://img.youtube.com" />
+        <link rel="dns-prefetch" href="https://connect.facebook.net" />
         <OrganizationJsonLd locale={locale} />
         <LocalBusinessJsonLd locale={locale} />
         <WebsiteJsonLd locale={locale} />
@@ -195,7 +199,9 @@ export default async function LocaleLayout({
       </head>
       <body className={`${poppins.className} antialiased bg-white`}>
         <NextIntlClientProvider messages={messages}>
-          <Navigation logo={siteSettings.logo} />
+          <header>
+            <Navigation logo={siteSettings.logo} />
+          </header>
           <main className="min-h-screen">
             {children}
           </main>

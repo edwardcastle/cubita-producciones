@@ -5,6 +5,8 @@ import { Link } from '@/i18n/routing';
 import { getAboutPage, generateMetadataFromSEO } from '@/lib/strapi';
 import FadeIn from '@/components/ui/FadeIn';
 import StaggerContainer, { StaggerItem } from '@/components/ui/StaggerContainer';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 
 type Locale = 'es' | 'en' | 'fr' | 'it';
 
@@ -29,11 +31,25 @@ export default async function SobreNosotrosPage() {
     getTranslations(),
   ]);
 
+  const baseUrl = 'https://cubitaproducciones.com';
+  const breadcrumbItems = [
+    { name: 'Home', url: `${baseUrl}/${locale}` },
+    { name: pageContent.title[locale], url: `${baseUrl}/${locale}/sobre-nosotros` },
+  ];
+
   return (
+    <>
+    <BreadcrumbJsonLd items={breadcrumbItems} />
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-black to-gray-800 text-white py-10 md:py-20 px-4">
         <div className="max-w-7xl mx-auto text-center">
+          <div className="mb-4">
+            <Breadcrumbs variant="dark" items={[
+              { label: 'Home', href: '/' },
+              { label: pageContent.title[locale] },
+            ]} />
+          </div>
           <FadeIn direction="down">
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-6">
               {pageContent.title[locale]}
@@ -186,5 +202,6 @@ export default async function SobreNosotrosPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

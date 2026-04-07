@@ -50,7 +50,7 @@ export default function Footer() {
             </p>
           </motion.div>
 
-          <motion.div variants={itemVariants}>
+          <motion.nav variants={itemVariants} aria-label="Footer navigation">
             <h4 className="font-semibold mb-4">Links</h4>
             <ul className="space-y-2">
               <li>
@@ -74,7 +74,7 @@ export default function Footer() {
                 </Link>
               </li>
             </ul>
-          </motion.div>
+          </motion.nav>
 
           <motion.div variants={itemVariants}>
             <h4 className="font-semibold mb-4">{t('footer.contact')}</h4>

@@ -147,6 +147,40 @@ export function BreadcrumbJsonLd({ items }: BreadcrumbJsonLdProps) {
   );
 }
 
+interface ArtistsListJsonLdProps {
+  artists: Array<{ name: string; slug: string; image: string | null; genre: string }>;
+  locale: string;
+}
+
+export function ArtistsListJsonLd({ artists, locale }: ArtistsListJsonLdProps) {
+  const prefix = locale === 'es' ? '' : `/${locale}`;
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Cuban Artists for Booking',
+    url: `https://cubitaproducciones.com${prefix}/artistas`,
+    description: 'Browse our collection of Cuban salsa and reggaeton artists available for booking in Europe.',
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: artists.length,
+      itemListElement: artists.map((artist, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: artist.name,
+        url: `https://cubitaproducciones.com${prefix}/artistas/${artist.slug}`,
+        image: artist.image || undefined,
+      })),
+    },
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}
+
 interface ArtistJsonLdProps {
   name: string;
   description: string;
