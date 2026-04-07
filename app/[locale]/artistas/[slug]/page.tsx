@@ -39,16 +39,31 @@ export async function generateMetadata({
     return { title: notFoundTitles[locale] };
   }
 
+  const titleFallbacks: Record<Locale, string> = {
+    es: `Booking ${artist.name} | Contratar para Eventos y Festivales en Europa`,
+    en: `Book ${artist.name} | Hire for Events & Festivals in Europe`,
+    fr: `Booking ${artist.name} | Réserver pour Événements et Festivals en Europe`,
+    it: `Booking ${artist.name} | Prenotare per Eventi e Festival in Europa`,
+  };
+
   const descriptionFallbacks: Record<Locale, string> = {
-    es: `Booking de ${artist.name}, artista cubano de ${artist.genre}. Disponible para festivales y eventos en Europa.`,
-    en: `Book ${artist.name}, Cuban ${artist.genre} artist. Available for festivals and events in Europe.`,
-    fr: `Réservation de ${artist.name}, artiste cubain de ${artist.genre}. Disponible pour festivals et événements en Europe.`,
-    it: `Prenotazione di ${artist.name}, artista cubano di ${artist.genre}. Disponibile per festival ed eventi in Europa.`,
+    es: `Booking de ${artist.name}, artista cubano de ${artist.genre}. Contratar para festivales, conciertos y eventos privados en Europa. Solicita presupuesto ahora.`,
+    en: `Book ${artist.name}, Cuban ${artist.genre} artist. Available for festivals, concerts and private events in Europe. Request a quote now.`,
+    fr: `Booking de ${artist.name}, artiste cubain de ${artist.genre}. Disponible pour festivals, concerts et événements privés en Europe. Demandez un devis.`,
+    it: `Booking di ${artist.name}, artista cubano di ${artist.genre}. Disponibile per festival, concerti ed eventi privati in Europa. Richiedi un preventivo.`,
+  };
+
+  const keywordsFallbacks: Record<Locale, string> = {
+    es: `booking ${artist.name}, contratar ${artist.name}, ${artist.name} ${artist.genre}, ${artist.name} Europa, ${artist.name} festivales, artista cubano booking`,
+    en: `booking ${artist.name}, book ${artist.name}, hire ${artist.name}, ${artist.name} ${artist.genre}, ${artist.name} Europe, ${artist.name} festivals, Cuban artist booking`,
+    fr: `booking ${artist.name}, réserver ${artist.name}, ${artist.name} ${artist.genre}, ${artist.name} Europe, ${artist.name} festivals, artiste cubain booking`,
+    it: `booking ${artist.name}, prenotare ${artist.name}, ${artist.name} ${artist.genre}, ${artist.name} Europa, ${artist.name} festival, artista cubano booking`,
   };
 
   return generateMetadataFromSEO(artist.seo, locale, {
-    title: `${artist.name} - Cubita Producciones`,
+    title: titleFallbacks[locale],
     description: stripMarkdown(artist.bio[locale])?.slice(0, 160) || descriptionFallbacks[locale],
+    keywords: keywordsFallbacks[locale],
   }, `/artistas/${slug}`);
 }
 

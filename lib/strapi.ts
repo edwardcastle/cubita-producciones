@@ -192,7 +192,7 @@ export function buildLocalizedUrl(locale: string, path: string = ''): string {
 export function generateMetadataFromSEO(
   seo: SEO | null,
   locale: 'es' | 'en' | 'fr' | 'it',
-  fallback: { title: string; description: string },
+  fallback: { title: string; description: string; keywords?: string },
   path: string = ''
 ): {
   title: string;
@@ -259,6 +259,8 @@ export function generateMetadataFromSEO(
 
   if (seo?.keywords) {
     metadata.keywords = seo.keywords;
+  } else if (fallback.keywords) {
+    metadata.keywords = fallback.keywords;
   }
 
   if (seo?.noIndex) {

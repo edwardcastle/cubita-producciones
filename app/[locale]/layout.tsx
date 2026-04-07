@@ -56,10 +56,10 @@ export async function generateMetadata({
   };
 
   const localeKeywords: Record<string, string[]> = {
-    es: ['booking', 'artistas cubanos', 'salsa', 'reguetón', 'reggaeton', 'Jacob Forever', 'Manolín', 'Charly & Johayron', 'festivales', 'Europa', 'conciertos', 'agencia de booking', 'música en vivo', 'eventos', 'cubanos en Europa'],
-    en: ['booking', 'Cuban artists', 'salsa', 'reggaeton', 'Jacob Forever', 'Manolín', 'Charly & Johayron', 'festivals', 'Europe', 'concerts', 'booking agency', 'live music', 'events', 'Cuban music Europe'],
-    fr: ['booking', 'artistes cubains', 'salsa', 'reggaeton', 'Jacob Forever', 'Manolín', 'Charly & Johayron', 'festivals', 'Europe', 'concerts', 'agence de booking', 'musique live', 'événements', 'musique cubaine Europe'],
-    it: ['booking', 'artisti cubani', 'salsa', 'reggaeton', 'Jacob Forever', 'Manolín', 'Charly & Johayron', 'festival', 'Europa', 'concerti', 'agenzia di booking', 'musica dal vivo', 'eventi', 'musica cubana Europa'],
+    es: ['booking artistas cubanos', 'contratar artistas cubanos', 'booking Jacob Forever', 'booking Manolín', 'booking El Micha', 'booking Charly & Johayron', 'salsa', 'reguetón', 'reggaeton', 'contratar para festivales', 'artistas cubanos Europa', 'agencia de booking cubana', 'conciertos salsa Europa', 'eventos música cubana'],
+    en: ['book Cuban artists', 'booking Jacob Forever', 'booking Manolín', 'booking El Micha', 'booking Charly & Johayron', 'Cuban artists Europe', 'salsa', 'reggaeton', 'hire Cuban artists', 'Cuban booking agency', 'salsa concerts Europe', 'Cuban music events', 'Latin artists booking'],
+    fr: ['booking artistes cubains', 'réserver Jacob Forever', 'booking Manolín', 'booking El Micha', 'booking Charly & Johayron', 'artistes cubains Europe', 'salsa', 'reggaeton', 'agence booking cubaine', 'concerts salsa Europe', 'événements musique cubaine'],
+    it: ['booking artisti cubani', 'prenotare Jacob Forever', 'booking Manolín', 'booking El Micha', 'booking Charly & Johayron', 'artisti cubani Europa', 'salsa', 'reggaeton', 'agenzia booking cubana', 'concerti salsa Europa', 'eventi musica cubana'],
   };
 
   return {

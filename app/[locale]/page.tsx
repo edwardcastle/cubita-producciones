@@ -13,10 +13,10 @@ export async function generateMetadata(): Promise<Metadata> {
   const pageContent = await getHomePage();
 
   const fallbacks: Record<Locale, { title: string; description: string }> = {
-    es: { title: 'Cubita Producciones - Booking de Artistas Cubanos', description: 'Agencia de booking de artistas cubanos de salsa y reguetón para festivales y eventos en Europa.' },
-    en: { title: 'Cubita Producciones - Cuban Artists Booking', description: 'Booking agency for Cuban salsa and reggaeton artists for festivals and events in Europe.' },
-    fr: { title: 'Cubita Producciones - Booking d\'Artistes Cubains', description: 'Agence de booking d\'artistes cubains de salsa et reggaeton pour festivals et événements en Europe.' },
-    it: { title: 'Cubita Producciones - Prenotazione Artisti Cubani', description: 'Agenzia di booking di artisti cubani di salsa e reggaeton per festival ed eventi in Europa.' },
+    es: { title: 'Cubita Producciones | Booking de Artistas Cubanos en Europa', description: 'Agencia de booking de artistas cubanos de salsa y reguetón. Contratar Jacob Forever, Manolín, El Micha y más para festivales y eventos en Europa.' },
+    en: { title: 'Cubita Producciones | Book Cuban Artists in Europe', description: 'Booking agency for Cuban salsa and reggaeton artists. Book Jacob Forever, Manolín, El Micha and more for festivals and events in Europe.' },
+    fr: { title: 'Cubita Producciones | Booking Artistes Cubains en Europe', description: 'Agence de booking d\'artistes cubains de salsa et reggaeton. Réservez Jacob Forever, Manolín, El Micha et plus pour festivals et événements en Europe.' },
+    it: { title: 'Cubita Producciones | Booking Artisti Cubani in Europa', description: 'Agenzia di booking di artisti cubani di salsa e reggaeton. Prenota Jacob Forever, Manolín, El Micha e altri per festival ed eventi in Europa.' },
   };
 
   return generateMetadataFromSEO(pageContent.seo, locale, fallbacks[locale], '');
