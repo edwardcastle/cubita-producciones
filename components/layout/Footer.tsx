@@ -3,54 +3,59 @@
 import {useTranslations} from 'next-intl';
 import {Link} from '@/i18n/routing';
 import {Mail, Phone} from 'lucide-react';
-import {motion, useInView} from 'framer-motion';
-import {useRef} from 'react';
+import {useRef, useEffect, useState} from 'react';
 
 export default function Footer() {
   const t = useTranslations();
   const currentYear = new Date().getFullYear();
   const ref = useRef<HTMLElement>(null);
-  const isInView = useInView(ref, { once: true, amount: 0.2 });
+  const [visible, setVisible] = useState(false);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.1,
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.unobserve(el);
+        }
       },
-    },
-  };
+      { threshold: 0.2 }
+    );
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] },
-    },
-  };
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <footer ref={ref} className="bg-gray-900 text-white">
-      <motion.div
-        className="max-w-7xl mx-auto px-4 py-12"
-        initial="hidden"
-        animate={isInView ? 'visible' : 'hidden'}
-        variants={containerVariants}
-      >
+      <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <motion.div variants={itemVariants}>
+          <div
+            style={{
+              opacity: visible ? 1 : 0,
+              transform: visible ? 'none' : 'translateY(20px)',
+              transition: 'opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) 0.1s, transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) 0.1s',
+            }}
+          >
             <h3 className="text-2xl font-bold text-white mb-4">
               Cubita Producciones
             </h3>
             <p className="text-gray-400">
               {t('home.about.description')}
             </p>
-          </motion.div>
+          </div>
 
-          <motion.nav variants={itemVariants} aria-label="Footer navigation">
+          <nav
+            aria-label="Footer navigation"
+            style={{
+              opacity: visible ? 1 : 0,
+              transform: visible ? 'none' : 'translateY(20px)',
+              transition: 'opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) 0.2s, transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) 0.2s',
+            }}
+          >
             <h4 className="font-semibold mb-4">Links</h4>
             <ul className="space-y-2">
               <li>
@@ -74,9 +79,15 @@ export default function Footer() {
                 </Link>
               </li>
             </ul>
-          </motion.nav>
+          </nav>
 
-          <motion.div variants={itemVariants}>
+          <div
+            style={{
+              opacity: visible ? 1 : 0,
+              transform: visible ? 'none' : 'translateY(20px)',
+              transition: 'opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) 0.3s, transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) 0.3s',
+            }}
+          >
             <h4 className="font-semibold mb-4">{t('footer.contact')}</h4>
             <ul className="space-y-2 text-gray-400">
               <li className="flex items-center gap-2 min-w-0">
@@ -88,16 +99,20 @@ export default function Footer() {
                 <span>+39 320 936 5048</span>
               </li>
             </ul>
-          </motion.div>
+          </div>
         </div>
 
-        <motion.div
-          variants={itemVariants}
+        <div
           className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400"
+          style={{
+            opacity: visible ? 1 : 0,
+            transform: visible ? 'none' : 'translateY(20px)',
+            transition: 'opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) 0.4s, transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) 0.4s',
+          }}
         >
           <p>&copy; {currentYear} Cubita Producciones. {t('footer.rights')}.</p>
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
     </footer>
   );
 }

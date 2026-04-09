@@ -3,9 +3,8 @@
 import {useTranslations, useLocale} from 'next-intl';
 import {Link, usePathname} from '@/i18n/routing';
 import {Menu, X, Globe} from 'lucide-react';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import {useRouter} from 'next/navigation';
-import {motion, AnimatePresence} from 'framer-motion';
 import Image from 'next/image';
 
 interface NavigationProps {
@@ -20,6 +19,7 @@ export default function Navigation({ logo }: NavigationProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const langRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,6 +30,18 @@ export default function Navigation({ logo }: NavigationProps) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (langRef.current && !langRef.current.contains(e.target as Node)) {
+        setLangOpen(false);
+      }
+    };
+    if (langOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [langOpen]);
+
   const navigation = [
     { name: t('home'), href: '/' },
     { name: t('artists'), href: '/artistas' },
@@ -38,10 +50,10 @@ export default function Navigation({ logo }: NavigationProps) {
   ];
 
   const languages = [
-    { code: 'es', name: 'Espanol', flag: '🇪🇸' },
-    { code: 'en', name: 'English', flag: '🇬🇧' },
-    { code: 'fr', name: 'Francais', flag: '🇫🇷' },
-    { code: 'it', name: 'Italiano', flag: '🇮🇹' },
+    { code: 'es', name: 'Espanol', flag: '\u{1F1EA}\u{1F1F8}' },
+    { code: 'en', name: 'English', flag: '\u{1F1EC}\u{1F1E7}' },
+    { code: 'fr', name: 'Francais', flag: '\u{1F1EB}\u{1F1F7}' },
+    { code: 'it', name: 'Italiano', flag: '\u{1F1EE}\u{1F1F9}' },
   ];
 
   const handleLanguageChange = (newLocale: string) => {
@@ -61,26 +73,20 @@ export default function Navigation({ logo }: NavigationProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <Link href="/" className="flex items-center gap-3">
-              <motion.div
-                className="flex items-center gap-3"
-                whileHover={{ scale: 1.02 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-              >
-                {logo && (
-                  <Image
-                    src={logo}
-                    alt="Cubita Producciones"
-                    width={40}
-                    height={40}
-                    className="h-10 w-auto"
-                    priority
-                  />
-                )}
-                <span className="text-xl font-bold text-gray-900">
-                  Cubita Producciones
-                </span>
-              </motion.div>
+            <Link href="/" className="flex items-center gap-3 transition-transform duration-200 hover:scale-[1.02]">
+              {logo && (
+                <Image
+                  src={logo}
+                  alt=""
+                  width={40}
+                  height={40}
+                  className="h-10 w-auto"
+                  priority
+                />
+              )}
+              <span className="text-xl font-bold text-gray-900">
+                Cubita Producciones
+              </span>
             </Link>
           </div>
 
@@ -97,131 +103,85 @@ export default function Navigation({ logo }: NavigationProps) {
             ))}
 
             {/* Language Selector */}
-            <div className="relative">
-              <motion.button
+            <div className="relative" ref={langRef}>
+              <button
                 onClick={() => setLangOpen(!langOpen)}
-                className="flex items-center gap-2 text-gray-700 hover:text-amber-600 font-medium"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                className="flex items-center gap-2 text-gray-700 hover:text-amber-600 font-medium transition-colors"
                 aria-label="Select language"
                 aria-expanded={langOpen}
               >
                 <Globe className="w-5 h-5" />
                 {locale.toUpperCase()}
-              </motion.button>
+              </button>
 
-              <AnimatePresence>
-                {langOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2"
-                  >
-                    {languages.map((lang) => (
-                      <motion.button
-                        key={lang.code}
-                        onClick={() => handleLanguageChange(lang.code)}
-                        className={`w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-2 ${
-                          locale === lang.code ? 'bg-amber-50 text-amber-600' : 'text-gray-700'
-                        }`}
-                        whileHover={{ x: 4 }}
-                        transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-                      >
-                        <span className="font-semibold text-sm">{lang.flag}</span>
-                        {lang.name}
-                      </motion.button>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {langOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 animate-dropdown">
+                  {languages.map((lang) => (
+                    <button
+                      key={lang.code}
+                      onClick={() => handleLanguageChange(lang.code)}
+                      className={`w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-2 transition-transform duration-150 hover:translate-x-1 ${
+                        locale === lang.code ? 'bg-amber-50 text-amber-600' : 'text-gray-700'
+                      }`}
+                    >
+                      <span className="font-semibold text-sm">{lang.flag}</span>
+                      {lang.name}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
-            <motion.button
+            <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-700 hover:text-amber-600"
-              whileTap={{ scale: 0.9 }}
+              className="text-gray-700 hover:text-amber-600 transition-transform active:scale-90"
               aria-label={isOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={isOpen}
             >
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </motion.button>
+            </button>
           </div>
         </div>
       </div>
 
       {/* Mobile Navigation */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="md:hidden overflow-hidden"
-          >
-            <motion.div
-              className="px-2 pt-2 pb-3 space-y-1"
-              initial="closed"
-              animate="open"
-              variants={{
-                open: {
-                  transition: { staggerChildren: 0.07, delayChildren: 0.1 }
-                },
-                closed: {
-                  transition: { staggerChildren: 0.05, staggerDirection: -1 }
-                }
-              }}
-            >
-              {navigation.map((item) => (
-                <motion.div
-                  key={item.href}
-                  variants={{
-                    open: { y: 0, opacity: 1 },
-                    closed: { y: -10, opacity: 0 }
-                  }}
-                >
-                  <Link
-                    href={item.href}
-                    className="block px-3 py-2 text-gray-700 hover:text-amber-600 hover:bg-gray-50 rounded-md font-medium"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {item.name}
-                  </Link>
-                </motion.div>
-              ))}
-
-              <motion.div
-                className="border-t pt-2 mt-2"
-                variants={{
-                  open: { y: 0, opacity: 1 },
-                  closed: { y: -10, opacity: 0 }
-                }}
+      {isOpen && (
+        <div className="md:hidden animate-mobile-menu">
+          <div className="px-2 pt-2 pb-3 space-y-1">
+            {navigation.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="block px-3 py-2 text-gray-700 hover:text-amber-600 hover:bg-gray-50 rounded-md font-medium"
+                onClick={() => setIsOpen(false)}
               >
-                {languages.map((lang) => (
-                  <button
-                    key={lang.code}
-                    onClick={() => {
-                      handleLanguageChange(lang.code);
-                      setIsOpen(false);
-                    }}
-                    className={`w-full px-3 py-2 text-left flex items-center gap-2 rounded-md ${
-                      locale === lang.code ? 'bg-amber-50 text-amber-600' : 'text-gray-700 hover:bg-gray-50'
-                    }`}
-                  >
-                    <span className="font-semibold text-sm">{lang.flag}</span>
-                    {lang.name}
-                  </button>
-                ))}
-              </motion.div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                {item.name}
+              </Link>
+            ))}
+
+            <div className="border-t pt-2 mt-2">
+              {languages.map((lang) => (
+                <button
+                  key={lang.code}
+                  onClick={() => {
+                    handleLanguageChange(lang.code);
+                    setIsOpen(false);
+                  }}
+                  className={`w-full px-3 py-2 text-left flex items-center gap-2 rounded-md ${
+                    locale === lang.code ? 'bg-amber-50 text-amber-600' : 'text-gray-700 hover:bg-gray-50'
+                  }`}
+                >
+                  <span className="font-semibold text-sm">{lang.flag}</span>
+                  {lang.name}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }

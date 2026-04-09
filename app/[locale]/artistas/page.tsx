@@ -14,7 +14,6 @@ type Locale = 'es' | 'en' | 'fr' | 'it';
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = (await getLocale()) as Locale;
-  const pageContent = await getArtistsPage();
 
   const fallbacks: Record<Locale, { title: string; description: string }> = {
     es: { title: 'Booking Artistas Cubanos | Salsa y Reggaeton - Cubita Producciones', description: 'Booking de artistas cubanos de salsa y reguetón para festivales y eventos en Europa. Jacob Forever, Manolín, El Micha, Charly & Johayron y más.' },
@@ -23,7 +22,12 @@ export async function generateMetadata(): Promise<Metadata> {
     it: { title: 'Booking Artisti Cubani | Salsa e Reggaeton - Cubita Producciones', description: 'Booking di artisti cubani di salsa e reggaeton per festival ed eventi in Europa. Jacob Forever, Manolín, El Micha, Charly & Johayron e altri.' },
   };
 
-  return generateMetadataFromSEO(pageContent.seo, locale, fallbacks[locale], '/artistas');
+  try {
+    const pageContent = await getArtistsPage();
+    return generateMetadataFromSEO(pageContent.seo, locale, fallbacks[locale], '/artistas');
+  } catch {
+    return fallbacks[locale];
+  }
 }
 
 export default async function ArtistasPage() {

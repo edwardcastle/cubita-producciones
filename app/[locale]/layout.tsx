@@ -4,7 +4,7 @@ import {notFound} from 'next/navigation';
 import {routing} from '@/i18n/routing';
 import Navigation from '@/components/layout/Navigation';
 import Footer from '@/components/layout/Footer';
-import ChatWidget from '@/components/ChatWidget';
+import LazyChat from '@/components/LazyChat';
 import type {Metadata} from 'next';
 import {Poppins} from 'next/font/google';
 import {getSiteSettings, buildLocalizedUrl} from '@/lib/strapi';
@@ -13,7 +13,7 @@ import './globals.css';
 
 const poppins = Poppins({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
+  weight: ['400', '500', '600', '700'],
   display: 'swap',
   variable: '--font-poppins',
 });
@@ -43,7 +43,7 @@ export async function generateMetadata({
     it: 'Agenzia di booking con oltre 30 anni di rappresentanza di artisti cubani di salsa e reggaeton in Europa. Jacob Forever, Manolín, Charly & Johayron e altri.'
   };
 
-  const baseUrl = 'https://cubitaproducciones.com';
+  const baseUrl = 'https://www.cubitaproducciones.com';
   const locales = ['es', 'en', 'fr', 'it'];
   const title = titles[locale as keyof typeof titles] || titles.es;
   const description = descriptions[locale as keyof typeof descriptions] || descriptions.es;
@@ -159,10 +159,6 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className={poppins.variable}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://img.youtube.com" />
-        <link rel="dns-prefetch" href="https://connect.facebook.net" />
         <OrganizationJsonLd locale={locale} />
         <LocalBusinessJsonLd locale={locale} />
         <WebsiteJsonLd locale={locale} />
@@ -207,7 +203,7 @@ export default async function LocaleLayout({
             {children}
           </main>
           <Footer />
-          <ChatWidget />
+          <LazyChat />
         </NextIntlClientProvider>
       </body>
     </html>

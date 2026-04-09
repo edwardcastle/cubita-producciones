@@ -11,7 +11,6 @@ type Locale = 'es' | 'en' | 'fr' | 'it';
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = (await getLocale()) as Locale;
-  const pageContent = await getContactPage();
 
   const fallbacks: Record<Locale, { title: string; description: string }> = {
     es: { title: 'Contacto - Cubita Producciones', description: 'Contacta con Cubita Producciones para booking de artistas cubanos de salsa y reguetón en Europa.' },
@@ -20,7 +19,12 @@ export async function generateMetadata(): Promise<Metadata> {
     it: { title: 'Contatti - Cubita Producciones', description: 'Contatta Cubita Producciones per prenotare artisti cubani di salsa e reggaeton in Europa.' },
   };
 
-  return generateMetadataFromSEO(pageContent.seo, locale, fallbacks[locale], '/contacto');
+  try {
+    const pageContent = await getContactPage();
+    return generateMetadataFromSEO(pageContent.seo, locale, fallbacks[locale], '/contacto');
+  } catch {
+    return fallbacks[locale];
+  }
 }
 
 export default async function ContactoPage() {

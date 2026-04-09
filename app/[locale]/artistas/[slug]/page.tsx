@@ -27,15 +27,22 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const locale = (await getLocale()) as Locale;
-  const artist = await getArtistBySlug(slug);
+
+  const notFoundTitles: Record<Locale, string> = {
+    es: 'Artista no encontrado - Cubita Producciones',
+    en: 'Artist not found - Cubita Producciones',
+    fr: 'Artiste non trouvé - Cubita Producciones',
+    it: 'Artista non trovato - Cubita Producciones',
+  };
+
+  let artist;
+  try {
+    artist = await getArtistBySlug(slug);
+  } catch {
+    return { title: notFoundTitles[locale] };
+  }
 
   if (!artist) {
-    const notFoundTitles: Record<Locale, string> = {
-      es: 'Artista no encontrado - Cubita Producciones',
-      en: 'Artist not found - Cubita Producciones',
-      fr: 'Artiste non trouvé - Cubita Producciones',
-      it: 'Artista non trovato - Cubita Producciones',
-    };
     return { title: notFoundTitles[locale] };
   }
 

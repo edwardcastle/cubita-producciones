@@ -153,7 +153,7 @@ export interface PageWithSEO {
 }
 
 /** Production website base URL */
-const BASE_URL = 'https://cubitaproducciones.com';
+const BASE_URL = 'https://www.cubitaproducciones.com';
 
 /** Supported locales for internationalization */
 const LOCALES = ['es', 'en', 'fr', 'it'] as const;
@@ -216,8 +216,8 @@ export function generateMetadataFromSEO(
   robots?: { index: boolean; follow: boolean; googleBot?: { index: boolean; follow: boolean; 'max-image-preview': 'none' | 'standard' | 'large'; 'max-snippet': number } };
   alternates?: { canonical: string; languages: Record<string, string> };
 } {
-  const title = seo?.metaTitle[locale] || fallback.title;
-  const description = seo?.metaDescription[locale] || fallback.description;
+  const title = seo?.metaTitle?.[locale] || fallback.title;
+  const description = seo?.metaDescription?.[locale] || fallback.description;
   const pageUrl = buildLocalizedUrl(locale, path);
   const ogImage = seo?.ogImage || `${BASE_URL}/og-image.jpg`;
 
@@ -247,7 +247,7 @@ export function generateMetadataFromSEO(
       images: [ogImage],
     },
     alternates: {
-      canonical: seo?.canonicalUrl || pageUrl,
+      canonical: pageUrl,
       languages: {
         ...Object.fromEntries(
           LOCALES.map((l) => [l, buildLocalizedUrl(l, path)])

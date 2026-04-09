@@ -10,7 +10,6 @@ type Locale = 'es' | 'en' | 'fr' | 'it';
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = (await getLocale()) as Locale;
-  const pageContent = await getHomePage();
 
   const fallbacks: Record<Locale, { title: string; description: string }> = {
     es: { title: 'Cubita Producciones | Booking de Artistas Cubanos en Europa', description: 'Agencia de booking de artistas cubanos de salsa y reguetón. Contratar Jacob Forever, Manolín, El Micha y más para festivales y eventos en Europa.' },
@@ -19,7 +18,12 @@ export async function generateMetadata(): Promise<Metadata> {
     it: { title: 'Cubita Producciones | Booking Artisti Cubani in Europa', description: 'Agenzia di booking di artisti cubani di salsa e reggaeton. Prenota Jacob Forever, Manolín, El Micha e altri per festival ed eventi in Europa.' },
   };
 
-  return generateMetadataFromSEO(pageContent.seo, locale, fallbacks[locale], '');
+  try {
+    const pageContent = await getHomePage();
+    return generateMetadataFromSEO(pageContent.seo, locale, fallbacks[locale], '');
+  } catch {
+    return fallbacks[locale];
+  }
 }
 
 export default async function HomePage() {
@@ -35,25 +39,19 @@ export default async function HomePage() {
       <section className="relative bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white py-12 md:py-24 px-4 overflow-hidden">
         <div className="max-w-7xl mx-auto">
           <div className="max-w-3xl">
-            <FadeIn direction="up" delay={0}>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6">
-                {pageContent.heroTitle[locale]}
-              </h1>
-            </FadeIn>
-            <FadeIn direction="up" delay={0.15}>
-              <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 md:mb-8 text-gray-300">
-                {pageContent.heroSubtitle[locale]}
-              </p>
-            </FadeIn>
-            <FadeIn direction="up" delay={0.3}>
-              <Link
-                href="/artistas"
-                className="inline-flex items-center gap-2 bg-amber-500 text-black px-6 py-3 md:px-8 md:py-4 rounded-lg font-semibold text-base md:text-lg hover:bg-amber-400 transition-colors btn-hover relative z-10"
-              >
-                {pageContent.ctaText[locale]}
-                <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
-              </Link>
-            </FadeIn>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6">
+              {pageContent.heroTitle[locale]}
+            </h1>
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 md:mb-8 text-gray-300">
+              {pageContent.heroSubtitle[locale]}
+            </p>
+            <Link
+              href="/artistas"
+              className="inline-flex items-center gap-2 bg-amber-500 text-black px-6 py-3 md:px-8 md:py-4 rounded-lg font-semibold text-base md:text-lg hover:bg-amber-400 transition-colors btn-hover relative z-10"
+            >
+              {pageContent.ctaText[locale]}
+              <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
+            </Link>
           </div>
         </div>
 
@@ -113,7 +111,7 @@ export default async function HomePage() {
                 </p>
                 <Link
                   href="/sobre-nosotros"
-                  className="inline-flex items-center gap-2 text-amber-600 font-semibold hover:text-amber-700 link-underline"
+                  className="inline-flex items-center gap-2 text-amber-800 font-semibold hover:text-amber-900 link-underline"
                 >
                   {t('home.about.learnMore')}
                   <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />

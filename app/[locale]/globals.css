@@ -115,6 +115,38 @@ body {
   box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
 }
 
+/* Dropdown animation */
+@keyframes dropdown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-dropdown {
+  animation: dropdown 0.2s ease-out;
+}
+
+/* Mobile menu animation */
+@keyframes mobileMenu {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-mobile-menu {
+  animation: mobileMenu 0.25s ease-out;
+}
+
 /* Navigation backdrop blur */
 .nav-blur {
   backdrop-filter: blur(10px);

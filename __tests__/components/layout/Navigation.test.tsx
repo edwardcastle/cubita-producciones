@@ -36,17 +36,17 @@ describe('Navigation', () => {
     });
 
     it('renders logo when provided', () => {
-      render(<Navigation logo="https://example.com/logo.png" />);
+      const { container } = render(<Navigation logo="https://example.com/logo.png" />);
 
-      const logo = screen.getByAltText('Cubita Producciones');
+      const logo = container.querySelector('img');
       expect(logo).toBeInTheDocument();
       expect(logo).toHaveAttribute('src', expect.stringContaining('logo.png'));
     });
 
     it('does not render logo image when logo is null', () => {
-      render(<Navigation logo={null} />);
+      const { container } = render(<Navigation logo={null} />);
 
-      expect(screen.queryByAltText('Cubita Producciones')).not.toBeInTheDocument();
+      expect(container.querySelector('img')).not.toBeInTheDocument();
     });
 
     it('renders language selector button', () => {
