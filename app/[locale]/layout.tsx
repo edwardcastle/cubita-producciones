@@ -43,7 +43,7 @@ export async function generateMetadata({
     it: 'Agenzia di booking con oltre 30 anni di rappresentanza di artisti cubani di salsa e reggaeton in Europa. Jacob Forever, Manolín, Charly & Johayron e altri.'
   };
 
-  const baseUrl = 'https://www.cubitaproducciones.com';
+  const baseUrl = 'https://cubitaproducciones.com';
   const locales = ['es', 'en', 'fr', 'it'];
   const title = titles[locale as keyof typeof titles] || titles.es;
   const description = descriptions[locale as keyof typeof descriptions] || descriptions.es;

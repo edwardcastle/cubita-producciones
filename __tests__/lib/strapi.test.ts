@@ -29,7 +29,7 @@ describe('Strapi Library', () => {
       },
       keywords: 'salsa, reggaeton, cuba, booking',
       ogImage: 'https://example.com/og-image.jpg',
-      canonicalUrl: 'https://www.cubitaproducciones.com/es/artistas',
+      canonicalUrl: 'https://cubitaproducciones.com/es/artistas',
       noIndex: false,
     };
 
@@ -133,7 +133,7 @@ describe('Strapi Library', () => {
       it('includes correct URL based on locale and path', () => {
         const result = generateMetadataFromSEO(mockSEO, 'es', fallback, '/artistas');
 
-        expect(result.openGraph?.url).toBe('https://www.cubitaproducciones.com/es/artistas');
+        expect(result.openGraph?.url).toBe('https://cubitaproducciones.com/es/artistas');
       });
     });
 
@@ -164,23 +164,23 @@ describe('Strapi Library', () => {
       it('uses page URL as canonical', () => {
         const result = generateMetadataFromSEO(mockSEO, 'es', fallback);
 
-        expect(result.alternates?.canonical).toBe('https://www.cubitaproducciones.com/es');
+        expect(result.alternates?.canonical).toBe('https://cubitaproducciones.com/es');
       });
 
       it('uses page URL with path as canonical', () => {
         const result = generateMetadataFromSEO(mockSEO, 'es', fallback, '/test');
 
-        expect(result.alternates?.canonical).toBe('https://www.cubitaproducciones.com/es/test');
+        expect(result.alternates?.canonical).toBe('https://cubitaproducciones.com/es/test');
       });
 
       it('includes language alternates', () => {
         const result = generateMetadataFromSEO(mockSEO, 'es', fallback, '/artistas');
 
         expect(result.alternates?.languages).toBeDefined();
-        expect(result.alternates?.languages?.es).toBe('https://www.cubitaproducciones.com/es/artistas');
-        expect(result.alternates?.languages?.en).toBe('https://www.cubitaproducciones.com/en/artistas');
-        expect(result.alternates?.languages?.fr).toBe('https://www.cubitaproducciones.com/fr/artistas');
-        expect(result.alternates?.languages?.it).toBe('https://www.cubitaproducciones.com/it/artistas');
+        expect(result.alternates?.languages?.es).toBe('https://cubitaproducciones.com/es/artistas');
+        expect(result.alternates?.languages?.en).toBe('https://cubitaproducciones.com/en/artistas');
+        expect(result.alternates?.languages?.fr).toBe('https://cubitaproducciones.com/fr/artistas');
+        expect(result.alternates?.languages?.it).toBe('https://cubitaproducciones.com/it/artistas');
       });
     });
 
@@ -224,19 +224,19 @@ describe('Strapi Library', () => {
       it('handles empty path', () => {
         const result = generateMetadataFromSEO(mockSEO, 'es', fallback, '');
 
-        expect(result.openGraph?.url).toBe('https://www.cubitaproducciones.com/es');
+        expect(result.openGraph?.url).toBe('https://cubitaproducciones.com/es');
       });
 
       it('handles path with leading slash', () => {
         const result = generateMetadataFromSEO(mockSEO, 'es', fallback, '/artistas');
 
-        expect(result.openGraph?.url).toBe('https://www.cubitaproducciones.com/es/artistas');
+        expect(result.openGraph?.url).toBe('https://cubitaproducciones.com/es/artistas');
       });
 
       it('handles nested paths', () => {
         const result = generateMetadataFromSEO(mockSEO, 'es', fallback, '/artistas/el-chacal');
 
-        expect(result.openGraph?.url).toBe('https://www.cubitaproducciones.com/es/artistas/el-chacal');
+        expect(result.openGraph?.url).toBe('https://cubitaproducciones.com/es/artistas/el-chacal');
       });
     });
 

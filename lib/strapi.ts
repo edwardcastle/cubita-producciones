@@ -153,7 +153,7 @@ export interface PageWithSEO {
 }
 
 /** Production website base URL */
-const BASE_URL = 'https://www.cubitaproducciones.com';
+const BASE_URL = 'https://cubitaproducciones.com';
 
 /** Supported locales for internationalization */
 const LOCALES = ['es', 'en', 'fr', 'it'] as const;
