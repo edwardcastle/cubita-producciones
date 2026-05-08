@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { Award, Users, Globe, Music } from 'lucide-react';
 import { Link } from '@/i18n/routing';
-import { getAboutPage, generateMetadataFromSEO } from '@/lib/strapi';
+import { getAboutPage, generateMetadataFromSEO, buildAlternates } from '@/lib/strapi';
 import FadeIn from '@/components/ui/FadeIn';
 import StaggerContainer, { StaggerItem } from '@/components/ui/StaggerContainer';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -14,17 +14,17 @@ export async function generateMetadata(): Promise<Metadata> {
   const locale = (await getLocale()) as Locale;
 
   const fallbacks: Record<Locale, { title: string; description: string }> = {
-    es: { title: 'Sobre Nosotros - Cubita Producciones', description: 'Más de 30 años de experiencia conectando el talento cubano con escenarios de toda Europa.' },
-    en: { title: 'About Us - Cubita Producciones', description: 'Over 30 years of experience connecting Cuban talent with stages across Europe.' },
-    fr: { title: 'À Propos - Cubita Producciones', description: 'Plus de 30 ans d\'expérience à connecter le talent cubain avec les scènes de toute l\'Europe.' },
-    it: { title: 'Chi Siamo - Cubita Producciones', description: 'Oltre 30 anni di esperienza nel collegare il talento cubano con i palcoscenici di tutta Europa.' },
+    es: { title: 'Agencia de Booking de Artistas Cubanos | Sobre Nosotros - Cubita Producciones', description: 'Más de 30 años de experiencia en booking de artistas cubanos para festivales y eventos en Europa. Agencia especializada en contratar artistas de salsa y reguetón.' },
+    en: { title: 'Cuban Artist Booking Agency | About Us - Cubita Producciones', description: 'Over 30 years of experience booking Cuban artists for festivals and events in Europe. Agency specializing in booking salsa and reggaeton artists.' },
+    fr: { title: 'Agence de Booking d\'Artistes Cubains | À Propos - Cubita Producciones', description: 'Plus de 30 ans d\'expérience dans le booking d\'artistes cubains pour festivals et événements en Europe. Agence spécialisée dans la réservation d\'artistes salsa et reggaeton.' },
+    it: { title: 'Agenzia Booking Artisti Cubani | Chi Siamo - Cubita Producciones', description: 'Oltre 30 anni di esperienza nel booking di artisti cubani per festival ed eventi in Europa. Agenzia specializzata nella prenotazione di artisti salsa e reggaeton.' },
   };
 
   try {
     const pageContent = await getAboutPage();
     return generateMetadataFromSEO(pageContent.seo, locale, fallbacks[locale], '/sobre-nosotros');
   } catch {
-    return fallbacks[locale];
+    return { ...fallbacks[locale], alternates: buildAlternates(locale, '/sobre-nosotros') };
   }
 }
 

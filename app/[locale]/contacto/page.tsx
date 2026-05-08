@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { getLocale } from 'next-intl/server';
 import { Mail, Phone, MapPin } from 'lucide-react';
-import { getContactPage, getArtists, generateMetadataFromSEO } from '@/lib/strapi';
+import { getContactPage, getArtists, generateMetadataFromSEO, buildAlternates } from '@/lib/strapi';
 import ContactForm from '@/components/ContactForm';
 import FadeIn from '@/components/ui/FadeIn';
 import { FAQJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
@@ -13,17 +13,17 @@ export async function generateMetadata(): Promise<Metadata> {
   const locale = (await getLocale()) as Locale;
 
   const fallbacks: Record<Locale, { title: string; description: string }> = {
-    es: { title: 'Contacto - Cubita Producciones', description: 'Contacta con Cubita Producciones para booking de artistas cubanos de salsa y reguetón en Europa.' },
-    en: { title: 'Contact - Cubita Producciones', description: 'Contact Cubita Producciones for booking Cuban salsa and reggaeton artists in Europe.' },
-    fr: { title: 'Contact - Cubita Producciones', description: 'Contactez Cubita Producciones pour réserver des artistes cubains de salsa et reggaeton en Europe.' },
-    it: { title: 'Contatti - Cubita Producciones', description: 'Contatta Cubita Producciones per prenotare artisti cubani di salsa e reggaeton in Europa.' },
+    es: { title: 'Contacto para Booking de Artistas | Cubita Producciones', description: 'Solicita booking de artistas cubanos de salsa y reguetón para tu evento o festival en Europa. Respuesta en menos de 24 horas.' },
+    en: { title: 'Contact for Artist Booking | Cubita Producciones', description: 'Request booking of Cuban salsa and reggaeton artists for your event or festival in Europe. Response within 24 hours.' },
+    fr: { title: 'Contact pour Booking d\'Artistes | Cubita Producciones', description: 'Demandez le booking d\'artistes cubains de salsa et reggaeton pour votre événement ou festival en Europe. Réponse sous 24 heures.' },
+    it: { title: 'Contatti per Booking Artisti | Cubita Producciones', description: 'Richiedi il booking di artisti cubani di salsa e reggaeton per il tuo evento o festival in Europa. Risposta entro 24 ore.' },
   };
 
   try {
     const pageContent = await getContactPage();
     return generateMetadataFromSEO(pageContent.seo, locale, fallbacks[locale], '/contacto');
   } catch {
-    return fallbacks[locale];
+    return { ...fallbacks[locale], alternates: buildAlternates(locale, '/contacto') };
   }
 }
 

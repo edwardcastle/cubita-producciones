@@ -127,11 +127,11 @@ describe('Footer', () => {
       expect(grid?.className).toContain('md:grid-cols-3');
     });
 
-    it('has border separator for copyright', () => {
+    it('has border separator above locale links', () => {
       render(<Footer />);
 
-      const copyrightSection = screen.getByText(/footer\.rights/).closest('div');
-      expect(copyrightSection?.className).toContain('border-t');
+      const borderSection = document.querySelector('.border-t.border-gray-800');
+      expect(borderSection).toBeInTheDocument();
     });
   });
 

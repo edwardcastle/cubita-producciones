@@ -158,7 +158,7 @@ const BASE_URL = 'https://cubitaproducciones.com';
 /** Supported locales for internationalization */
 const LOCALES = ['es', 'en', 'fr', 'it'] as const;
 
-/** Default locale (no prefix in URL with localePrefix: 'as-needed') */
+/** Default locale */
 const DEFAULT_LOCALE = 'es';
 
 /** OpenGraph locale format mapping */
@@ -172,6 +172,19 @@ const OG_LOCALES: Record<string, string> = {
 /** Build a locale-aware URL with locale prefix */
 export function buildLocalizedUrl(locale: string, path: string = ''): string {
   return `${BASE_URL}/${locale}${path}`;
+}
+
+/** Build alternates object for Next.js metadata */
+export function buildAlternates(locale: string, path: string = '') {
+  return {
+    canonical: buildLocalizedUrl(locale, path),
+    languages: {
+      ...Object.fromEntries(
+        LOCALES.map((l) => [l, buildLocalizedUrl(l, path)])
+      ),
+      'x-default': buildLocalizedUrl(DEFAULT_LOCALE, path),
+    },
+  };
 }
 
 /**
@@ -476,11 +489,11 @@ export const getHomePage = cache(async (): Promise<HomePage> => {
   const data = await fetchStrapi<any>('/home-page?populate=*');
 
   const defaults: HomePage = {
-    heroTitle: { es: 'Booking de Artistas Cubanos', en: 'Cuban Artists Booking', fr: 'Réservation d\'Artistes Cubains', it: 'Prenotazione Artisti Cubani' },
-    heroSubtitle: { es: 'Conectamos el talento cubano con el mundo', en: 'Connecting Cuban talent with the world', fr: 'Connecter le talent cubain avec le monde', it: 'Colleghiamo il talento cubano con il mondo' },
+    heroTitle: { es: 'Booking de Artistas Cubanos para Eventos y Festivales', en: 'Booking Cuban Artists for Events & Festivals', fr: 'Booking d\'Artistes Cubains pour Événements et Festivals', it: 'Booking Artisti Cubani per Eventi e Festival' },
+    heroSubtitle: { es: 'Agencia de booking de artistas de salsa y reguetón en Europa', en: 'Salsa and reggaeton artist booking agency in Europe', fr: 'Agence de booking d\'artistes salsa et reggaeton en Europe', it: 'Agenzia di booking di artisti salsa e reggaeton in Europa' },
     stats: { years: 30, artists: 50, festivals: 100, countries: 15 },
     aboutTitle: { es: 'Sobre Nosotros', en: 'About Us', fr: 'À Propos', it: 'Chi Siamo' },
-    aboutText: { es: 'Somos una agencia de booking especializada en artistas cubanos.', en: 'We are a booking agency specialized in Cuban artists.', fr: 'Nous sommes une agence de booking spécialisée dans les artistes cubains.', it: 'Siamo un\'agenzia di booking specializzata in artisti cubani.' },
+    aboutText: { es: 'Somos una agencia de booking de artistas cubanos con más de 30 años de experiencia contratando artistas para festivales y eventos en Europa.', en: 'We are a Cuban artist booking agency with over 30 years of experience booking artists for festivals and events in Europe.', fr: 'Nous sommes une agence de booking d\'artistes cubains avec plus de 30 ans d\'expérience dans la réservation d\'artistes pour festivals et événements en Europe.', it: 'Siamo un\'agenzia di booking di artisti cubani con oltre 30 anni di esperienza nella prenotazione di artisti per festival ed eventi in Europa.' },
     ctaText: { es: 'Ver Artistas', en: 'View Artists', fr: 'Voir les Artistes', it: 'Vedi Artisti' },
     seo: null,
   };
@@ -755,10 +768,10 @@ export const getSiteSettings = cache(async (): Promise<SiteSettings> => {
       contact: { es: 'Contacto', en: 'Contact', fr: 'Contact', it: 'Contatto' },
     },
     footerDescription: {
-      es: 'Agencia de booking de artistas cubanos',
-      en: 'Cuban artists booking agency',
-      fr: 'Agence de réservation d\'artistes cubains',
-      it: 'Agenzia di booking di artisti cubani',
+      es: 'Agencia de booking de artistas cubanos para eventos y festivales en Europa',
+      en: 'Cuban artist booking agency for events and festivals in Europe',
+      fr: 'Agence de booking d\'artistes cubains pour événements et festivals en Europe',
+      it: 'Agenzia di booking di artisti cubani per eventi e festival in Europa',
     },
     footerCopyright: {
       es: 'Todos los derechos reservados',

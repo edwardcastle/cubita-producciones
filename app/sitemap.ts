@@ -2,7 +2,6 @@ import {MetadataRoute} from 'next';
 import {getAllArtistSlugs, buildLocalizedUrl} from '@/lib/strapi';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const routes = ['', '/artistas', '/sobre-nosotros', '/contacto'];
   const locales = ['es', 'en', 'fr', 'it'];
 
   function buildAlternates(path: string) {
@@ -16,14 +15,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     };
   }
 
-  // Static pages with alternates for each language
+  const routeConfig = [
+    { path: '', priority: 1.0, changeFrequency: 'weekly' as const },
+    { path: '/artistas', priority: 0.9, changeFrequency: 'weekly' as const },
+    { path: '/contacto', priority: 0.8, changeFrequency: 'monthly' as const },
+    { path: '/sobre-nosotros', priority: 0.7, changeFrequency: 'monthly' as const },
+  ];
+
+  // Use a stable date — update this when content actually changes
+  const lastModified = new Date('2026-05-09');
+
+  // Static pages: one entry per locale with proper alternates
   const staticPages = locales.flatMap((locale) =>
-    routes.map((route) => ({
-      url: buildLocalizedUrl(locale, route),
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: route === '' ? 1 : 0.8,
-      alternates: buildAlternates(route),
+    routeConfig.map((route) => ({
+      url: buildLocalizedUrl(locale, route.path),
+      lastModified,
+      changeFrequency: route.changeFrequency,
+      priority: route.priority,
+      alternates: buildAlternates(route.path),
     }))
   );
 
@@ -33,9 +42,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const artistPages = locales.flatMap((locale) =>
     artistSlugs.map((slug) => ({
       url: buildLocalizedUrl(locale, `/artistas/${slug}`),
-      lastModified: new Date(),
+      lastModified,
       changeFrequency: 'weekly' as const,
-      priority: 0.7,
+      priority: 0.8,
       alternates: buildAlternates(`/artistas/${slug}`),
     }))
   );

@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { getLocale } from 'next-intl/server';
-import { getArtists, getArtistsPage, getSiteSettings, generateMetadataFromSEO } from '@/lib/strapi';
+import { getArtists, getArtistsPage, getSiteSettings, generateMetadataFromSEO, buildAlternates } from '@/lib/strapi';
 import { stripMarkdown } from '@/lib/utils';
 import Image from 'next/image';
 import { Link } from '@/i18n/routing';
@@ -16,17 +16,17 @@ export async function generateMetadata(): Promise<Metadata> {
   const locale = (await getLocale()) as Locale;
 
   const fallbacks: Record<Locale, { title: string; description: string }> = {
-    es: { title: 'Booking Artistas Cubanos | Salsa y Reggaeton - Cubita Producciones', description: 'Booking de artistas cubanos de salsa y reguetón para festivales y eventos en Europa. Jacob Forever, Manolín, El Micha, Charly & Johayron y más.' },
-    en: { title: 'Book Cuban Artists | Salsa & Reggaeton - Cubita Producciones', description: 'Book Cuban salsa and reggaeton artists for festivals and events in Europe. Jacob Forever, Manolín, El Micha, Charly & Johayron and more.' },
-    fr: { title: 'Booking Artistes Cubains | Salsa et Reggaeton - Cubita Producciones', description: 'Booking d\'artistes cubains de salsa et reggaeton pour festivals et événements en Europe. Jacob Forever, Manolín, El Micha, Charly & Johayron et plus.' },
-    it: { title: 'Booking Artisti Cubani | Salsa e Reggaeton - Cubita Producciones', description: 'Booking di artisti cubani di salsa e reggaeton per festival ed eventi in Europa. Jacob Forever, Manolín, El Micha, Charly & Johayron e altri.' },
+    es: { title: 'Booking Artistas Cubanos para Festivales y Eventos | Cubita Producciones', description: 'Catálogo de artistas cubanos disponibles para booking. Contratar artistas de salsa y reguetón para festivales y eventos en Europa: Jacob Forever, Manolín, El Micha, Charly & Johayron.' },
+    en: { title: 'Booking Cuban Artists for Festivals & Events | Cubita Producciones', description: 'Browse Cuban artists available for booking. Book salsa and reggaeton artists for festivals and events in Europe: Jacob Forever, Manolín, El Micha, Charly & Johayron.' },
+    fr: { title: 'Booking Artistes Cubains pour Festivals et Événements | Cubita Producciones', description: 'Catalogue d\'artistes cubains disponibles pour booking. Réservez des artistes de salsa et reggaeton pour festivals et événements en Europe: Jacob Forever, Manolín, El Micha, Charly & Johayron.' },
+    it: { title: 'Booking Artisti Cubani per Festival ed Eventi | Cubita Producciones', description: 'Catalogo di artisti cubani disponibili per booking. Prenota artisti di salsa e reggaeton per festival ed eventi in Europa: Jacob Forever, Manolín, El Micha, Charly & Johayron.' },
   };
 
   try {
     const pageContent = await getArtistsPage();
     return generateMetadataFromSEO(pageContent.seo, locale, fallbacks[locale], '/artistas');
   } catch {
-    return fallbacks[locale];
+    return { ...fallbacks[locale], alternates: buildAlternates(locale, '/artistas') };
   }
 }
 

@@ -199,7 +199,7 @@ describe('JsonLd Components', () => {
       const script = container.querySelector('script[type="application/ld+json"]');
       const jsonLd = JSON.parse(script?.innerHTML || '{}');
 
-      expect(jsonLd.name).toContain('Cuban Artists Booking');
+      expect(jsonLd.name).toContain('Booking Cuban Artists');
     });
 
     it('contains correct website data for French', () => {
@@ -303,7 +303,7 @@ describe('JsonLd Components', () => {
       const script = container.querySelector('script[type="application/ld+json"]');
       const jsonLd = JSON.parse(script?.innerHTML || '{}');
 
-      expect(jsonLd.description).toContain('Booking agency');
+      expect(jsonLd.description).toContain('booking agency');
     });
   });
 });

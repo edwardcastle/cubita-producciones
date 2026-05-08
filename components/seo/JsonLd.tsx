@@ -43,11 +43,11 @@ export async function OrganizationJsonLd({ locale }: OrganizationJsonLdProps) {
     },
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
-      name: 'Artist Booking Services',
+      name: 'Booking de Artistas Cubanos / Cuban Artist Booking Services',
       itemListElement: [
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Artist Booking' } },
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Event Production' } },
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'International Tours' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Booking de Artistas para Festivales y Eventos', description: 'Servicio de booking de artistas cubanos de salsa y reggaeton para festivales, conciertos y eventos privados en Europa' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Producción de Eventos y Conciertos', description: 'Producción integral de eventos y conciertos con artistas cubanos' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Giras Internacionales de Artistas', description: 'Organización de giras y tours internacionales para artistas cubanos en Europa' } },
       ],
     },
   };
@@ -68,10 +68,10 @@ export async function LocalBusinessJsonLd({ locale }: LocalBusinessJsonLdProps) 
   const settings = await getSiteSettings();
 
   const descriptions: Record<string, string> = {
-    es: 'Agencia de booking especializada en artistas cubanos de salsa y reggaeton para festivales y eventos en Europa.',
-    en: 'Booking agency specializing in Cuban salsa and reggaeton artists for festivals and events in Europe.',
-    fr: 'Agence de booking specialisee dans les artistes cubains de salsa et reggaeton pour festivals et evenements en Europe.',
-    it: 'Agenzia di booking specializzata in artisti cubani di salsa e reggaeton per festival ed eventi in Europa.',
+    es: 'Agencia de booking de artistas cubanos de salsa y reggaeton. Más de 30 años contratando artistas para festivales, conciertos y eventos privados en toda Europa.',
+    en: 'Cuban artist booking agency for salsa and reggaeton. Over 30 years booking artists for festivals, concerts and private events across Europe.',
+    fr: 'Agence de booking d\'artistes cubains de salsa et reggaeton. Plus de 30 ans de réservation d\'artistes pour festivals, concerts et événements privés en Europe.',
+    it: 'Agenzia di booking di artisti cubani di salsa e reggaeton. Oltre 30 anni di prenotazione artisti per festival, concerti ed eventi privati in Europa.',
   };
 
   const jsonLd = {
@@ -111,7 +111,7 @@ export async function LocalBusinessJsonLd({ locale }: LocalBusinessJsonLdProps) 
       '@type': 'Continent',
       name: 'Europe',
     },
-    serviceType: ['Artist Booking', 'Event Production', 'International Tours'],
+    serviceType: ['Booking de Artistas', 'Artist Booking', 'Booking Artistas para Eventos', 'Event Production', 'International Tours'],
     knowsLanguage: ['Spanish', 'English', 'French', 'Italian'],
   };
 
@@ -154,12 +154,27 @@ interface ArtistsListJsonLdProps {
 
 export function ArtistsListJsonLd({ artists, locale }: ArtistsListJsonLdProps) {
   const prefix = locale === 'es' ? '' : `/${locale}`;
+
+  const names: Record<string, string> = {
+    es: 'Booking Artistas Cubanos - Catálogo de Artistas',
+    en: 'Cuban Artists Booking - Artist Catalog',
+    fr: 'Booking Artistes Cubains - Catalogue d\'Artistes',
+    it: 'Booking Artisti Cubani - Catalogo Artisti',
+  };
+
+  const pageDescriptions: Record<string, string> = {
+    es: 'Catálogo de artistas cubanos de salsa y reggaeton disponibles para booking en festivales, conciertos y eventos en Europa.',
+    en: 'Catalog of Cuban salsa and reggaeton artists available for booking at festivals, concerts and events in Europe.',
+    fr: 'Catalogue d\'artistes cubains de salsa et reggaeton disponibles pour booking lors de festivals, concerts et événements en Europe.',
+    it: 'Catalogo di artisti cubani di salsa e reggaeton disponibili per booking a festival, concerti ed eventi in Europa.',
+  };
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    name: 'Cuban Artists for Booking',
+    name: names[locale] || names.es,
     url: `https://cubitaproducciones.com${prefix}/artistas`,
-    description: 'Browse our collection of Cuban salsa and reggaeton artists available for booking in Europe.',
+    description: pageDescriptions[locale] || pageDescriptions.es,
     mainEntity: {
       '@type': 'ItemList',
       numberOfItems: artists.length,
@@ -227,11 +242,11 @@ interface WebsiteJsonLdProps {
 }
 
 export function WebsiteJsonLd({ locale }: WebsiteJsonLdProps) {
-  const names: Record<string, string> = {
-    es: 'Cubita Producciones - Booking de Artistas Cubanos',
-    en: 'Cubita Producciones - Cuban Artists Booking',
-    fr: 'Cubita Producciones - Booking d\'Artistes Cubains',
-    it: 'Cubita Producciones - Prenotazione Artisti Cubani',
+  const siteNames: Record<string, string> = {
+    es: 'Cubita Producciones - Booking de Artistas Cubanos para Eventos en Europa',
+    en: 'Cubita Producciones - Booking Cuban Artists for Events in Europe',
+    fr: 'Cubita Producciones - Booking d\'Artistes Cubains pour Événements en Europe',
+    it: 'Cubita Producciones - Booking Artisti Cubani per Eventi in Europa',
   };
 
   const jsonLd = {
@@ -239,7 +254,7 @@ export function WebsiteJsonLd({ locale }: WebsiteJsonLdProps) {
     '@type': 'WebSite',
     '@id': 'https://cubitaproducciones.com/#website',
     url: 'https://cubitaproducciones.com',
-    name: names[locale] || names.es,
+    name: siteNames[locale] || siteNames.es,
     publisher: {
       '@id': 'https://cubitaproducciones.com/#organization',
     },

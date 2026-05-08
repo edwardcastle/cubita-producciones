@@ -1,15 +1,25 @@
 'use client';
 
-import {useTranslations} from 'next-intl';
-import {Link} from '@/i18n/routing';
+import {useTranslations, useLocale} from 'next-intl';
+import {Link, usePathname} from '@/i18n/routing';
 import {Mail, Phone} from 'lucide-react';
 import {useRef, useEffect, useState} from 'react';
 
+const localeLabels: Record<string, string> = {
+  es: 'Espanol',
+  en: 'English',
+  fr: 'Francais',
+  it: 'Italiano',
+};
+
 export default function Footer() {
   const t = useTranslations();
+  const locale = useLocale();
+  const pathname = usePathname();
   const currentYear = new Date().getFullYear();
   const ref = useRef<HTMLElement>(null);
   const [visible, setVisible] = useState(false);
+  const otherLocales = ['es', 'en', 'fr', 'it'].filter((l) => l !== locale);
 
   useEffect(() => {
     const el = ref.current;
@@ -102,12 +112,33 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Crawlable cross-locale links for SEO */}
         <div
-          className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400"
+          className="border-t border-gray-800 mt-8 pt-6 flex flex-wrap justify-center gap-4 text-sm text-gray-500"
           style={{
             opacity: visible ? 1 : 0,
             transform: visible ? 'none' : 'translateY(20px)',
             transition: 'opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) 0.4s, transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) 0.4s',
+          }}
+        >
+          {otherLocales.map((l) => (
+            <a
+              key={l}
+              href={`/${l}${pathname}`}
+              className="hover:text-gray-300 transition-colors"
+              hrefLang={l}
+            >
+              {localeLabels[l]}
+            </a>
+          ))}
+        </div>
+
+        <div
+          className="mt-4 pt-4 text-center text-gray-400"
+          style={{
+            opacity: visible ? 1 : 0,
+            transform: visible ? 'none' : 'translateY(20px)',
+            transition: 'opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) 0.45s, transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) 0.45s',
           }}
         >
           <p>&copy; {currentYear} Cubita Producciones. {t('footer.rights')}.</p>

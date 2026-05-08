@@ -30,17 +30,17 @@ export async function generateMetadata({
   const {locale} = await params;
 
   const titles = {
-    es: 'Cubita Producciones | Booking de Artistas Cubanos en Europa',
-    en: 'Cubita Producciones | Cuban Artists Booking in Europe',
-    fr: 'Cubita Producciones | Booking d\'Artistes Cubains en Europe',
-    it: 'Cubita Producciones | Prenotazione Artisti Cubani in Europa'
+    es: 'Cubita Producciones | Booking de Artistas Cubanos para Eventos en Europa',
+    en: 'Cubita Producciones | Booking Cuban Artists for Events in Europe',
+    fr: 'Cubita Producciones | Booking d\'Artistes Cubains pour Événements en Europe',
+    it: 'Cubita Producciones | Booking Artisti Cubani per Eventi in Europa'
   };
 
   const descriptions = {
-    es: 'Agencia de booking con más de 30 años representando artistas cubanos de salsa y reguetón en Europa. Jacob Forever, Manolín, Charly & Johayron y más.',
-    en: 'Booking agency with over 30 years representing Cuban salsa and reggaeton artists in Europe. Jacob Forever, Manolín, Charly & Johayron and more.',
-    fr: 'Agence de booking avec plus de 30 ans représentant des artistes cubains de salsa et reggaeton en Europe. Jacob Forever, Manolín, Charly & Johayron et plus.',
-    it: 'Agenzia di booking con oltre 30 anni di rappresentanza di artisti cubani di salsa e reggaeton in Europa. Jacob Forever, Manolín, Charly & Johayron e altri.'
+    es: 'Agencia de booking de artistas cubanos de salsa y reguetón en Europa. Más de 30 años contratando artistas para festivales, conciertos y eventos. Jacob Forever, Manolín, Charly & Johayron y más.',
+    en: 'Cuban artist booking agency for salsa and reggaeton in Europe. Over 30 years booking artists for festivals, concerts and events. Jacob Forever, Manolín, Charly & Johayron and more.',
+    fr: 'Agence de booking d\'artistes cubains de salsa et reggaeton en Europe. Plus de 30 ans de réservation d\'artistes pour festivals, concerts et événements. Jacob Forever, Manolín, Charly & Johayron et plus.',
+    it: 'Agenzia di booking di artisti cubani di salsa e reggaeton in Europa. Oltre 30 anni di prenotazione artisti per festival, concerti ed eventi. Jacob Forever, Manolín, Charly & Johayron e altri.'
   };
 
   const baseUrl = 'https://cubitaproducciones.com';
@@ -56,10 +56,10 @@ export async function generateMetadata({
   };
 
   const localeKeywords: Record<string, string[]> = {
-    es: ['booking artistas cubanos', 'contratar artistas cubanos', 'booking Jacob Forever', 'booking Manolín', 'booking El Micha', 'booking Charly & Johayron', 'salsa', 'reguetón', 'reggaeton', 'contratar para festivales', 'artistas cubanos Europa', 'agencia de booking cubana', 'conciertos salsa Europa', 'eventos música cubana'],
-    en: ['book Cuban artists', 'booking Jacob Forever', 'booking Manolín', 'booking El Micha', 'booking Charly & Johayron', 'Cuban artists Europe', 'salsa', 'reggaeton', 'hire Cuban artists', 'Cuban booking agency', 'salsa concerts Europe', 'Cuban music events', 'Latin artists booking'],
-    fr: ['booking artistes cubains', 'réserver Jacob Forever', 'booking Manolín', 'booking El Micha', 'booking Charly & Johayron', 'artistes cubains Europe', 'salsa', 'reggaeton', 'agence booking cubaine', 'concerts salsa Europe', 'événements musique cubaine'],
-    it: ['booking artisti cubani', 'prenotare Jacob Forever', 'booking Manolín', 'booking El Micha', 'booking Charly & Johayron', 'artisti cubani Europa', 'salsa', 'reggaeton', 'agenzia booking cubana', 'concerti salsa Europa', 'eventi musica cubana'],
+    es: ['booking artistas', 'booking artistas cubanos', 'contratar artistas cubanos', 'booking artistas para eventos', 'booking artistas para fiestas', 'booking Jacob Forever', 'booking Manolín', 'booking El Micha', 'booking Charly & Johayron', 'salsa', 'reguetón', 'reggaeton', 'contratar artistas para festivales', 'artistas cubanos Europa', 'agencia de booking artistas', 'conciertos salsa Europa', 'eventos música cubana', 'booking artistas salsa', 'booking artistas reggaeton'],
+    en: ['booking artists', 'book Cuban artists', 'artist booking agency', 'booking artists for events', 'booking artists for festivals', 'booking Jacob Forever', 'booking Manolín', 'booking El Micha', 'booking Charly & Johayron', 'Cuban artists Europe', 'salsa', 'reggaeton', 'hire Cuban artists', 'Cuban booking agency', 'salsa concerts Europe', 'Cuban music events', 'Latin artists booking'],
+    fr: ['booking artistes', 'booking artistes cubains', 'réserver artistes pour événements', 'agence booking artistes', 'réserver Jacob Forever', 'booking Manolín', 'booking El Micha', 'booking Charly & Johayron', 'artistes cubains Europe', 'salsa', 'reggaeton', 'agence booking cubaine', 'concerts salsa Europe', 'événements musique cubaine'],
+    it: ['booking artisti', 'booking artisti cubani', 'prenotare artisti per eventi', 'agenzia booking artisti', 'prenotare Jacob Forever', 'booking Manolín', 'booking El Micha', 'booking Charly & Johayron', 'artisti cubani Europa', 'salsa', 'reggaeton', 'agenzia booking cubana', 'concerti salsa Europa', 'eventi musica cubana'],
   };
 
   return {
@@ -119,15 +119,6 @@ export async function generateMetadata({
         'max-video-preview': -1,
         'max-image-preview': 'large',
         'max-snippet': -1,
-      },
-    },
-    alternates: {
-      canonical: buildLocalizedUrl(locale),
-      languages: {
-        ...Object.fromEntries(
-          locales.map((l) => [l, buildLocalizedUrl(l)])
-        ),
-        'x-default': buildLocalizedUrl('es'),
       },
     },
     verification: {
