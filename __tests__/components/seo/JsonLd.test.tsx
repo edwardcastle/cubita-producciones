@@ -230,14 +230,13 @@ describe('JsonLd Components', () => {
       expect(jsonLd.inLanguage).toHaveLength(4);
     });
 
-    it('includes search action', () => {
+    it('does not include SearchAction (no on-site search implemented)', () => {
       const { container } = render(<WebsiteJsonLd locale="es" />);
 
       const script = container.querySelector('script[type="application/ld+json"]');
       const jsonLd = JSON.parse(script?.innerHTML || '{}');
 
-      expect(jsonLd.potentialAction).toBeDefined();
-      expect(jsonLd.potentialAction['@type']).toBe('SearchAction');
+      expect(jsonLd.potentialAction).toBeUndefined();
     });
 
     it('references organization', () => {

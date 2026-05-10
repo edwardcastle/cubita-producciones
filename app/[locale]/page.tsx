@@ -5,6 +5,7 @@ import { ArrowRight, Music2, Users, Award } from 'lucide-react';
 import { getHomePage, generateMetadataFromSEO, buildAlternates } from '@/lib/strapi';
 import FadeIn from '@/components/ui/FadeIn';
 import StaggerContainer, { StaggerItem } from '@/components/ui/StaggerContainer';
+import { FAQJsonLd, HOME_FAQS } from '@/components/seo/JsonLd';
 
 type Locale = 'es' | 'en' | 'fr' | 'it';
 
@@ -33,12 +34,24 @@ export default async function HomePage() {
     getTranslations(),
   ]);
 
+  const faqs = HOME_FAQS[locale] || HOME_FAQS.es;
+  const faqHeading: Record<Locale, string> = {
+    es: 'Preguntas frecuentes sobre booking de artistas cubanos',
+    en: 'Frequently asked questions about booking Cuban artists',
+    fr: 'Questions fréquentes sur le booking d\'artistes cubains',
+    it: 'Domande frequenti sul booking di artisti cubani',
+  };
+
   return (
     <div>
+      <FAQJsonLd locale={locale} />
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white py-12 md:py-24 px-4 overflow-hidden">
         <div className="max-w-7xl mx-auto">
           <div className="max-w-3xl">
+            <p className="text-amber-500 text-sm md:text-base font-semibold tracking-widest uppercase mb-3 md:mb-4">
+              Cubita Producciones
+            </p>
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6">
               {pageContent.heroTitle[locale]}
             </h1>
@@ -123,6 +136,32 @@ export default async function HomePage() {
                 <Music2 className="w-20 h-20 md:w-32 md:h-32 text-gray-800 mx-auto" />
               </div>
             </FadeIn>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-10 md:py-20 bg-white px-4">
+        <div className="max-w-4xl mx-auto">
+          <FadeIn direction="up">
+            <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-6 md:mb-10 text-center">
+              {faqHeading[locale]}
+            </h2>
+          </FadeIn>
+          <div className="space-y-4 md:space-y-6">
+            {faqs.map((faq, i) => (
+              <FadeIn key={i} direction="up" delay={i * 0.05}>
+                <details className="group rounded-lg border border-gray-200 bg-gray-50 p-4 md:p-6 open:bg-white open:shadow-sm">
+                  <summary className="cursor-pointer list-none flex items-start justify-between gap-4 text-base md:text-lg font-semibold text-gray-900">
+                    <span>{faq.question}</span>
+                    <span className="text-amber-600 text-xl leading-none transition-transform group-open:rotate-45">+</span>
+                  </summary>
+                  <p className="mt-3 md:mt-4 text-sm md:text-base text-gray-700 leading-relaxed">
+                    {faq.answer}
+                  </p>
+                </details>
+              </FadeIn>
+            ))}
           </div>
         </div>
       </section>
