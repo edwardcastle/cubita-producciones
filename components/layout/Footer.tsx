@@ -4,6 +4,14 @@ import {useTranslations, useLocale} from 'next-intl';
 import {Link, usePathname} from '@/i18n/routing';
 import {Mail, Phone} from 'lucide-react';
 import {useRef, useEffect, useState} from 'react';
+import {BOOKING_LANDING_SLUGS, type LandingLocale} from '@/lib/booking-landing';
+
+const BOOKING_LINK_LABELS: Record<LandingLocale, string> = {
+  es: 'Booking de Artistas Cubanos',
+  en: 'Booking Cuban Artists',
+  fr: 'Booking Artistes Cubains',
+  it: 'Booking Artisti Cubani',
+};
 
 const localeLabels: Record<string, string> = {
   es: 'Espanol',
@@ -77,6 +85,14 @@ export default function Footer() {
                 <Link href="/artistas" className="text-gray-400 hover:text-white transition-colors link-underline">
                   {t('nav.artists')}
                 </Link>
+              </li>
+              <li>
+                <a
+                  href={`/${locale}/${BOOKING_LANDING_SLUGS[locale as LandingLocale] ?? BOOKING_LANDING_SLUGS.es}`}
+                  className="text-gray-400 hover:text-white transition-colors link-underline"
+                >
+                  {BOOKING_LINK_LABELS[locale as LandingLocale] ?? BOOKING_LINK_LABELS.es}
+                </a>
               </li>
               <li>
                 <Link href="/sobre-nosotros" className="text-gray-400 hover:text-white transition-colors link-underline">

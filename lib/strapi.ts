@@ -66,6 +66,7 @@ export interface HomePage {
   aboutTitle: { es: string; en: string; fr: string; it: string };
   aboutText: { es: string; en: string; fr: string; it: string };
   ctaText: { es: string; en: string; fr: string; it: string };
+  heroImages: StrapiImage[];
   seo: SEO | null;
 }
 
@@ -354,6 +355,28 @@ function getImageUrl(image: StrapiImage | null): string | null {
 }
 
 /**
+ * Maps a Strapi multiple-media field into an array of StrapiImage objects.
+ * Entries without a usable URL are skipped; non-array input yields [].
+ * @param raw - Raw `heroImages` value from the Strapi API response
+ * @returns Array of StrapiImage with resolved absolute URLs
+ */
+export function parseHeroImages(raw: unknown): StrapiImage[] {
+  if (!Array.isArray(raw)) return [];
+  return raw
+    .map((item): StrapiImage | null => {
+      const url = getImageUrl(item as StrapiImage | null);
+      if (!url) return null;
+      return {
+        url,
+        alternativeText: (item as StrapiImage).alternativeText,
+        width: (item as StrapiImage).width,
+        height: (item as StrapiImage).height,
+      };
+    })
+    .filter((img): img is StrapiImage => img !== null);
+}
+
+/**
  * Formats availability date range for display
  * @param start - Start date ISO string or null
  * @param end - End date ISO string or null
@@ -481,6 +504,40 @@ export const getAllArtistSlugs = cache(async (): Promise<string[]> => {
   return data.map((item) => item.slug).filter(Boolean);
 });
 
+export type SitemapData = {
+  home: Date | null;
+  artistsList: Date | null;
+  contact: Date | null;
+  about: Date | null;
+  artists: Array<{slug: string; updatedAt: Date}>;
+};
+
+export const getSitemapData = cache(async (): Promise<SitemapData> => {
+  const toDate = (v: unknown): Date | null => {
+    if (typeof v !== 'string') return null;
+    const d = new Date(v);
+    return isNaN(d.getTime()) ? null : d;
+  };
+
+  const [home, about, contact, artistsPage, artists] = await Promise.all([
+    fetchStrapi<any>('/home-page?fields[0]=updatedAt'),
+    fetchStrapi<any>('/about-page?fields[0]=updatedAt'),
+    fetchStrapi<any>('/contact-page?fields[0]=updatedAt'),
+    fetchStrapi<any>('/artists-page?fields[0]=updatedAt'),
+    fetchStrapi<any[]>('/artists?fields[0]=slug&fields[1]=updatedAt&pagination[pageSize]=100'),
+  ]);
+
+  return {
+    home: toDate(home?.updatedAt),
+    about: toDate(about?.updatedAt),
+    contact: toDate(contact?.updatedAt),
+    artistsList: toDate(artistsPage?.updatedAt),
+    artists: (artists || [])
+      .map((a) => ({slug: a?.slug, updatedAt: toDate(a?.updatedAt)}))
+      .filter((a): a is {slug: string; updatedAt: Date} => Boolean(a.slug && a.updatedAt)),
+  };
+});
+
 /**
  * Fetches home page content from Strapi CMS
  * @returns Promise resolving to HomePage object with multilingual content
@@ -495,6 +552,7 @@ export const getHomePage = cache(async (): Promise<HomePage> => {
     aboutTitle: { es: 'Sobre Nosotros', en: 'About Us', fr: 'À Propos', it: 'Chi Siamo' },
     aboutText: { es: 'Somos una agencia de booking de artistas cubanos con más de 30 años de experiencia contratando artistas para festivales y eventos en Europa.', en: 'We are a Cuban artist booking agency with over 30 years of experience booking artists for festivals and events in Europe.', fr: 'Nous sommes une agence de booking d\'artistes cubains avec plus de 30 ans d\'expérience dans la réservation d\'artistes pour festivals et événements en Europe.', it: 'Siamo un\'agenzia di booking di artisti cubani con oltre 30 anni di esperienza nella prenotazione di artisti per festival ed eventi in Europa.' },
     ctaText: { es: 'Ver Artistas', en: 'View Artists', fr: 'Voir les Artistes', it: 'Vedi Artisti' },
+    heroImages: [],
     seo: null,
   };
 
@@ -537,6 +595,7 @@ export const getHomePage = cache(async (): Promise<HomePage> => {
       fr: data.ctaTextFr || defaults.ctaText.fr,
       it: data.ctaTextIt || defaults.ctaText.it,
     },
+    heroImages: parseHeroImages(data.heroImages),
     seo: parseSEO(data.seo),
   };
 });

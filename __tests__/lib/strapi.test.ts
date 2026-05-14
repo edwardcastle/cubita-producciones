@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import {
   generateMetadataFromSEO,
+  parseHeroImages,
   type SEO,
 } from '@/lib/strapi';
 
@@ -267,6 +268,44 @@ describe('Strapi Library', () => {
           expect(result.openGraph?.locale).toBe(ogLocales[locale]);
         });
       });
+    });
+  });
+
+  describe('parseHeroImages', () => {
+    it('maps a Strapi media array into StrapiImage objects', () => {
+      const raw = [
+        { url: 'https://cdn.example.com/a.jpg', alternativeText: 'Artist A', width: 1920, height: 1080 },
+        { url: 'https://cdn.example.com/b.jpg', alternativeText: 'Artist B', width: 1600, height: 900 },
+      ];
+
+      const result = parseHeroImages(raw);
+
+      expect(result).toEqual([
+        { url: 'https://cdn.example.com/a.jpg', alternativeText: 'Artist A', width: 1920, height: 1080 },
+        { url: 'https://cdn.example.com/b.jpg', alternativeText: 'Artist B', width: 1600, height: 900 },
+      ]);
+    });
+
+    it('returns an empty array when input is missing', () => {
+      expect(parseHeroImages(undefined)).toEqual([]);
+      expect(parseHeroImages(null)).toEqual([]);
+    });
+
+    it('returns an empty array when input is not an array', () => {
+      expect(parseHeroImages({ url: 'https://x.com/a.jpg' })).toEqual([]);
+    });
+
+    it('skips entries without a url', () => {
+      const raw = [
+        { url: 'https://cdn.example.com/a.jpg' },
+        { alternativeText: 'no url' },
+        null,
+      ];
+
+      const result = parseHeroImages(raw);
+
+      expect(result).toHaveLength(1);
+      expect(result[0].url).toBe('https://cdn.example.com/a.jpg');
     });
   });
 });

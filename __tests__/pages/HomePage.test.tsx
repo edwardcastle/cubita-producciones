@@ -41,6 +41,7 @@ vi.mock('@/lib/strapi', () => ({
         fr: 'Voir Artistes',
         it: 'Vedi Artisti',
       },
+      heroImages: [],
       seo: null,
     })
   ),

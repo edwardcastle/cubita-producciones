@@ -6,6 +6,7 @@ import { getHomePage, generateMetadataFromSEO, buildAlternates } from '@/lib/str
 import FadeIn from '@/components/ui/FadeIn';
 import StaggerContainer, { StaggerItem } from '@/components/ui/StaggerContainer';
 import { FAQJsonLd, HOME_FAQS } from '@/components/seo/JsonLd';
+import HeroCarousel from '@/components/home/HeroCarousel';
 
 type Locale = 'es' | 'en' | 'fr' | 'it';
 
@@ -42,11 +43,18 @@ export default async function HomePage() {
     it: 'Domande frequenti sul booking di artisti cubani',
   };
 
+  const carouselLabels: Record<Locale, { prev: string; next: string; slide: string }> = {
+    es: { prev: 'Imagen anterior', next: 'Imagen siguiente', slide: 'Ir a la imagen' },
+    en: { prev: 'Previous image', next: 'Next image', slide: 'Go to image' },
+    fr: { prev: 'Image précédente', next: 'Image suivante', slide: 'Aller à l\'image' },
+    it: { prev: 'Immagine precedente', next: 'Immagine successiva', slide: 'Vai all\'immagine' },
+  };
+
   return (
     <div>
       <FAQJsonLd locale={locale} />
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white py-12 md:py-24 px-4 overflow-hidden">
+      <HeroCarousel images={pageContent.heroImages} labels={carouselLabels[locale]}>
         <div className="max-w-7xl mx-auto">
           <div className="max-w-3xl">
             <p className="text-amber-500 text-sm md:text-base font-semibold tracking-widest uppercase mb-3 md:mb-4">
@@ -55,7 +63,7 @@ export default async function HomePage() {
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6">
               {pageContent.heroTitle[locale]}
             </h1>
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 md:mb-8 text-gray-300">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 md:mb-8 text-gray-200">
               {pageContent.heroSubtitle[locale]}
             </p>
             <Link
@@ -67,12 +75,7 @@ export default async function HomePage() {
             </Link>
           </div>
         </div>
-
-        {/* Decorative elements */}
-        <div className="absolute bottom-0 right-0 opacity-10 hidden md:block">
-          <Music2 className="w-64 h-64" />
-        </div>
-      </section>
+      </HeroCarousel>
 
       {/* Stats Section */}
       <section className="py-8 md:py-16 bg-gray-50">

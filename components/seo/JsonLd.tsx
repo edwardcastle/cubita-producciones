@@ -326,6 +326,91 @@ export const HOME_FAQS: Record<string, Array<{ question: string; answer: string 
   ],
 };
 
+interface BookingServiceJsonLdProps {
+  locale: string;
+  url: string;
+}
+
+export async function BookingServiceJsonLd({ locale, url }: BookingServiceJsonLdProps) {
+  const settings = await getSiteSettings();
+
+  const names: Record<string, string> = {
+    es: 'Booking de Artistas Cubanos para Festivales y Eventos en Europa',
+    en: 'Booking Cuban Artists for Festivals and Events in Europe',
+    fr: 'Booking d\'Artistes Cubains pour Festivals et Événements en Europe',
+    it: 'Booking di Artisti Cubani per Festival ed Eventi in Europa',
+  };
+
+  const descriptions: Record<string, string> = {
+    es: 'Servicio profesional de booking de artistas cubanos de salsa, reguetón y timba para festivales, conciertos, eventos corporativos y privados en toda Europa. Más de 30 años contratando talento cubano internacional.',
+    en: 'Professional booking service for Cuban salsa, reggaeton and timba artists for festivals, concerts, corporate and private events across Europe. Over 30 years booking international Cuban talent.',
+    fr: 'Service professionnel de booking d\'artistes cubains de salsa, reggaeton et timba pour festivals, concerts, événements corporatifs et privés en Europe. Plus de 30 ans de réservation de talents cubains internationaux.',
+    it: 'Servizio professionale di booking di artisti cubani di salsa, reggaeton e timba per festival, concerti, eventi aziendali e privati in tutta Europa. Oltre 30 anni di prenotazione di talenti cubani internazionali.',
+  };
+
+  const serviceTypes: Record<string, string> = {
+    es: 'Booking de Artistas',
+    en: 'Artist Booking Service',
+    fr: 'Service de Booking d\'Artistes',
+    it: 'Servizio di Booking Artisti',
+  };
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    '@id': `${url}#service`,
+    name: names[locale] || names.es,
+    description: descriptions[locale] || descriptions.es,
+    serviceType: serviceTypes[locale] || serviceTypes.es,
+    category: 'Artist Booking Agency',
+    provider: {
+      '@id': 'https://cubitaproducciones.com/#organization',
+    },
+    areaServed: [
+      { '@type': 'Country', name: 'Spain' },
+      { '@type': 'Country', name: 'Italy' },
+      { '@type': 'Country', name: 'France' },
+      { '@type': 'Country', name: 'Germany' },
+      { '@type': 'Country', name: 'Switzerland' },
+      { '@type': 'Country', name: 'Belgium' },
+      { '@type': 'Country', name: 'Netherlands' },
+      { '@type': 'Country', name: 'Portugal' },
+      { '@type': 'Country', name: 'Austria' },
+      { '@type': 'Country', name: 'United Kingdom' },
+      { '@type': 'Continent', name: 'Europe' },
+    ],
+    audience: {
+      '@type': 'BusinessAudience',
+      audienceType: 'Festival organizers, event promoters, venue managers, corporate event planners',
+    },
+    offers: {
+      '@type': 'AggregateOffer',
+      priceCurrency: 'EUR',
+      priceRange: '$$$',
+      availability: 'https://schema.org/InStock',
+      seller: {
+        '@id': 'https://cubitaproducciones.com/#organization',
+      },
+    },
+    url,
+    image: settings.logo || 'https://cubitaproducciones.com/og-image.jpg',
+    termsOfService: `${url}#how-it-works`,
+    availableChannel: {
+      '@type': 'ServiceChannel',
+      serviceUrl: url,
+      availableLanguage: ['Spanish', 'English', 'French', 'Italian'],
+      processingTime: 'PT24H',
+    },
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}
+
 interface FAQJsonLdProps {
   locale: string;
 }
