@@ -21,6 +21,11 @@ export default function Navigation({ logo }: NavigationProps) {
   const [scrolled, setScrolled] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
 
+  // On the homepage the navbar floats transparently over the hero carousel,
+  // turning solid once the user scrolls (or opens the mobile menu).
+  const isHome = pathname === '/';
+  const transparent = isHome && !scrolled && !isOpen;
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
@@ -65,9 +70,13 @@ export default function Navigation({ logo }: NavigationProps) {
     <nav
       aria-label="Main navigation"
       className={`sticky top-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'bg-white/95 nav-blur shadow-md'
-          : 'bg-white shadow-sm'
+        isHome ? '-mb-16' : ''
+      } ${
+        transparent
+          ? 'bg-transparent'
+          : scrolled
+            ? 'bg-white/95 nav-blur shadow-md'
+            : 'bg-white shadow-sm'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -84,7 +93,9 @@ export default function Navigation({ logo }: NavigationProps) {
                   priority
                 />
               )}
-              <span className="text-xl font-bold text-gray-900">
+              <span className={`text-xl font-bold transition-colors ${
+                transparent ? 'text-white' : 'text-gray-900'
+              }`}>
                 Cubita Producciones
               </span>
             </Link>
@@ -96,7 +107,11 @@ export default function Navigation({ logo }: NavigationProps) {
               <Link
                 key={item.href}
                 href={item.href}
-                className="relative text-gray-700 hover:text-amber-600 font-medium transition-colors link-underline"
+                className={`relative font-medium transition-colors link-underline ${
+                  transparent
+                    ? 'text-white hover:text-amber-400'
+                    : 'text-gray-700 hover:text-amber-600'
+                }`}
               >
                 {item.name}
               </Link>
@@ -106,7 +121,11 @@ export default function Navigation({ logo }: NavigationProps) {
             <div className="relative" ref={langRef}>
               <button
                 onClick={() => setLangOpen(!langOpen)}
-                className="flex items-center gap-2 text-gray-700 hover:text-amber-600 font-medium transition-colors"
+                className={`flex items-center gap-2 font-medium transition-colors ${
+                  transparent
+                    ? 'text-white hover:text-amber-400'
+                    : 'text-gray-700 hover:text-amber-600'
+                }`}
                 aria-label="Select language"
                 aria-expanded={langOpen}
               >
@@ -137,7 +156,9 @@ export default function Navigation({ logo }: NavigationProps) {
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-700 hover:text-amber-600 transition-transform active:scale-90"
+              className={`transition-transform active:scale-90 ${
+                transparent ? 'text-white hover:text-amber-400' : 'text-gray-700 hover:text-amber-600'
+              }`}
               aria-label={isOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={isOpen}
             >

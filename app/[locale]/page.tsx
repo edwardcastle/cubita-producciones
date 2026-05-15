@@ -57,21 +57,27 @@ export default async function HomePage() {
       <HeroCarousel images={pageContent.heroImages} labels={carouselLabels[locale]}>
         <div className="max-w-7xl mx-auto">
           <div className="max-w-3xl">
-            <p className="text-amber-500 text-sm md:text-base font-semibold tracking-widest uppercase mb-3 md:mb-4">
+            <p
+              className="text-amber-400 text-sm md:text-base font-semibold tracking-widest uppercase mb-3 md:mb-4 [paint-order:stroke_fill] [-webkit-text-stroke:0.75px_black] [text-shadow:_0_1px_3px_rgba(0,0,0,0.9)]"
+            >
               Cubita Producciones
             </p>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6">
+            <h1
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 [paint-order:stroke_fill] [-webkit-text-stroke:1.5px_black] [text-shadow:_0_2px_8px_rgba(0,0,0,0.95)]"
+            >
               {pageContent.heroTitle[locale]}
             </h1>
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 md:mb-8 text-gray-200">
+            <p
+              className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 md:mb-8 text-gray-100 [paint-order:stroke_fill] [-webkit-text-stroke:1px_black] [text-shadow:_0_2px_6px_rgba(0,0,0,0.95)]"
+            >
               {pageContent.heroSubtitle[locale]}
             </p>
             <Link
               href="/artistas"
-              className="inline-flex items-center gap-2 bg-amber-500 text-black px-6 py-3 md:px-8 md:py-4 rounded-lg font-semibold text-base md:text-lg hover:bg-amber-400 transition-colors btn-hover relative z-10"
+              className="inline-flex items-center gap-1.5 md:gap-2 bg-amber-500 text-black px-4 py-2 md:px-8 md:py-4 rounded-md md:rounded-lg font-semibold text-sm md:text-lg hover:bg-amber-400 transition-colors btn-hover relative z-10"
             >
               {pageContent.ctaText[locale]}
-              <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
+              <ArrowRight className="w-3.5 h-3.5 md:w-5 md:h-5" />
             </Link>
           </div>
         </div>

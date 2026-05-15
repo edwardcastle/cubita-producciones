@@ -144,21 +144,22 @@ describe('Navigation', () => {
   });
 
   describe('Scroll Behavior', () => {
-    it('applies scrolled styles when page is scrolled', () => {
+    it('is transparent at the top of the homepage and turns solid on scroll', async () => {
       render(<Navigation logo={null} />);
 
       const nav = screen.getByRole('navigation');
 
-      // Initially should not have scrolled styles (shadow-md is for scrolled state)
-      expect(nav.className).toContain('shadow-sm');
+      // On the homepage (mocked pathname '/'), the navbar starts transparent
+      // and floating over the hero — no background, no shadow.
+      expect(nav.className).toContain('bg-transparent');
+      expect(nav.className).not.toContain('shadow');
 
       // Simulate scroll
       Object.defineProperty(window, 'scrollY', { value: 50, writable: true });
       fireEvent.scroll(window);
 
-      // After scroll, styles should change
-      // Note: Due to React state updates, we need waitFor
-      waitFor(() => {
+      // After scrolling it becomes solid white with a shadow
+      await waitFor(() => {
         expect(nav.className).toContain('shadow-md');
       });
     });

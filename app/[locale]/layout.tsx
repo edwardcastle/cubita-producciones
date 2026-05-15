@@ -7,6 +7,7 @@ import Footer from '@/components/layout/Footer';
 import LazyChat from '@/components/LazyChat';
 import type {Metadata} from 'next';
 import {Poppins} from 'next/font/google';
+import Script from 'next/script';
 import {getSiteSettings, buildLocalizedUrl} from '@/lib/strapi';
 import {OrganizationJsonLd, LocalBusinessJsonLd, WebsiteJsonLd} from '@/components/seo/JsonLd';
 import './globals.css';
@@ -147,45 +148,43 @@ export default async function LocaleLayout({
     getSiteSettings(),
   ]);
 
+  const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+
   return (
     <html lang={locale} className={poppins.variable}>
-      <head>
+      <body className={`${poppins.className} antialiased bg-white`}>
+        {/* JSON-LD structured data — Google reads these from anywhere in the document */}
         <OrganizationJsonLd locale={locale} />
         <LocalBusinessJsonLd locale={locale} />
         <WebsiteJsonLd locale={locale} />
+
         {/* Meta Pixel */}
-        {process.env.NEXT_PUBLIC_META_PIXEL_ID && (
+        {pixelId && (
           <>
-            <script
-              async
-              dangerouslySetInnerHTML={{
-                __html: `
-                  !function(f,b,e,v,n,t,s)
-                  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-                  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-                  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-                  n.queue=[];t=b.createElement(e);t.async=!0;
-                  t.src=v;s=b.getElementsByTagName(e)[0];
-                  s.parentNode.insertBefore(t,s)}(window, document,'script',
-                  'https://connect.facebook.net/en_US/fbevents.js');
-                  fbq('init', '${process.env.NEXT_PUBLIC_META_PIXEL_ID}');
-                  fbq('track', 'PageView');
-                `,
-              }}
-            />
+            <Script id="meta-pixel" strategy="afterInteractive">
+              {`!function(f,b,e,v,n,t,s)
+              {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+              n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+              if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+              n.queue=[];t=b.createElement(e);t.async=!0;
+              t.src=v;s=b.getElementsByTagName(e)[0];
+              s.parentNode.insertBefore(t,s)}(window, document,'script',
+              'https://connect.facebook.net/en_US/fbevents.js');
+              fbq('init', '${pixelId}');
+              fbq('track', 'PageView');`}
+            </Script>
             <noscript>
               <img
                 height="1"
                 width="1"
                 style={{ display: 'none' }}
-                src={`https://www.facebook.com/tr?id=${process.env.NEXT_PUBLIC_META_PIXEL_ID}&ev=PageView&noscript=1`}
+                src={`https://www.facebook.com/tr?id=${pixelId}&ev=PageView&noscript=1`}
                 alt=""
               />
             </noscript>
           </>
         )}
-      </head>
-      <body className={`${poppins.className} antialiased bg-white`}>
+
         <NextIntlClientProvider messages={messages}>
           <header>
             <Navigation logo={siteSettings.logo} />
