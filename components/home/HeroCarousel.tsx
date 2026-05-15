@@ -44,7 +44,7 @@ function usePrefersReducedMotion(): boolean {
 // min-height so the section feels generous. At md+ the image becomes the
 // full-bleed background and the text overlays it.
 const SECTION_CLASS =
-  'relative flex flex-col overflow-hidden bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white min-h-[70dvh] md:min-h-screen';
+  'relative flex flex-col overflow-hidden bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white  md:min-h-screen';
 
 export default function HeroCarousel({
   images,
@@ -109,7 +109,7 @@ export default function HeroCarousel({
                 fill
                 priority={index === 0}
                 sizes="100vw"
-                className="object-cover"
+                className="aspect-video"
               />
             </motion.div>
           </AnimatePresence>
@@ -163,8 +163,9 @@ export default function HeroCarousel({
 
       {/* Hero text — flows below the image on mobile, overlays it on desktop.
           flex-1 lets it fill the remaining height so its content stays
-          vertically centered in the taller mobile hero. */}
-      <div className="relative z-10 w-full flex-1 flex items-center py-10 px-4 md:py-16">
+          vertically centered in the taller mobile hero. The horizontal
+          padding mirrors the navbar's so children can align with the logo. */}
+      <div className="relative z-10 w-full flex-1 flex items-center py-10 px-4 sm:px-6 lg:px-8 md:py-16">
         {children}
       </div>
     </section>

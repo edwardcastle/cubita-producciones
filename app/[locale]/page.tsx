@@ -55,10 +55,13 @@ export default async function HomePage() {
       <FAQJsonLd locale={locale} />
       {/* Hero Section */}
       <HeroCarousel images={pageContent.heroImages} labels={carouselLabels[locale]}>
-        <div className="max-w-7xl mx-auto">
-          <div className="max-w-3xl">
+        {/* Same max-w-7xl mx-auto container as the navbar — the inner
+            max-w-3xl block sits at its left edge so the title and CTA
+            line up horizontally with the logo. */}
+        <div className="max-w-7xl mx-auto w-full">
+          <div className="max-w-3xl mt-16 md:mt-0">
             <p
-              className="text-amber-400 text-sm md:text-base font-semibold tracking-widest uppercase mb-3 md:mb-4 [paint-order:stroke_fill] [-webkit-text-stroke:0.75px_black] [text-shadow:_0_1px_3px_rgba(0,0,0,0.9)]"
+              className="hidden md:block text-amber-400 text-sm md:text-base font-semibold tracking-widest uppercase mb-3 md:mb-4 [paint-order:stroke_fill] [-webkit-text-stroke:0.75px_black] [text-shadow:_0_1px_3px_rgba(0,0,0,0.9)]"
             >
               Cubita Producciones
             </p>
