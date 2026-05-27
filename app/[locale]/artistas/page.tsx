@@ -90,7 +90,7 @@ export default async function ArtistasPage() {
                   {artist.image ? (
                     <Image
                       src={artist.image}
-                      alt={`${artist.name} - ${artist.genre === 'salsa' ? pageContent.salsaLabel[locale] : pageContent.reggaetonLabel[locale]}`}
+                      alt={`Booking ${artist.name} - artista cubano de ${artist.genre === 'salsa' ? pageContent.salsaLabel[locale] : pageContent.reggaetonLabel[locale]} disponible para eventos en Europa`}
                       fill
                       className="object-cover object-top"
                       sizes="(max-width: 768px) 50vw, (max-width: 1024px) 50vw, 33vw"

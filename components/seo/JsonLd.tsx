@@ -411,6 +411,281 @@ export async function BookingServiceJsonLd({ locale, url }: BookingServiceJsonLd
   );
 }
 
+interface HowToBookingJsonLdProps {
+  locale: string;
+  url: string;
+}
+
+const HOW_TO_STEPS: Record<string, { name: string; description: string; steps: Array<{ name: string; text: string }> }> = {
+  es: {
+    name: 'Cómo hacer booking de un artista cubano con Cubita Producciones',
+    description: 'Proceso paso a paso para hacer booking de artistas cubanos para tu festival, concierto o evento en Europa.',
+    steps: [
+      { name: 'Solicitud', text: 'Cuéntanos el tipo de evento, fecha, lugar y qué artista quieres contratar a través del formulario o por email.' },
+      { name: 'Confirmación', text: 'En menos de 24h recibirás confirmación de disponibilidad, presupuesto y condiciones del booking.' },
+      { name: 'Contrato', text: 'Firmamos contrato de booking con todas las garantías legales y técnicas.' },
+      { name: 'Producción', text: 'Coordinamos logística, viajes, rider técnico y alojamiento hasta el día del evento.' },
+    ],
+  },
+  en: {
+    name: 'How to book a Cuban artist with Cubita Producciones',
+    description: 'Step-by-step process to book Cuban artists for your festival, concert or event in Europe.',
+    steps: [
+      { name: 'Inquiry', text: 'Tell us about your event type, date, location and which artist you want to book via the form or email.' },
+      { name: 'Confirmation', text: 'Within 24h you receive availability confirmation, pricing and booking conditions.' },
+      { name: 'Contract', text: 'We sign the booking contract with full legal and technical guarantees.' },
+      { name: 'Production', text: 'We coordinate logistics, travel, technical rider and accommodation up to the event day.' },
+    ],
+  },
+  fr: {
+    name: 'Comment réserver un artiste cubain avec Cubita Producciones',
+    description: 'Processus étape par étape pour faire le booking d\'artistes cubains pour votre festival, concert ou événement en Europe.',
+    steps: [
+      { name: 'Demande', text: 'Indiquez-nous le type d\'événement, la date, le lieu et l\'artiste à réserver via le formulaire ou par email.' },
+      { name: 'Confirmation', text: 'Sous 24h vous recevez la confirmation de disponibilité, le tarif et les conditions du booking.' },
+      { name: 'Contrat', text: 'Nous signons le contrat de booking avec toutes les garanties légales et techniques.' },
+      { name: 'Production', text: 'Nous coordonnons logistique, voyages, rider technique et hébergement jusqu\'au jour de l\'événement.' },
+    ],
+  },
+  it: {
+    name: 'Come prenotare un artista cubano con Cubita Producciones',
+    description: 'Processo passo dopo passo per fare booking di artisti cubani per il tuo festival, concerto o evento in Europa.',
+    steps: [
+      { name: 'Richiesta', text: 'Indicaci tipo di evento, data, luogo e quale artista vuoi prenotare tramite il modulo o per email.' },
+      { name: 'Conferma', text: 'Entro 24h ricevi conferma di disponibilità, preventivo e condizioni del booking.' },
+      { name: 'Contratto', text: 'Firmiamo il contratto di booking con tutte le garanzie legali e tecniche.' },
+      { name: 'Produzione', text: 'Coordiniamo logistica, viaggi, rider tecnico e alloggio fino al giorno dell\'evento.' },
+    ],
+  },
+};
+
+export function HowToBookingJsonLd({ locale, url }: HowToBookingJsonLdProps) {
+  const content = HOW_TO_STEPS[locale] || HOW_TO_STEPS.es;
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    '@id': `${url}#howto`,
+    name: content.name,
+    description: content.description,
+    inLanguage: locale,
+    totalTime: 'PT24H',
+    estimatedCost: {
+      '@type': 'MonetaryAmount',
+      currency: 'EUR',
+      value: '0',
+    },
+    step: content.steps.map((s, i) => ({
+      '@type': 'HowToStep',
+      position: i + 1,
+      name: s.name,
+      text: s.text,
+      url: `${url}#how-it-works`,
+    })),
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}
+
+interface VideoObjectJsonLdProps {
+  name: string;
+  description: string;
+  thumbnailUrl: string;
+  uploadDate?: string;
+  embedUrl: string;
+  contentUrl?: string;
+}
+
+export function VideoObjectJsonLd({ name, description, thumbnailUrl, uploadDate, embedUrl, contentUrl }: VideoObjectJsonLdProps) {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'VideoObject',
+    name,
+    description,
+    thumbnailUrl,
+    uploadDate: uploadDate || '2024-01-01',
+    embedUrl,
+    contentUrl: contentUrl || embedUrl,
+    publisher: {
+      '@id': 'https://cubitaproducciones.com/#organization',
+    },
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}
+
+interface ArtistEventsJsonLdProps {
+  artistName: string;
+  artistUrl: string;
+  events: Array<{
+    name: string;
+    startDate: string;
+    endDate: string;
+    locationName: string;
+    locationRegion: string;
+    description: string;
+  }>;
+}
+
+export function ArtistEventsJsonLd({ artistName, artistUrl, events }: ArtistEventsJsonLdProps) {
+  if (!events.length) return null;
+
+  const jsonLds = events.map((event, i) => ({
+    '@context': 'https://schema.org',
+    '@type': 'MusicEvent',
+    '@id': `${artistUrl}#event-${i + 1}`,
+    name: event.name,
+    description: event.description,
+    startDate: event.startDate,
+    endDate: event.endDate,
+    eventStatus: 'https://schema.org/EventScheduled',
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    location: {
+      '@type': 'Place',
+      name: event.locationName,
+      address: {
+        '@type': 'PostalAddress',
+        addressRegion: event.locationRegion,
+        addressCountry: 'EU',
+      },
+    },
+    performer: {
+      '@type': 'MusicGroup',
+      name: artistName,
+      url: artistUrl,
+    },
+    organizer: {
+      '@id': 'https://cubitaproducciones.com/#organization',
+    },
+    offers: {
+      '@type': 'Offer',
+      url: 'https://cubitaproducciones.com/contacto',
+      availability: 'https://schema.org/InStock',
+      priceCurrency: 'EUR',
+      validFrom: new Date().toISOString().split('T')[0],
+    },
+  }));
+
+  return (
+    <>
+      {jsonLds.map((jsonLd, i) => (
+        <script
+          key={i}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      ))}
+    </>
+  );
+}
+
+interface AggregateRatingJsonLdProps {
+  reviews: Array<{
+    author: string;
+    rating: number;
+    text: string;
+    date: string;
+    eventName?: string;
+  }>;
+  itemReviewedName: string;
+  itemReviewedUrl: string;
+}
+
+export function AggregateRatingJsonLd({ reviews, itemReviewedName, itemReviewedUrl }: AggregateRatingJsonLdProps) {
+  if (!reviews.length) return null;
+
+  const avg = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    '@id': 'https://cubitaproducciones.com/#organization',
+    name: itemReviewedName,
+    url: itemReviewedUrl,
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: avg.toFixed(1),
+      reviewCount: reviews.length,
+      bestRating: '5',
+      worstRating: '1',
+    },
+    review: reviews.map((r) => ({
+      '@type': 'Review',
+      author: { '@type': 'Person', name: r.author },
+      datePublished: r.date,
+      reviewBody: r.text,
+      name: r.eventName || `Review by ${r.author}`,
+      reviewRating: {
+        '@type': 'Rating',
+        ratingValue: String(r.rating),
+        bestRating: '5',
+        worstRating: '1',
+      },
+    })),
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}
+
+interface BlogPostJsonLdProps {
+  title: string;
+  description: string;
+  image: string | null;
+  publishedAt: string;
+  updatedAt: string;
+  author: string;
+  url: string;
+  locale: string;
+}
+
+export function BlogPostJsonLd({ title, description, image, publishedAt, updatedAt, author, url, locale }: BlogPostJsonLdProps) {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    '@id': `${url}#post`,
+    headline: title,
+    description,
+    image: image || 'https://cubitaproducciones.com/og-image.jpg',
+    datePublished: publishedAt,
+    dateModified: updatedAt,
+    inLanguage: locale,
+    author: {
+      '@type': 'Organization',
+      name: author,
+      '@id': 'https://cubitaproducciones.com/#organization',
+    },
+    publisher: {
+      '@id': 'https://cubitaproducciones.com/#organization',
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': url,
+    },
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}
+
 interface FAQJsonLdProps {
   locale: string;
 }

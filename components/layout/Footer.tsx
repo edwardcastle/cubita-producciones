@@ -2,15 +2,22 @@
 
 import {useTranslations, useLocale} from 'next-intl';
 import {Link, usePathname} from '@/i18n/routing';
-import {Mail, Phone} from 'lucide-react';
+import {Mail, Phone, Instagram} from 'lucide-react';
 import {useRef, useEffect, useState} from 'react';
 import {BOOKING_LANDING_SLUGS, type LandingLocale} from '@/lib/booking-landing';
 
 const BOOKING_LINK_LABELS: Record<LandingLocale, string> = {
-  es: 'Booking de Artistas Cubanos',
-  en: 'Booking Cuban Artists',
-  fr: 'Booking Artistes Cubains',
-  it: 'Booking Artisti Cubani',
+  es: 'Booking de Artistas en Europa',
+  en: 'Booking Artists in Europe',
+  fr: 'Booking d\'Artistes en Europe',
+  it: 'Booking di Artisti in Europa',
+};
+
+const BLOG_LINK_LABELS: Record<LandingLocale, string> = {
+  es: 'Blog',
+  en: 'Blog',
+  fr: 'Blog',
+  it: 'Blog',
 };
 
 const localeLabels: Record<string, string> = {
@@ -20,7 +27,15 @@ const localeLabels: Record<string, string> = {
   it: 'Italiano',
 };
 
-export default function Footer() {
+export default function Footer({
+  email,
+  phone,
+  instagram,
+}: {
+  email?: string;
+  phone?: string;
+  instagram?: string;
+}) {
   const t = useTranslations();
   const locale = useLocale();
   const pathname = usePathname();
@@ -95,6 +110,11 @@ export default function Footer() {
                 </a>
               </li>
               <li>
+                <Link href="/blog" className="text-gray-400 hover:text-white transition-colors link-underline">
+                  {BLOG_LINK_LABELS[locale as LandingLocale] ?? BLOG_LINK_LABELS.es}
+                </Link>
+              </li>
+              <li>
                 <Link href="/sobre-nosotros" className="text-gray-400 hover:text-white transition-colors link-underline">
                   {t('nav.about')}
                 </Link>
@@ -116,14 +136,36 @@ export default function Footer() {
           >
             <h4 className="font-semibold mb-4">{t('footer.contact')}</h4>
             <ul className="space-y-2 text-gray-400">
-              <li className="flex items-center gap-2 min-w-0">
-                <Mail className="w-4 h-4 shrink-0" />
-                <span className="truncate">booking@cubitaproducciones.com</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <Phone className="w-4 h-4" />
-                <span>+39 320 936 5048</span>
-              </li>
+              {email && (
+                <li className="flex items-center gap-2 min-w-0">
+                  <Mail className="w-4 h-4 shrink-0" />
+                  <a href={`mailto:${email}`} className="truncate hover:text-white transition-colors">
+                    {email}
+                  </a>
+                </li>
+              )}
+              {phone && (
+                <li className="flex items-center gap-2">
+                  <Phone className="w-4 h-4" />
+                  <a href={`tel:${phone.replace(/\s+/g, '')}`} className="hover:text-white transition-colors">
+                    {phone}
+                  </a>
+                </li>
+              )}
+              {instagram && (
+                <li>
+                  <a
+                    href={instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 hover:text-white transition-colors"
+                    aria-label="Instagram - Cubita Producciones"
+                  >
+                    <Instagram className="w-4 h-4" />
+                    <span>Instagram</span>
+                  </a>
+                </li>
+              )}
             </ul>
           </div>
         </div>

@@ -32,16 +32,27 @@ describe('Footer', () => {
       expect(screen.getByText('footer.contact')).toBeInTheDocument();
     });
 
-    it('renders email address', () => {
-      render(<Footer />);
+    it('renders email address from props', () => {
+      render(<Footer email="info@cubitaproducciones.com" />);
 
-      expect(screen.getByText('booking@cubitaproducciones.com')).toBeInTheDocument();
+      const emailLink = screen.getByText('info@cubitaproducciones.com');
+      expect(emailLink).toBeInTheDocument();
+      expect(emailLink.closest('a')).toHaveAttribute('href', 'mailto:info@cubitaproducciones.com');
     });
 
-    it('renders phone number', () => {
+    it('renders phone number from props', () => {
+      render(<Footer phone="+39 327 607 8955" />);
+
+      const phoneLink = screen.getByText('+39 327 607 8955');
+      expect(phoneLink).toBeInTheDocument();
+      expect(phoneLink.closest('a')).toHaveAttribute('href', 'tel:+393276078955');
+    });
+
+    it('omits email and phone when not provided', () => {
       render(<Footer />);
 
-      expect(screen.getByText('+39 320 936 5048')).toBeInTheDocument();
+      expect(screen.queryByText(/cubitaproducciones\.com$/)).not.toBeInTheDocument();
+      expect(screen.queryByText(/^\+39/)).not.toBeInTheDocument();
     });
 
     it('renders copyright with current year', () => {
@@ -95,19 +106,17 @@ describe('Footer', () => {
   });
 
   describe('Icons', () => {
-    it('renders mail icon', () => {
-      render(<Footer />);
+    it('renders mail icon next to email', () => {
+      render(<Footer email="info@cubitaproducciones.com" />);
 
-      // Mail icon should be next to email
-      const emailContainer = screen.getByText('booking@cubitaproducciones.com').closest('li');
+      const emailContainer = screen.getByText('info@cubitaproducciones.com').closest('li');
       expect(emailContainer).toBeInTheDocument();
     });
 
-    it('renders phone icon', () => {
-      render(<Footer />);
+    it('renders phone icon next to phone number', () => {
+      render(<Footer phone="+39 327 607 8955" />);
 
-      // Phone icon should be next to phone number
-      const phoneContainer = screen.getByText('+39 320 936 5048').closest('li');
+      const phoneContainer = screen.getByText('+39 327 607 8955').closest('li');
       expect(phoneContainer).toBeInTheDocument();
     });
   });

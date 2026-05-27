@@ -4,7 +4,6 @@ import {useTranslations, useLocale} from 'next-intl';
 import {Link, usePathname} from '@/i18n/routing';
 import {Menu, X, Globe} from 'lucide-react';
 import {useState, useEffect, useRef} from 'react';
-import {useRouter} from 'next/navigation';
 import Image from 'next/image';
 
 interface NavigationProps {
@@ -15,7 +14,6 @@ export default function Navigation({ logo }: NavigationProps) {
   const t = useTranslations('nav');
   const locale = useLocale();
   const pathname = usePathname();
-  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -60,11 +58,6 @@ export default function Navigation({ logo }: NavigationProps) {
     { code: 'fr', name: 'Francais', flag: '\u{1F1EB}\u{1F1F7}' },
     { code: 'it', name: 'Italiano', flag: '\u{1F1EE}\u{1F1F9}' },
   ];
-
-  const handleLanguageChange = (newLocale: string) => {
-    router.push(`/${newLocale}${pathname}`);
-    setLangOpen(false);
-  };
 
   return (
     <nav
@@ -136,16 +129,19 @@ export default function Navigation({ logo }: NavigationProps) {
               {langOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 animate-dropdown">
                   {languages.map((lang) => (
-                    <button
+                    <Link
                       key={lang.code}
-                      onClick={() => handleLanguageChange(lang.code)}
+                      href={pathname}
+                      locale={lang.code}
+                      onClick={() => setLangOpen(false)}
+                      hrefLang={lang.code}
                       className={`w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-2 transition-transform duration-150 hover:translate-x-1 ${
                         locale === lang.code ? 'bg-amber-50 text-amber-600' : 'text-gray-700'
                       }`}
                     >
                       <span className="font-semibold text-sm">{lang.flag}</span>
                       {lang.name}
-                    </button>
+                    </Link>
                   ))}
                 </div>
               )}
@@ -185,19 +181,19 @@ export default function Navigation({ logo }: NavigationProps) {
 
             <div className="border-t pt-2 mt-2">
               {languages.map((lang) => (
-                <button
+                <Link
                   key={lang.code}
-                  onClick={() => {
-                    handleLanguageChange(lang.code);
-                    setIsOpen(false);
-                  }}
+                  href={pathname}
+                  locale={lang.code}
+                  onClick={() => setIsOpen(false)}
+                  hrefLang={lang.code}
                   className={`w-full px-3 py-2 text-left flex items-center gap-2 rounded-md ${
                     locale === lang.code ? 'bg-amber-50 text-amber-600' : 'text-gray-700 hover:bg-gray-50'
                   }`}
                 >
                   <span className="font-semibold text-sm">{lang.flag}</span>
                   {lang.name}
-                </button>
+                </Link>
               ))}
             </div>
           </div>

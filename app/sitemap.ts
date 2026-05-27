@@ -1,5 +1,5 @@
 import {MetadataRoute} from 'next';
-import {getSitemapData, buildLocalizedUrl} from '@/lib/strapi';
+import {getSitemapData, getAllBlogPostSlugs, buildLocalizedUrl} from '@/lib/strapi';
 import {BOOKING_LANDING_SLUGS, buildBookingLandingUrl, type LandingLocale} from '@/lib/booking-landing';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -16,12 +16,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     };
   }
 
-  const data = await getSitemapData();
+  const [data, blogSlugs] = await Promise.all([getSitemapData(), getAllBlogPostSlugs()]);
   const fallback = new Date();
 
   const routeConfig = [
     { path: '', priority: 1.0, changeFrequency: 'weekly' as const, lastModified: data.home ?? fallback },
     { path: '/artistas', priority: 0.9, changeFrequency: 'weekly' as const, lastModified: data.artistsList ?? fallback },
+    { path: '/blog', priority: 0.8, changeFrequency: 'weekly' as const, lastModified: fallback },
     { path: '/contacto', priority: 0.8, changeFrequency: 'monthly' as const, lastModified: data.contact ?? fallback },
     { path: '/sobre-nosotros', priority: 0.7, changeFrequency: 'monthly' as const, lastModified: data.about ?? fallback },
   ];
@@ -66,5 +67,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     alternates: bookingLandingAlternates,
   }));
 
-  return [...staticPages, ...bookingLandingPages, ...artistPages];
+  const blogPostPages = locales.flatMap((locale) =>
+    blogSlugs.map(({slug, updatedAt}) => ({
+      url: buildLocalizedUrl(locale, `/blog/${slug}`),
+      lastModified: new Date(updatedAt),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+      alternates: buildAlternates(`/blog/${slug}`),
+    }))
+  );
+
+  return [...staticPages, ...bookingLandingPages, ...artistPages, ...blogPostPages];
 }

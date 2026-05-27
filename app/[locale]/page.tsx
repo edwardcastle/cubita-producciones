@@ -1,17 +1,22 @@
 import { Metadata } from 'next';
-import { getLocale, getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/routing';
 import { ArrowRight, Music2, Users, Award } from 'lucide-react';
-import { getHomePage, generateMetadataFromSEO, buildAlternates } from '@/lib/strapi';
+import { getHomePage, getReviews, generateMetadataFromSEO, buildAlternates } from '@/lib/strapi';
 import FadeIn from '@/components/ui/FadeIn';
 import StaggerContainer, { StaggerItem } from '@/components/ui/StaggerContainer';
-import { FAQJsonLd, HOME_FAQS } from '@/components/seo/JsonLd';
+import { FAQJsonLd, HOME_FAQS, AggregateRatingJsonLd } from '@/components/seo/JsonLd';
 import HeroCarousel from '@/components/home/HeroCarousel';
+import ReviewsSection from '@/components/ReviewsSection';
 
 type Locale = 'es' | 'en' | 'fr' | 'it';
 
-export async function generateMetadata(): Promise<Metadata> {
-  const locale = (await getLocale()) as Locale;
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: Locale }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
 
   const fallbacks: Record<Locale, { title: string; description: string }> = {
     es: { title: 'Cubita Producciones | Booking de Artistas Cubanos para Eventos en Europa', description: 'Agencia de booking de artistas cubanos de salsa y reguetón para festivales y eventos en Europa. Contratar Jacob Forever, Manolín, El Micha y más artistas.' },
@@ -28,11 +33,17 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export default async function HomePage() {
-  const locale = (await getLocale()) as Locale;
-  const [pageContent, t] = await Promise.all([
+export default async function HomePage({
+  params,
+}: {
+  params: Promise<{ locale: Locale }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const [pageContent, t, reviews] = await Promise.all([
     getHomePage(),
     getTranslations(),
+    getReviews(),
   ]);
 
   const faqs = HOME_FAQS[locale] || HOME_FAQS.es;
@@ -53,6 +64,11 @@ export default async function HomePage() {
   return (
     <div>
       <FAQJsonLd locale={locale} />
+      <AggregateRatingJsonLd
+        reviews={reviews}
+        itemReviewedName="Cubita Producciones"
+        itemReviewedUrl="https://cubitaproducciones.com"
+      />
       {/* Hero Section */}
       <HeroCarousel images={pageContent.heroImages} labels={carouselLabels[locale]}>
         {/* Same max-w-7xl mx-auto container as the navbar — the inner
@@ -177,6 +193,9 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Reviews Section — renders only if Strapi has reviews */}
+      <ReviewsSection reviews={reviews} locale={locale} />
 
       {/* CTA Section */}
       <section className="py-10 md:py-20 bg-gray-900 text-white px-4">

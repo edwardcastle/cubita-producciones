@@ -811,6 +811,93 @@ export const getArtistsPage = cache(async (): Promise<ArtistsPage> => {
   };
 });
 
+export interface BlogPost {
+  id: string;
+  slug: string;
+  title: { es: string; en: string; fr: string; it: string };
+  excerpt: { es: string; en: string; fr: string; it: string };
+  content: { es: string; en: string; fr: string; it: string };
+  coverImage: string | null;
+  publishedAt: string;
+  updatedAt: string;
+  author: string;
+  readingTime: number;
+  seo: SEO | null;
+}
+
+function readLocaleField(item: any, base: string): { es: string; en: string; fr: string; it: string } {
+  return {
+    es: item[`${base}Es`] || item[base] || '',
+    en: item[`${base}En`] || item[base] || '',
+    fr: item[`${base}Fr`] || item[base] || '',
+    it: item[`${base}It`] || item[base] || '',
+  };
+}
+
+function mapBlogPost(item: any): BlogPost {
+  return {
+    id: String(item.id),
+    slug: item.slug,
+    title: readLocaleField(item, 'title'),
+    excerpt: readLocaleField(item, 'excerpt'),
+    content: readLocaleField(item, 'content'),
+    coverImage: getImageUrl(item.coverImage),
+    publishedAt: item.publishedAt || item.createdAt || new Date().toISOString(),
+    updatedAt: item.updatedAt || item.publishedAt || new Date().toISOString(),
+    author: item.author || 'Cubita Producciones',
+    readingTime: typeof item.readingTime === 'number' ? item.readingTime : 5,
+    seo: item.seo || null,
+  };
+}
+
+export const getBlogPosts = cache(async (): Promise<BlogPost[]> => {
+  const data = await fetchStrapi<any[]>('/blog-posts?populate=*&sort=publishedAt:desc&pagination[pageSize]=100');
+  if (!data) return [];
+  return data.filter((p) => p.slug).map(mapBlogPost);
+});
+
+export const getBlogPostBySlug = cache(async (slug: string): Promise<BlogPost | null> => {
+  const data = await fetchStrapi<any[]>(`/blog-posts?filters[slug][$eq]=${slug}&populate=*`);
+  if (!data || data.length === 0) return null;
+  return mapBlogPost(data[0]);
+});
+
+export const getAllBlogPostSlugs = cache(async (): Promise<Array<{ slug: string; updatedAt: string }>> => {
+  const data = await fetchStrapi<any[]>('/blog-posts?fields[0]=slug&fields[1]=updatedAt&pagination[pageSize]=200');
+  if (!data) return [];
+  return data
+    .filter((p) => p.slug)
+    .map((p) => ({ slug: p.slug, updatedAt: p.updatedAt || new Date().toISOString() }));
+});
+
+export interface Review {
+  id: string;
+  author: string;
+  rating: number;
+  text: string;
+  date: string;
+  eventName?: string;
+  artistName?: string;
+  featured: boolean;
+}
+
+export const getReviews = cache(async (): Promise<Review[]> => {
+  const data = await fetchStrapi<any[]>('/reviews?sort=date:desc&pagination[pageSize]=50');
+  if (!data) return [];
+  return data
+    .filter((r) => typeof r.rating === 'number' && r.rating >= 1 && r.rating <= 5 && r.author && r.text)
+    .map((r) => ({
+      id: String(r.id),
+      author: r.author,
+      rating: r.rating,
+      text: r.text,
+      date: r.date || new Date().toISOString().split('T')[0],
+      eventName: r.eventName || undefined,
+      artistName: r.artistName || undefined,
+      featured: Boolean(r.featured),
+    }));
+});
+
 export const getSiteSettings = cache(async (): Promise<SiteSettings> => {
   const data = await fetchStrapi<any>('/site-setting?populate=logo');
 

@@ -1,7 +1,7 @@
 import { getLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import BookingLandingContent from '@/components/booking/BookingLandingContent';
-import { BreadcrumbJsonLd, BookingServiceJsonLd } from '@/components/seo/JsonLd';
+import { BreadcrumbJsonLd, BookingServiceJsonLd, HowToBookingJsonLd } from '@/components/seo/JsonLd';
 import { buildBookingLandingMetadata, buildBookingLandingUrl } from '@/lib/booking-landing';
 
 const PAGE_LOCALE = 'en' as const;
@@ -15,12 +15,13 @@ export default async function Page() {
   const url = buildBookingLandingUrl(PAGE_LOCALE);
   const breadcrumbItems = [
     { name: 'Home', url: `https://cubitaproducciones.com/${PAGE_LOCALE}` },
-    { name: 'Booking Cuban Artists', url },
+    { name: 'Booking Artists in Europe', url },
   ];
 
   return (
     <>
       <BookingServiceJsonLd locale={PAGE_LOCALE} url={url} />
+      <HowToBookingJsonLd locale={PAGE_LOCALE} url={url} />
       <BreadcrumbJsonLd items={breadcrumbItems} />
       <BookingLandingContent locale={PAGE_LOCALE} />
     </>

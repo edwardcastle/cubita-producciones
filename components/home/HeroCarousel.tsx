@@ -105,7 +105,7 @@ export default function HeroCarousel({
             >
               <Image
                 src={images[index].url}
-                alt={images[index].alternativeText || ''}
+                alt={images[index].alternativeText || `Artista cubano en concierto - booking de artistas en Europa con Cubita Producciones`}
                 fill
                 priority={index === 0}
                 sizes="100vw"

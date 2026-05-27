@@ -189,7 +189,7 @@ describe('ArtistasPage', () => {
 
       render(await ArtistasPage());
 
-      const artistImage = screen.getByAltText('Artist One - Salsa');
+      const artistImage = screen.getByAltText(/Booking Artist One.*Salsa/);
       expect(artistImage).toBeInTheDocument();
     });
 

@@ -8,7 +8,8 @@ import Image from 'next/image';
 import { Music, Calendar, Users, Mail, Instagram, Youtube, Play } from 'lucide-react';
 import FadeIn from '@/components/ui/FadeIn';
 import StaggerContainer, { StaggerItem } from '@/components/ui/StaggerContainer';
-import { ArtistJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
+import { ArtistJsonLd, BreadcrumbJsonLd, ArtistEventsJsonLd, VideoObjectJsonLd } from '@/components/seo/JsonLd';
+import { ARTIST_EVENTS } from '@/lib/artist-events';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import YouTubeEmbed from '@/components/YouTubeEmbed';
 import RichText from '@/components/RichText';
@@ -193,6 +194,20 @@ export default async function ArtistaPage({
         youtube={artist.youtube}
         url={`${baseUrl}/${locale}/artistas/${artist.slug}`}
       />
+      <ArtistEventsJsonLd
+        artistName={artist.name}
+        artistUrl={`${baseUrl}/${locale}/artistas/${artist.slug}`}
+        events={ARTIST_EVENTS[artist.slug] ?? []}
+      />
+      {artist.youtubeVideoId && (
+        <VideoObjectJsonLd
+          name={`${artist.name} - ${genreLabel} (Video)`}
+          description={`Video oficial de ${artist.name}, artista cubano de ${genreLabel}. Disponible para booking en festivales y eventos en Europa con Cubita Producciones.`}
+          thumbnailUrl={`https://i.ytimg.com/vi/${artist.youtubeVideoId}/maxresdefault.jpg`}
+          embedUrl={`https://www.youtube.com/embed/${artist.youtubeVideoId}`}
+          contentUrl={artist.youtube || `https://www.youtube.com/watch?v=${artist.youtubeVideoId}`}
+        />
+      )}
       <BreadcrumbJsonLd items={breadcrumbItems} />
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
@@ -294,7 +309,7 @@ export default async function ArtistaPage({
                 {artist.image ? (
                   <Image
                     src={artist.image}
-                    alt={`${artist.name} - ${genreLabel}`}
+                    alt={`Booking ${artist.name} - ${genreLabel} artist available for festivals and events in Europe`}
                     fill
                     className="object-cover"
                     priority

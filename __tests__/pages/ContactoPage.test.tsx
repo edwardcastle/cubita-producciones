@@ -66,6 +66,8 @@ vi.mock('@/lib/strapi', () => ({
     title: 'Contacto - Cubita Producciones',
     description: 'Test Description',
   })),
+  buildAlternates: vi.fn(() => ({})),
+  getSiteSettings: vi.fn(() => Promise.resolve({ instagram: undefined })),
 }));
 
 // Mock next-intl/server

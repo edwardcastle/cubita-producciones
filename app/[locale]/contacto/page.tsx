@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { getLocale } from 'next-intl/server';
-import { Mail, Phone, MapPin } from 'lucide-react';
-import { getContactPage, getArtists, generateMetadataFromSEO, buildAlternates } from '@/lib/strapi';
+import { Mail, Phone, MapPin, Instagram } from 'lucide-react';
+import { getContactPage, getArtists, getSiteSettings, generateMetadataFromSEO, buildAlternates } from '@/lib/strapi';
 import ContactForm from '@/components/ContactForm';
 import FadeIn from '@/components/ui/FadeIn';
 import { FAQJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
@@ -29,7 +29,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function ContactoPage() {
   const locale = (await getLocale()) as Locale;
-  const [pageContent, artists] = await Promise.all([getContactPage(), getArtists()]);
+  const [pageContent, artists, siteSettings] = await Promise.all([getContactPage(), getArtists(), getSiteSettings()]);
 
   const sendingTexts: Record<Locale, string> = {
     es: 'Enviando...',
@@ -107,7 +107,7 @@ export default async function ContactoPage() {
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3 md:gap-4">
+                <div className="flex items-start gap-3 md:gap-4 mb-4 md:mb-6">
                   <div className="bg-gray-100 p-2 md:p-3 rounded-lg">
                     <MapPin className="w-4 h-4 md:w-6 md:h-6 text-gray-800" />
                   </div>
@@ -118,6 +118,25 @@ export default async function ContactoPage() {
                     <p className="text-gray-600 text-xs md:text-base">{pageContent.location}</p>
                   </div>
                 </div>
+
+                {siteSettings.instagram && (
+                  <div className="flex items-start gap-3 md:gap-4">
+                    <div className="bg-gray-100 p-2 md:p-3 rounded-lg">
+                      <Instagram className="w-4 h-4 md:w-6 md:h-6 text-gray-800" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="font-semibold text-gray-900 text-sm md:text-base mb-0.5 md:mb-1">Instagram</p>
+                      <a
+                        href={siteSettings.instagram}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-gray-600 hover:text-amber-700 text-xs md:text-base transition-colors"
+                      >
+                        @{siteSettings.instagram.replace(/^https?:\/\/(www\.)?instagram\.com\//, '').replace(/^@/, '').replace(/\/.*$/, '')}
+                      </a>
+                    </div>
+                  </div>
+                )}
               </div>
             </FadeIn>
 

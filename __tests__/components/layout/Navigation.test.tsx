@@ -3,16 +3,6 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Navigation from '@/components/layout/Navigation';
 
-// Mock the router
-const mockPush = vi.fn();
-vi.mock('next/navigation', () => ({
-  useRouter: () => ({
-    push: mockPush,
-    replace: vi.fn(),
-    prefetch: vi.fn(),
-  }),
-}));
-
 describe('Navigation', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -96,17 +86,20 @@ describe('Navigation', () => {
       });
     });
 
-    it('calls router.push when language is changed', async () => {
+    it('renders language options as real anchor links so crawlers can follow them', async () => {
       const user = userEvent.setup();
       render(<Navigation logo={null} />);
 
       const langButton = screen.getByText('ES');
       await user.click(langButton);
 
+      // Real <a> elements with hrefLang allow Googlebot to follow language
+      // alternates without needing to execute JS — important for indexation
+      // of /en, /fr, /it.
       const englishOption = await screen.findByText('English');
-      await user.click(englishOption);
-
-      expect(mockPush).toHaveBeenCalledWith('/en/');
+      const anchor = englishOption.closest('a');
+      expect(anchor).not.toBeNull();
+      expect(anchor).toHaveAttribute('hrefLang', 'en');
     });
 
     it('closes language dropdown after selection', async () => {

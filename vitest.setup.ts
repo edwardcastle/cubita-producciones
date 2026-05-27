@@ -22,6 +22,7 @@ vi.mock('next-intl', () => ({
 vi.mock('next-intl/server', () => ({
   getLocale: vi.fn(() => Promise.resolve('es')),
   getTranslations: vi.fn(() => Promise.resolve((key: string) => key)),
+  setRequestLocale: vi.fn(),
 }));
 
 // Mock @/i18n/routing

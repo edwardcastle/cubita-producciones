@@ -1,5 +1,5 @@
 import {NextIntlClientProvider} from 'next-intl';
-import {getMessages} from 'next-intl/server';
+import {getMessages, setRequestLocale} from 'next-intl/server';
 import {notFound} from 'next/navigation';
 import {routing} from '@/i18n/routing';
 import Navigation from '@/components/layout/Navigation';
@@ -57,10 +57,10 @@ export async function generateMetadata({
   };
 
   const localeKeywords: Record<string, string[]> = {
-    es: ['booking artistas', 'booking artistas cubanos', 'contratar artistas cubanos', 'booking artistas para eventos', 'booking artistas para fiestas', 'booking Jacob Forever', 'booking Manolín', 'booking El Micha', 'booking Charly & Johayron', 'salsa', 'reguetón', 'reggaeton', 'contratar artistas para festivales', 'artistas cubanos Europa', 'agencia de booking artistas', 'conciertos salsa Europa', 'eventos música cubana', 'booking artistas salsa', 'booking artistas reggaeton'],
-    en: ['booking artists', 'book Cuban artists', 'artist booking agency', 'booking artists for events', 'booking artists for festivals', 'booking Jacob Forever', 'booking Manolín', 'booking El Micha', 'booking Charly & Johayron', 'Cuban artists Europe', 'salsa', 'reggaeton', 'hire Cuban artists', 'Cuban booking agency', 'salsa concerts Europe', 'Cuban music events', 'Latin artists booking'],
-    fr: ['booking artistes', 'booking artistes cubains', 'réserver artistes pour événements', 'agence booking artistes', 'réserver Jacob Forever', 'booking Manolín', 'booking El Micha', 'booking Charly & Johayron', 'artistes cubains Europe', 'salsa', 'reggaeton', 'agence booking cubaine', 'concerts salsa Europe', 'événements musique cubaine'],
-    it: ['booking artisti', 'booking artisti cubani', 'prenotare artisti per eventi', 'agenzia booking artisti', 'prenotare Jacob Forever', 'booking Manolín', 'booking El Micha', 'booking Charly & Johayron', 'artisti cubani Europa', 'salsa', 'reggaeton', 'agenzia booking cubana', 'concerti salsa Europa', 'eventi musica cubana'],
+    es: ['booking artistas en Europa', 'booking de artistas en Europa', 'booking artistas en europa', 'booking de artistas cubanos en Europa', 'booking artistas cubanos en Europa', 'booking artistas para eventos en Europa', 'booking artistas para festivales en Europa', 'agencia de booking en Europa', 'contratar artistas en Europa', 'contratar artistas cubanos en Europa', 'booking artistas', 'booking artistas cubanos', 'contratar artistas cubanos', 'booking artistas para eventos', 'booking artistas para fiestas', 'booking Jacob Forever', 'booking Manolín', 'booking El Micha', 'booking Charly & Johayron', 'salsa', 'reguetón', 'reggaeton', 'contratar artistas para festivales', 'artistas cubanos Europa', 'agencia de booking artistas', 'conciertos salsa Europa', 'eventos música cubana', 'booking artistas salsa', 'booking artistas reggaeton'],
+    en: ['booking artists in Europe', 'book artists in Europe', 'booking Cuban artists in Europe', 'book Cuban artists in Europe', 'booking artists for events in Europe', 'booking artists for festivals in Europe', 'artist booking agency in Europe', 'European artist booking agency', 'hire artists in Europe', 'hire Cuban artists in Europe', 'booking artists', 'book Cuban artists', 'artist booking agency', 'booking artists for events', 'booking artists for festivals', 'booking Jacob Forever', 'booking Manolín', 'booking El Micha', 'booking Charly & Johayron', 'Cuban artists Europe', 'salsa', 'reggaeton', 'hire Cuban artists', 'Cuban booking agency', 'salsa concerts Europe', 'Cuban music events', 'Latin artists booking'],
+    fr: ['booking artistes en Europe', 'booking d\'artistes en Europe', 'booking artistes cubains en Europe', 'booking d\'artistes cubains en Europe', 'booking artistes pour événements en Europe', 'booking artistes pour festivals en Europe', 'agence de booking en Europe', 'réserver artistes en Europe', 'réserver artistes cubains en Europe', 'booking artistes', 'booking artistes cubains', 'réserver artistes pour événements', 'agence booking artistes', 'réserver Jacob Forever', 'booking Manolín', 'booking El Micha', 'booking Charly & Johayron', 'artistes cubains Europe', 'salsa', 'reggaeton', 'agence booking cubaine', 'concerts salsa Europe', 'événements musique cubaine'],
+    it: ['booking artisti in Europa', 'booking di artisti in Europa', 'booking artisti cubani in Europa', 'booking di artisti cubani in Europa', 'booking artisti per eventi in Europa', 'booking artisti per festival in Europa', 'agenzia di booking in Europa', 'prenotare artisti in Europa', 'prenotare artisti cubani in Europa', 'booking artisti', 'booking artisti cubani', 'prenotare artisti per eventi', 'agenzia booking artisti', 'prenotare Jacob Forever', 'booking Manolín', 'booking El Micha', 'booking Charly & Johayron', 'artisti cubani Europa', 'salsa', 'reggaeton', 'agenzia booking cubana', 'concerti salsa Europa', 'eventi musica cubana'],
   };
 
   return {
@@ -143,6 +143,12 @@ export default async function LocaleLayout({
     notFound();
   }
 
+  // Enable static rendering for this locale (next-intl v4).
+  // Without this, getLocale()/useLocale() reads request-time headers and
+  // forces dynamic rendering with Cache-Control: no-store on every response,
+  // which hurts crawl speed and SEO.
+  setRequestLocale(locale);
+
   const [messages, siteSettings] = await Promise.all([
     getMessages(),
     getSiteSettings(),
@@ -192,7 +198,11 @@ export default async function LocaleLayout({
           <main className="min-h-screen">
             {children}
           </main>
-          <Footer />
+          <Footer
+            email={siteSettings.email}
+            phone={siteSettings.phone}
+            instagram={siteSettings.instagram}
+          />
           <LazyChat />
         </NextIntlClientProvider>
       </body>

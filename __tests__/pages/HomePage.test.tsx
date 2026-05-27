@@ -49,10 +49,13 @@ vi.mock('@/lib/strapi', () => ({
     title: 'Test Title',
     description: 'Test Description',
   })),
+  buildAlternates: vi.fn(() => ({})),
+  getReviews: vi.fn(() => Promise.resolve([])),
 }));
 
 // Mock next-intl/server
 vi.mock('next-intl/server', () => ({
+  setRequestLocale: vi.fn(),
   getLocale: vi.fn(() => Promise.resolve('es')),
   getTranslations: vi.fn(() =>
     Promise.resolve((key: string) => {
@@ -81,7 +84,7 @@ describe('HomePage', () => {
       // Import the page component
       const HomePage = (await import('@/app/[locale]/page')).default;
 
-      render(await HomePage());
+      render(await HomePage({ params: Promise.resolve({ locale: 'es' }) }));
 
       expect(screen.getByText('Título Hero ES')).toBeInTheDocument();
     });
@@ -89,7 +92,7 @@ describe('HomePage', () => {
     it('renders hero subtitle', async () => {
       const HomePage = (await import('@/app/[locale]/page')).default;
 
-      render(await HomePage());
+      render(await HomePage({ params: Promise.resolve({ locale: 'es' }) }));
 
       expect(screen.getByText('Subtítulo ES')).toBeInTheDocument();
     });
@@ -97,7 +100,7 @@ describe('HomePage', () => {
     it('renders CTA button in hero', async () => {
       const HomePage = (await import('@/app/[locale]/page')).default;
 
-      render(await HomePage());
+      render(await HomePage({ params: Promise.resolve({ locale: 'es' }) }));
 
       expect(screen.getByText('Ver Artistas')).toBeInTheDocument();
     });
@@ -105,7 +108,7 @@ describe('HomePage', () => {
     it('renders stats section', async () => {
       const HomePage = (await import('@/app/[locale]/page')).default;
 
-      render(await HomePage());
+      render(await HomePage({ params: Promise.resolve({ locale: 'es' }) }));
 
       expect(screen.getByText('30+')).toBeInTheDocument();
       expect(screen.getByText('50+')).toBeInTheDocument();
@@ -116,7 +119,7 @@ describe('HomePage', () => {
     it('renders about section', async () => {
       const HomePage = (await import('@/app/[locale]/page')).default;
 
-      render(await HomePage());
+      render(await HomePage({ params: Promise.resolve({ locale: 'es' }) }));
 
       expect(screen.getByText('Sobre Nosotros ES')).toBeInTheDocument();
       expect(screen.getByText('Texto sobre nosotros ES')).toBeInTheDocument();
@@ -125,7 +128,7 @@ describe('HomePage', () => {
     it('renders CTA section', async () => {
       const HomePage = (await import('@/app/[locale]/page')).default;
 
-      render(await HomePage());
+      render(await HomePage({ params: Promise.resolve({ locale: 'es' }) }));
 
       expect(screen.getByText('Listo para reservar?')).toBeInTheDocument();
       expect(screen.getByText('Contacta con nosotros')).toBeInTheDocument();
@@ -136,7 +139,7 @@ describe('HomePage', () => {
     it('has link to artists page', async () => {
       const HomePage = (await import('@/app/[locale]/page')).default;
 
-      render(await HomePage());
+      render(await HomePage({ params: Promise.resolve({ locale: 'es' }) }));
 
       const artistsLink = screen.getByText('Ver Artistas').closest('a');
       expect(artistsLink).toHaveAttribute('href', '/artistas');
@@ -145,7 +148,7 @@ describe('HomePage', () => {
     it('has link to about page', async () => {
       const HomePage = (await import('@/app/[locale]/page')).default;
 
-      render(await HomePage());
+      render(await HomePage({ params: Promise.resolve({ locale: 'es' }) }));
 
       const aboutLink = screen.getByText('Saber más').closest('a');
       expect(aboutLink).toHaveAttribute('href', '/sobre-nosotros');
@@ -154,7 +157,7 @@ describe('HomePage', () => {
     it('has link to contact page', async () => {
       const HomePage = (await import('@/app/[locale]/page')).default;
 
-      render(await HomePage());
+      render(await HomePage({ params: Promise.resolve({ locale: 'es' }) }));
 
       const contactLink = screen.getByText('Contacto').closest('a');
       expect(contactLink).toHaveAttribute('href', '/contacto');
@@ -165,7 +168,7 @@ describe('HomePage', () => {
     it('has hero section', async () => {
       const HomePage = (await import('@/app/[locale]/page')).default;
 
-      render(await HomePage());
+      render(await HomePage({ params: Promise.resolve({ locale: 'es' }) }));
 
       // Hero section contains the main title
       const heroTitle = screen.getByRole('heading', { level: 1 });
@@ -175,7 +178,7 @@ describe('HomePage', () => {
     it('has stats section with 4 stat items', async () => {
       const HomePage = (await import('@/app/[locale]/page')).default;
 
-      render(await HomePage());
+      render(await HomePage({ params: Promise.resolve({ locale: 'es' }) }));
 
       // Check for stat labels (translations)
       expect(screen.getByText('años de experiencia')).toBeInTheDocument();
@@ -189,7 +192,7 @@ describe('HomePage', () => {
     it('generates correct metadata', async () => {
       const { generateMetadata } = await import('@/app/[locale]/page');
 
-      const metadata = await generateMetadata();
+      const metadata = await generateMetadata({ params: Promise.resolve({ locale: 'es' }) });
 
       expect(metadata).toBeDefined();
       expect(metadata.title).toBeDefined();
