@@ -67,6 +67,7 @@ export interface HomePage {
   aboutText: { es: string; en: string; fr: string; it: string };
   ctaText: { es: string; en: string; fr: string; it: string };
   heroImages: StrapiImage[];
+  aboutVideo: string | null;
   seo: SEO | null;
 }
 
@@ -553,6 +554,7 @@ export const getHomePage = cache(async (): Promise<HomePage> => {
     aboutText: { es: 'Somos una agencia de booking de artistas cubanos con más de 30 años de experiencia contratando artistas para festivales y eventos en Europa.', en: 'We are a Cuban artist booking agency with over 30 years of experience booking artists for festivals and events in Europe.', fr: 'Nous sommes une agence de booking d\'artistes cubains avec plus de 30 ans d\'expérience dans la réservation d\'artistes pour festivals et événements en Europe.', it: 'Siamo un\'agenzia di booking di artisti cubani con oltre 30 anni di esperienza nella prenotazione di artisti per festival ed eventi in Europa.' },
     ctaText: { es: 'Ver Artistas', en: 'View Artists', fr: 'Voir les Artistes', it: 'Vedi Artisti' },
     heroImages: [],
+    aboutVideo: null,
     seo: null,
   };
 
@@ -596,6 +598,7 @@ export const getHomePage = cache(async (): Promise<HomePage> => {
       it: data.ctaTextIt || defaults.ctaText.it,
     },
     heroImages: parseHeroImages(data.heroImages),
+    aboutVideo: getImageUrl(data.aboutVideo),
     seo: parseSEO(data.seo),
   };
 });

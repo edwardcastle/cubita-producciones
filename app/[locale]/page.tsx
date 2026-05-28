@@ -140,31 +140,24 @@ export default async function HomePage({
 
       {/* About Section */}
       <section className="py-10 md:py-20 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
-            <FadeIn direction="left">
-              <div>
-                <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-4 md:mb-6">
-                  {pageContent.aboutTitle[locale]}
-                </h2>
-                <p className="text-base md:text-xl text-gray-600 mb-4 md:mb-6">
-                  {pageContent.aboutText[locale]}
-                </p>
-                <Link
-                  href="/sobre-nosotros"
-                  className="inline-flex items-center gap-2 text-amber-800 font-semibold hover:text-amber-900 link-underline"
-                >
-                  {t('home.about.learnMore')}
-                  <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
-                </Link>
-              </div>
-            </FadeIn>
-            <FadeIn direction="right" delay={0.2}>
-              <div className="bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl p-8 md:p-12 text-center">
-                <Music2 className="w-20 h-20 md:w-32 md:h-32 text-gray-800 mx-auto" />
-              </div>
-            </FadeIn>
-          </div>
+        <div className="max-w-3xl mx-auto">
+          <FadeIn direction="up">
+            <div>
+              <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-4 md:mb-6">
+                {pageContent.aboutTitle[locale]}
+              </h2>
+              <p className="text-base md:text-xl text-gray-600 mb-4 md:mb-6">
+                {pageContent.aboutText[locale]}
+              </p>
+              <Link
+                href="/sobre-nosotros"
+                className="inline-flex items-center gap-2 text-amber-800 font-semibold hover:text-amber-900 link-underline"
+              >
+                {t('home.about.learnMore')}
+                <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
+              </Link>
+            </div>
+          </FadeIn>
         </div>
       </section>
 

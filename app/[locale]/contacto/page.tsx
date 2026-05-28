@@ -91,7 +91,12 @@ export default async function ContactoPage() {
                   </div>
                   <div className="min-w-0">
                     <p className="font-semibold text-gray-900 text-sm md:text-base mb-0.5 md:mb-1">Email</p>
-                    <p className="text-gray-600 text-xs md:text-base truncate">{pageContent.email}</p>
+                    <a
+                      href={`mailto:${pageContent.email}`}
+                      className="text-gray-600 hover:text-amber-700 text-xs md:text-base truncate block transition-colors"
+                    >
+                      {pageContent.email}
+                    </a>
                   </div>
                 </div>
 
@@ -103,7 +108,15 @@ export default async function ContactoPage() {
                     <p className="font-semibold text-gray-900 text-sm md:text-base mb-0.5 md:mb-1">
                       {locale === 'es' ? 'Telefono' : locale === 'en' ? 'Phone' : locale === 'it' ? 'Telefono' : 'Telephone'}
                     </p>
-                    <p className="text-gray-600 text-xs md:text-base">{pageContent.phone}</p>
+                    <a
+                      href={`https://wa.me/${pageContent.phone.replace(/\D/g, '')}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-600 hover:text-amber-700 text-xs md:text-base transition-colors"
+                      aria-label={`WhatsApp ${pageContent.phone}`}
+                    >
+                      {pageContent.phone}
+                    </a>
                   </div>
                 </div>
 
