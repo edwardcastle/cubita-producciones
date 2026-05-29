@@ -3,7 +3,7 @@ import { setRequestLocale, getLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { Link } from '@/i18n/routing';
 import Image from 'next/image';
-import { Calendar, Clock, ArrowLeft } from 'lucide-react';
+import { Calendar, ArrowLeft } from 'lucide-react';
 import { getBlogPostBySlug, getAllBlogPostSlugs, buildAlternates, generateMetadataFromSEO } from '@/lib/strapi';
 import { stripMarkdown } from '@/lib/utils';
 import FadeIn from '@/components/ui/FadeIn';
@@ -112,10 +112,6 @@ export default async function BlogPostPage({
               <span className="inline-flex items-center gap-1.5">
                 <Calendar className="w-4 h-4" />
                 {dateFormatter.format(new Date(post.publishedAt))}
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <Clock className="w-4 h-4" />
-                {post.readingTime} {c.min}
               </span>
               <span className="text-gray-500">{post.author}</span>
             </div>

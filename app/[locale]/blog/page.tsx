@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/routing';
 import Image from 'next/image';
-import { ArrowRight, Calendar, Clock } from 'lucide-react';
+import { ArrowRight, Calendar } from 'lucide-react';
 import { getBlogPosts, buildAlternates } from '@/lib/strapi';
 import FadeIn from '@/components/ui/FadeIn';
 import StaggerContainer, { StaggerItem } from '@/components/ui/StaggerContainer';
@@ -120,7 +120,7 @@ export default async function BlogIndex({
                       href={`/blog/${post.slug}`}
                       className="group block bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow h-full"
                     >
-                      {post.coverImage ? (
+                      {post.coverImage && (
                         <div className="relative h-48 md:h-56 w-full overflow-hidden">
                           <Image
                             src={post.coverImage}
@@ -130,18 +130,12 @@ export default async function BlogIndex({
                             sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
                           />
                         </div>
-                      ) : (
-                        <div className="h-48 md:h-56 bg-gradient-to-br from-gray-100 to-gray-200" />
                       )}
                       <div className="p-5 md:p-6">
                         <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500 mb-3">
                           <span className="inline-flex items-center gap-1">
                             <Calendar className="w-3.5 h-3.5" />
                             {dateFormatter.format(new Date(post.publishedAt))}
-                          </span>
-                          <span className="inline-flex items-center gap-1">
-                            <Clock className="w-3.5 h-3.5" />
-                            {post.readingTime} {c.min}
                           </span>
                         </div>
                         <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-2 group-hover:text-amber-700 transition-colors">
