@@ -2,11 +2,11 @@ import { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/routing';
 import { ArrowRight, Music2, Users, Award } from 'lucide-react';
-import { getHomePage, getReviews, generateMetadataFromSEO, buildAlternates } from '@/lib/strapi';
+import { getHomePage, getReviews, getArtists, generateMetadataFromSEO, buildAlternates } from '@/lib/strapi';
 import FadeIn from '@/components/ui/FadeIn';
 import StaggerContainer, { StaggerItem } from '@/components/ui/StaggerContainer';
 import { FAQJsonLd, HOME_FAQS, AggregateRatingJsonLd } from '@/components/seo/JsonLd';
-import HeroCarousel from '@/components/home/HeroCarousel';
+import Hero3D from '@/components/home/Hero3D';
 import ReviewsSection from '@/components/ReviewsSection';
 import AnimatedDisclosure from '@/components/ui/AnimatedDisclosure';
 import Grain from '@/components/atmosphere/Grain';
@@ -44,11 +44,20 @@ export default async function HomePage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const [pageContent, t, reviews] = await Promise.all([
+  const [pageContent, t, reviews, artists] = await Promise.all([
     getHomePage(),
     getTranslations(),
     getReviews(),
+    getArtists(),
   ]);
+
+  const heroPhotos = artists
+    .filter((a) => a.image)
+    .map((a) => ({ id: a.id, url: a.image!, alt: a.name }));
+  const photosForHero =
+    heroPhotos.length > 0
+      ? heroPhotos
+      : pageContent.heroImages.map((img, i) => ({ id: `hero-${i}`, url: img.url, alt: 'Cubita Producciones' }));
 
   const faqs = HOME_FAQS[locale] || HOME_FAQS.es;
   const faqHeading: Record<Locale, string> = {
@@ -56,13 +65,6 @@ export default async function HomePage({
     en: 'Frequently asked questions about booking Cuban artists',
     fr: 'Questions fréquentes sur le booking d\'artistes cubains',
     it: 'Domande frequenti sul booking di artisti cubani',
-  };
-
-  const carouselLabels: Record<Locale, { prev: string; next: string; slide: string }> = {
-    es: { prev: 'Imagen anterior', next: 'Imagen siguiente', slide: 'Ir a la imagen' },
-    en: { prev: 'Previous image', next: 'Next image', slide: 'Go to image' },
-    fr: { prev: 'Image précédente', next: 'Image suivante', slide: 'Aller à l\'image' },
-    it: { prev: 'Immagine precedente', next: 'Immagine successiva', slide: 'Vai all\'immagine' },
   };
 
   return (
@@ -75,7 +77,7 @@ export default async function HomePage({
         itemReviewedUrl="https://cubitaproducciones.com"
       />
       {/* Hero Section */}
-      <HeroCarousel images={pageContent.heroImages} labels={carouselLabels[locale]}>
+      <Hero3D photos={photosForHero}>
         {/* Same max-w-7xl mx-auto container as the navbar — the inner
             max-w-3xl block sits at its left edge so the title and CTA
             line up horizontally with the logo. */}
@@ -105,7 +107,7 @@ export default async function HomePage({
             </Link>
           </div>
         </div>
-      </HeroCarousel>
+      </Hero3D>
 
       {/* Stats Section */}
       <section className="py-8 md:py-16 bg-gray-50">

@@ -1,9 +1,16 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import React from 'react';
 
 // Mock ArtistMarquee — it is an async server component that would fail in happy-dom
 vi.mock('@/components/home/ArtistMarquee', () => ({
   default: () => null,
+}));
+
+// Mock Hero3D — it's a client component that uses useSyncExternalStore + Three.js Canvas
+// which happy-dom cannot handle. Render children so text assertions still work.
+vi.mock('@/components/home/Hero3D', () => ({
+  default: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
 
 // Mock the data fetchers
