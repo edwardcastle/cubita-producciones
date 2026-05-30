@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useEffect, useState, ReactNode, createContext, useContext } from 'react';
+import { EASE } from '@/lib/motion';
 
 interface StaggerContextValue {
   visible: boolean;
@@ -19,6 +20,8 @@ interface StaggerContainerProps {
   once?: boolean;
   amount?: number;
 }
+
+const easeCss = `cubic-bezier(${EASE.standard.join(',')})`;
 
 export default function StaggerContainer({
   children,
@@ -86,7 +89,7 @@ export function StaggerItem({
       style={{
         opacity: visible ? 1 : 0,
         transform: visible ? 'none' : 'translateY(30px)',
-        transition: `opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) ${delay}s, transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) ${delay}s`,
+        transition: `opacity 0.5s ${easeCss} ${delay}s, transform 0.5s ${easeCss} ${delay}s`,
       }}
     >
       {children}

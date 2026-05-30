@@ -8,6 +8,7 @@ import StaggerContainer, { StaggerItem } from '@/components/ui/StaggerContainer'
 import { FAQJsonLd, HOME_FAQS, AggregateRatingJsonLd } from '@/components/seo/JsonLd';
 import HeroCarousel from '@/components/home/HeroCarousel';
 import ReviewsSection from '@/components/ReviewsSection';
+import Grain from '@/components/atmosphere/Grain';
 
 type Locale = 'es' | 'en' | 'fr' | 'it';
 
@@ -63,6 +64,7 @@ export default async function HomePage({
 
   return (
     <div>
+      <Grain />
       <FAQJsonLd locale={locale} />
       <AggregateRatingJsonLd
         reviews={reviews}

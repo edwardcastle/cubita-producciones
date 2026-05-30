@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useEffect, useState, ReactNode } from 'react';
+import { EASE } from '@/lib/motion';
 
 type Direction = 'up' | 'down' | 'left' | 'right' | 'none';
 
@@ -21,6 +22,8 @@ const initialTransforms: Record<Direction, string> = {
   right: 'translateX(-40px)',
   none: 'none',
 };
+
+const easeCss = `cubic-bezier(${EASE.standard.join(',')})`;
 
 export default function FadeIn({
   children,
@@ -61,7 +64,7 @@ export default function FadeIn({
       style={{
         opacity: visible ? 1 : 0,
         transform: visible ? 'none' : initialTransforms[direction],
-        transition: `opacity ${duration}s cubic-bezier(0.25, 0.1, 0.25, 1) ${delay}s, transform ${duration}s cubic-bezier(0.25, 0.1, 0.25, 1) ${delay}s`,
+        transition: `opacity ${duration}s ${easeCss} ${delay}s, transform ${duration}s ${easeCss} ${delay}s`,
       }}
     >
       {children}
