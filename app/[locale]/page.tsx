@@ -198,7 +198,7 @@ export default async function HomePage({
 
       {/* CTA Section */}
       <section className="cubita-cta-bg py-10 md:py-20 bg-gray-900 text-white px-4">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="max-w-4xl mx-auto text-center relative">
           <FadeIn direction="up">
             <h2 className="text-2xl md:text-4xl font-bold mb-4 md:mb-6">
               {t('home.cta.title')}

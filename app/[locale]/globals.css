@@ -217,14 +217,14 @@ body {
 /* CTA section background slow drift */
 .cubita-cta-bg {
   position: relative;
-  isolation: isolate;
+  overflow: hidden;
 }
 .cubita-cta-bg::before {
   content: '';
   position: absolute;
   inset: -20%;
-  background: radial-gradient(circle at 30% 40%, rgba(245, 158, 11, 0.06), transparent 50%);
-  z-index: -1;
+  background: radial-gradient(circle at 30% 40%, rgba(245, 158, 11, 0.18), transparent 60%);
+  mix-blend-mode: screen;
   animation: cubita-cta-drift 30s ease-in-out infinite;
   pointer-events: none;
 }
