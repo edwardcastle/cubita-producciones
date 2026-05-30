@@ -14,7 +14,7 @@ export default function Grain() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 z-[1] overflow-hidden opacity-[0.07]"
+      className="pointer-events-none fixed inset-0 z-[1] overflow-hidden opacity-[0.18] mix-blend-overlay"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
