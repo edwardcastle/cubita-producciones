@@ -10,6 +10,7 @@ import HeroCarousel from '@/components/home/HeroCarousel';
 import ReviewsSection from '@/components/ReviewsSection';
 import Grain from '@/components/atmosphere/Grain';
 import StatCounter from '@/components/home/StatCounter';
+import ArtistMarquee from '@/components/home/ArtistMarquee';
 
 type Locale = 'es' | 'en' | 'fr' | 'it';
 
@@ -150,8 +151,9 @@ export default async function HomePage({
       </section>
 
       {/* About Section */}
-      <section className="py-10 md:py-20 px-4">
-        <div className="max-w-3xl mx-auto">
+      <section className="relative overflow-hidden py-10 md:py-20 px-4">
+        <ArtistMarquee />
+        <div className="max-w-3xl mx-auto relative">
           <FadeIn direction="up">
             <div>
               <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-4 md:mb-6">

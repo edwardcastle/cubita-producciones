@@ -1,6 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 
+// Mock ArtistMarquee — it is an async server component that would fail in happy-dom
+vi.mock('@/components/home/ArtistMarquee', () => ({
+  default: () => null,
+}));
+
 // Mock the data fetchers
 vi.mock('@/lib/strapi', () => ({
   getHomePage: vi.fn(() =>
@@ -51,6 +56,7 @@ vi.mock('@/lib/strapi', () => ({
   })),
   buildAlternates: vi.fn(() => ({})),
   getReviews: vi.fn(() => Promise.resolve([])),
+  getArtists: vi.fn(() => Promise.resolve([])),
 }));
 
 // Mock next-intl/server
