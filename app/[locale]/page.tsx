@@ -8,6 +8,7 @@ import StaggerContainer, { StaggerItem } from '@/components/ui/StaggerContainer'
 import { FAQJsonLd, HOME_FAQS, AggregateRatingJsonLd } from '@/components/seo/JsonLd';
 import HeroCarousel from '@/components/home/HeroCarousel';
 import ReviewsSection from '@/components/ReviewsSection';
+import AnimatedDisclosure from '@/components/ui/AnimatedDisclosure';
 import Grain from '@/components/atmosphere/Grain';
 import StatCounter from '@/components/home/StatCounter';
 import ArtistMarquee from '@/components/home/ArtistMarquee';
@@ -185,15 +186,7 @@ export default async function HomePage({
           <div className="space-y-4 md:space-y-6">
             {faqs.map((faq, i) => (
               <FadeIn key={i} direction="up" delay={i * 0.05}>
-                <details className="group rounded-lg border border-gray-200 bg-gray-50 p-4 md:p-6 open:bg-white open:shadow-sm">
-                  <summary className="cursor-pointer list-none flex items-start justify-between gap-4 text-base md:text-lg font-semibold text-gray-900">
-                    <span>{faq.question}</span>
-                    <span className="text-amber-600 text-xl leading-none transition-transform group-open:rotate-45">+</span>
-                  </summary>
-                  <p className="mt-3 md:mt-4 text-sm md:text-base text-gray-700 leading-relaxed">
-                    {faq.answer}
-                  </p>
-                </details>
+                <AnimatedDisclosure title={faq.question} body={faq.answer} />
               </FadeIn>
             ))}
           </div>
