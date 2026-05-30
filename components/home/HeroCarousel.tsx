@@ -3,6 +3,8 @@
 import { useState, useEffect, useCallback, useSyncExternalStore, ReactNode } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
+import { DURATION, EASE, SPRING } from '@/lib/motion';
+import { useCursorParallax } from '@/lib/hooks/useCursorParallax';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { StrapiImage } from '@/lib/strapi';
 
@@ -55,6 +57,8 @@ export default function HeroCarousel({
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const reducedMotion = usePrefersReducedMotion();
+  const photoParallax = useCursorParallax({ intensity: 8, invert: true,  disabled: reducedMotion });
+  const textParallax  = useCursorParallax({ intensity: 3, invert: false, disabled: reducedMotion });
 
   const count = images.length;
   const hasImages = count > 0;
@@ -94,25 +98,37 @@ export default function HeroCarousel({
     >
       {hasImages && (
         <div className="absolute inset-0 w-full">
-          <AnimatePresence initial={false}>
-            <motion.div
-              key={index}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: reducedMotion ? 0 : 0.8 }}
-              className="absolute inset-0"
-            >
-              <Image
-                src={images[index].url}
-                alt={images[index].alternativeText || `Artista cubano en concierto - booking de artistas en Europa con Cubita Producciones`}
-                fill
-                priority={index === 0}
-                sizes="100vw"
-                className="aspect-video"
-              />
-            </motion.div>
-          </AnimatePresence>
+          <motion.div
+            className="absolute inset-0"
+            style={{ x: photoParallax.x, y: photoParallax.y }}
+          >
+            <AnimatePresence initial={false}>
+              <motion.div
+                key={index}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: reducedMotion ? 0 : 0.8 }}
+                className="absolute inset-0"
+              >
+                <motion.div
+                  className="absolute inset-0"
+                  initial={{ scale: 1 }}
+                  animate={{ scale: reducedMotion ? 1 : 1.06 }}
+                  transition={{ duration: reducedMotion ? 0 : DURATION.cinematic, ease: EASE.cinematic }}
+                >
+                  <Image
+                    src={images[index].url}
+                    alt={images[index].alternativeText || `Artista cubano en concierto - booking de artistas en Europa con Cubita Producciones`}
+                    fill
+                    priority={index === 0}
+                    sizes="100vw"
+                    className="aspect-video"
+                  />
+                </motion.div>
+              </motion.div>
+            </AnimatePresence>
+          </motion.div>
           {/* Dark overlay — keeps the hero text legible over bright images.
               Slightly stronger band in the vertical middle where the text sits. */}
           <div className="absolute inset-0 bg-black/55" aria-hidden="true" />
@@ -165,9 +181,19 @@ export default function HeroCarousel({
           flex-1 lets it fill the remaining height so its content stays
           vertically centered in the taller mobile hero. The horizontal
           padding mirrors the navbar's so children can align with the logo. */}
-      <div className="relative z-10 w-full flex-1 flex items-center py-10 px-4 sm:px-6 lg:px-8 md:py-16">
-        {children}
-      </div>
+      <motion.div
+        className="relative z-10 w-full flex-1 flex items-center py-10 px-4 sm:px-6 lg:px-8 md:py-16"
+        initial={reducedMotion ? false : { opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={reducedMotion ? { duration: 0 } : { ...SPRING.reveal, delay: 0.2 }}
+      >
+        <motion.div
+          className="w-full"
+          style={{ x: textParallax.x, y: textParallax.y }}
+        >
+          {children}
+        </motion.div>
+      </motion.div>
     </section>
   );
 }

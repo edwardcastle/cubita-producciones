@@ -58,10 +58,18 @@ vi.mock('framer-motion', async () => {
       };
     },
   };
+  // Minimal motion value stub — tests don't assert on motion values
+  const makeMotionValue = (initial: number) => {
+    let v = initial;
+    return { get: () => v, set: (n: number) => { v = n; }, on: () => () => {} };
+  };
   return {
     motion: new Proxy({}, handler),
     AnimatePresence: ({ children }: { children: React.ReactNode }) => children,
     useInView: () => true,
+    useMotionValue: (initial: number) => makeMotionValue(initial),
+    useSpring: (mv: ReturnType<typeof makeMotionValue>) => mv,
+    useReducedMotion: () => false,
   };
 });
 
