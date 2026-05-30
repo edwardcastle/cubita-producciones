@@ -9,6 +9,7 @@ import { FAQJsonLd, HOME_FAQS, AggregateRatingJsonLd } from '@/components/seo/Js
 import HeroCarousel from '@/components/home/HeroCarousel';
 import ReviewsSection from '@/components/ReviewsSection';
 import Grain from '@/components/atmosphere/Grain';
+import StatCounter from '@/components/home/StatCounter';
 
 type Locale = 'es' | 'en' | 'fr' | 'it';
 
@@ -109,30 +110,38 @@ export default async function HomePage({
         <div className="max-w-7xl mx-auto px-4">
           <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 text-center" staggerDelay={0.1}>
             <StaggerItem>
-              <div className="p-3 md:p-6">
-                <Award className="w-8 h-8 md:w-12 md:h-12 text-amber-500 mx-auto mb-2 md:mb-4" />
-                <div className="text-2xl md:text-4xl font-bold text-gray-900 mb-1 md:mb-2">{pageContent.stats.years}+</div>
+              <div className="p-3 md:p-6 group">
+                <Award className="w-8 h-8 md:w-12 md:h-12 text-amber-500 mx-auto mb-2 md:mb-4 transition-transform duration-200 ease-out group-hover:rotate-[4deg] motion-reduce:transition-none motion-reduce:group-hover:rotate-0" />
+                <div className="text-2xl md:text-4xl font-bold text-gray-900 mb-1 md:mb-2">
+                  <StatCounter value={pageContent.stats.years} />
+                </div>
                 <div className="text-xs md:text-base text-gray-600">{t('about.experience')}</div>
               </div>
             </StaggerItem>
             <StaggerItem>
-              <div className="p-3 md:p-6">
-                <Users className="w-8 h-8 md:w-12 md:h-12 text-amber-500 mx-auto mb-2 md:mb-4" />
-                <div className="text-2xl md:text-4xl font-bold text-gray-900 mb-1 md:mb-2">{pageContent.stats.artists}+</div>
+              <div className="p-3 md:p-6 group">
+                <Users className="w-8 h-8 md:w-12 md:h-12 text-amber-500 mx-auto mb-2 md:mb-4 transition-transform duration-200 ease-out group-hover:rotate-[4deg] motion-reduce:transition-none motion-reduce:group-hover:rotate-0" />
+                <div className="text-2xl md:text-4xl font-bold text-gray-900 mb-1 md:mb-2">
+                  <StatCounter value={pageContent.stats.artists} />
+                </div>
                 <div className="text-xs md:text-base text-gray-600">{t('artists.title')}</div>
               </div>
             </StaggerItem>
             <StaggerItem>
-              <div className="p-3 md:p-6">
-                <Music2 className="w-8 h-8 md:w-12 md:h-12 text-amber-500 mx-auto mb-2 md:mb-4" />
-                <div className="text-2xl md:text-4xl font-bold text-gray-900 mb-1 md:mb-2">{pageContent.stats.festivals}+</div>
+              <div className="p-3 md:p-6 group">
+                <Music2 className="w-8 h-8 md:w-12 md:h-12 text-amber-500 mx-auto mb-2 md:mb-4 transition-transform duration-200 ease-out group-hover:rotate-[4deg] motion-reduce:transition-none motion-reduce:group-hover:rotate-0" />
+                <div className="text-2xl md:text-4xl font-bold text-gray-900 mb-1 md:mb-2">
+                  <StatCounter value={pageContent.stats.festivals} />
+                </div>
                 <div className="text-xs md:text-base text-gray-600">{t('home.stats.festivals')}</div>
               </div>
             </StaggerItem>
             <StaggerItem>
-              <div className="p-3 md:p-6">
-                <Award className="w-8 h-8 md:w-12 md:h-12 text-amber-500 mx-auto mb-2 md:mb-4" />
-                <div className="text-2xl md:text-4xl font-bold text-gray-900 mb-1 md:mb-2">{pageContent.stats.countries}+</div>
+              <div className="p-3 md:p-6 group">
+                <Award className="w-8 h-8 md:w-12 md:h-12 text-amber-500 mx-auto mb-2 md:mb-4 transition-transform duration-200 ease-out group-hover:rotate-[4deg] motion-reduce:transition-none motion-reduce:group-hover:rotate-0" />
+                <div className="text-2xl md:text-4xl font-bold text-gray-900 mb-1 md:mb-2">
+                  <StatCounter value={pageContent.stats.countries} />
+                </div>
                 <div className="text-xs md:text-base text-gray-600">{t('home.stats.countries')}</div>
               </div>
             </StaggerItem>
