@@ -1,13 +1,12 @@
 // components/atmosphere/Grain.tsx
-// Fixed-position monochrome film-grain overlay.
+// Fixed-position film-grain overlay.
 // - Pure SVG turbulence noise — no external assets, no extra request.
-// - Plain alpha blending at ~7% opacity so the texture is visible on both
-//   light and dark sections without depending on a blend mode.
-// - overflow-hidden on the wrapper prevents any SVG filter region from
-//   bleeding out and triggering a horizontal scrollbar.
-// - Server component: no client JS, no hydration cost.
-// - aria-hidden + pointer-events-none so it never interferes with users or AT.
-// - Static (no animation). Reduced-motion users see the same thing.
+// - The SVG is oversized (110%) and offset (-5%) so the stepped translate
+//   animation never reveals edges through the wrapper's overflow-hidden.
+// - Plain alpha at ~7% opacity so the texture shows on both light and dark.
+// - Server component: zero client JS apart from CSS animation.
+// - aria-hidden + pointer-events-none.
+// - prefers-reduced-motion stops the animation (handled in globals.css).
 
 const FILTER_ID = 'cubita-grain-filter';
 
@@ -17,7 +16,11 @@ export default function Grain() {
       aria-hidden="true"
       className="pointer-events-none fixed inset-0 z-[1] overflow-hidden opacity-[0.07]"
     >
-      <svg className="h-full w-full" xmlns="http://www.w3.org/2000/svg">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="cubita-grain absolute"
+        style={{ top: '-5%', left: '-5%', width: '110%', height: '110%' }}
+      >
         <defs>
           <filter id={FILTER_ID}>
             <feTurbulence
