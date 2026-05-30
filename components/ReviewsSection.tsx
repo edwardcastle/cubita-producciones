@@ -45,9 +45,9 @@ export default function ReviewsSection({ reviews, locale }: { reviews: Review[];
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6" staggerDelay={0.08}>
           {list.map((r) => (
             <StaggerItem key={r.id}>
-              <article className="bg-white rounded-xl border border-gray-200 p-5 md:p-6 h-full hover:shadow-lg transition-shadow">
+              <article className="cubita-review-card bg-white rounded-xl border border-gray-200 p-5 md:p-6 h-full hover:shadow-lg transition-shadow">
                 <Quote className="w-6 h-6 text-amber-500 mb-3" />
-                <div className="flex gap-0.5 mb-3" aria-label={`Rated ${r.rating} out of 5`}>
+                <div className="cubita-stars gap-0.5 mb-3" aria-label={`Rated ${r.rating} out of 5`}>
                   {Array.from({ length: 5 }).map((_, i) => (
                     <Star
                       key={i}

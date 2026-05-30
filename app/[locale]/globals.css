@@ -175,3 +175,67 @@ body {
   to   { transform: translateX(0); }
 }
 
+/* Reviews — star-row shimmer on card hover */
+.cubita-stars { position: relative; overflow: hidden; display: inline-flex; }
+.cubita-stars::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 30%, rgba(245, 158, 11, 0.45) 50%, transparent 70%);
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+.cubita-review-card:hover .cubita-stars::after {
+  animation: cubita-shimmer 0.6s ease-out forwards;
+}
+@keyframes cubita-shimmer {
+  from { transform: translateX(-120%); }
+  to   { transform: translateX(120%); }
+}
+
+/* CTA button gradient sweep on hover */
+.cubita-cta {
+  position: relative;
+  overflow: hidden;
+}
+.cubita-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.4) 50%, transparent 70%);
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+.cubita-cta:hover::before {
+  animation: cubita-cta-sweep 0.8s ease-out forwards;
+}
+@keyframes cubita-cta-sweep {
+  from { transform: translateX(-120%); }
+  to   { transform: translateX(120%); }
+}
+
+/* CTA section background slow drift */
+.cubita-cta-bg {
+  position: relative;
+  isolation: isolate;
+}
+.cubita-cta-bg::before {
+  content: '';
+  position: absolute;
+  inset: -20%;
+  background: radial-gradient(circle at 30% 40%, rgba(245, 158, 11, 0.06), transparent 50%);
+  z-index: -1;
+  animation: cubita-cta-drift 30s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes cubita-cta-drift {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(8%, -6%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cubita-review-card:hover .cubita-stars::after { animation: none; }
+  .cubita-cta:hover::before { animation: none; }
+  .cubita-cta-bg::before    { animation: none; }
+}
+

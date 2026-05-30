@@ -197,7 +197,7 @@ export default async function HomePage({
       <ReviewsSection reviews={reviews} locale={locale} />
 
       {/* CTA Section */}
-      <section className="py-10 md:py-20 bg-gray-900 text-white px-4">
+      <section className="cubita-cta-bg py-10 md:py-20 bg-gray-900 text-white px-4">
         <div className="max-w-4xl mx-auto text-center">
           <FadeIn direction="up">
             <h2 className="text-2xl md:text-4xl font-bold mb-4 md:mb-6">
@@ -212,10 +212,12 @@ export default async function HomePage({
           <FadeIn direction="up" delay={0.3}>
             <Link
               href="/contacto"
-              className="inline-flex items-center gap-2 bg-amber-500 text-black px-6 py-3 md:px-8 md:py-4 rounded-lg font-semibold text-base md:text-lg hover:bg-amber-400 transition-colors btn-hover"
+              className="cubita-cta inline-flex items-center gap-2 bg-amber-500 text-black px-6 py-3 md:px-8 md:py-4 rounded-lg font-semibold text-base md:text-lg hover:bg-amber-400 transition-colors btn-hover relative overflow-hidden"
             >
-              {t('nav.contact')}
-              <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
+              <span className="relative z-[1] inline-flex items-center gap-2">
+                {t('nav.contact')}
+                <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
+              </span>
             </Link>
           </FadeIn>
         </div>
