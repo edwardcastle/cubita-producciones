@@ -241,21 +241,16 @@ body {
 
 /* Homepage film-grain shimmer */
 .cubita-grain {
-  animation: cubita-grain-shimmer 0.8s steps(8) infinite;
+  animation: cubita-grain-shimmer 2.4s steps(6) infinite;
   will-change: transform;
 }
 @keyframes cubita-grain-shimmer {
-  0%   { transform: translate(0, 0); }
-  10%  { transform: translate(-2%, -1%); }
-  20%  { transform: translate(2%, 1%); }
-  30%  { transform: translate(-1%, 2%); }
-  40%  { transform: translate(1%, -2%); }
-  50%  { transform: translate(-2%, 2%); }
-  60%  { transform: translate(2%, -1%); }
-  70%  { transform: translate(-1%, -2%); }
-  80%  { transform: translate(1%, 2%); }
-  90%  { transform: translate(-2%, -1%); }
-  100% { transform: translate(0, 0); }
+  0%, 100% { transform: translate(0, 0); }
+  16%      { transform: translate(-0.8%, -0.4%); }
+  33%      { transform: translate(0.8%, 0.4%); }
+  50%      { transform: translate(-0.4%, 0.8%); }
+  66%      { transform: translate(0.4%, -0.8%); }
+  83%      { transform: translate(-0.6%, 0.4%); }
 }
 @media (prefers-reduced-motion: reduce) {
   .cubita-grain { animation: none; will-change: auto; }

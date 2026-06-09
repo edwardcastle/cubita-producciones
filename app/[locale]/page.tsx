@@ -53,7 +53,7 @@ export default async function HomePage({
 
   const heroPhotos = artists
     .filter((a) => a.image)
-    .map((a) => ({ id: a.id, url: a.image!, alt: a.name }));
+    .map((a) => ({ id: a.id, url: a.image!, alt: a.name, slug: a.slug }));
   const photosForHero =
     heroPhotos.length > 0
       ? heroPhotos
@@ -100,7 +100,7 @@ export default async function HomePage({
             </p>
             <Link
               href="/artistas"
-              className="inline-flex items-center gap-1.5 md:gap-2 bg-amber-500 text-black px-4 py-2 md:px-8 md:py-4 rounded-md md:rounded-lg font-semibold text-sm md:text-lg hover:bg-amber-400 transition-colors btn-hover relative z-10"
+              className="pointer-events-auto inline-flex items-center gap-1.5 md:gap-2 bg-amber-500 text-black px-4 py-2 md:px-8 md:py-4 rounded-md md:rounded-lg font-semibold text-sm md:text-lg hover:bg-amber-400 transition-colors btn-hover relative z-10"
             >
               {pageContent.ctaText[locale]}
               <ArrowRight className="w-3.5 h-3.5 md:w-5 md:h-5" />
