@@ -15,7 +15,7 @@ export {
 export { getSitemapData } from './sitemap';
 
 export async function getArtists(): Promise<Artist[]> {
-  return [...ARTISTS].sort((a, b) => a.name.localeCompare(b.name));
+  return [...ARTISTS].sort((a, b) => a.name.localeCompare(b.name, 'es'));
 }
 export async function getArtistBySlug(slug: string): Promise<Artist | null> {
   return ARTISTS.find((a) => a.slug === slug) ?? null;

@@ -1,16 +1,16 @@
 import type { StrapiImage, SEO } from './types';
 
 /** Production website base URL */
-export const BASE_URL = 'https://cubitaproducciones.com';
+const BASE_URL = 'https://cubitaproducciones.com';
 
 /** Supported locales for internationalization */
-export const LOCALES = ['es', 'en', 'fr', 'it'] as const;
+const LOCALES = ['es', 'en', 'fr', 'it'] as const;
 
 /** Default locale */
-export const DEFAULT_LOCALE = 'es';
+const DEFAULT_LOCALE = 'es';
 
 /** OpenGraph locale format mapping */
-export const OG_LOCALES: Record<string, string> = {
+const OG_LOCALES: Record<string, string> = {
   es: 'es_ES',
   en: 'en_US',
   fr: 'fr_FR',
@@ -110,15 +110,7 @@ export function generateMetadataFromSEO(
       description,
       images: [ogImage],
     },
-    alternates: {
-      canonical: pageUrl,
-      languages: {
-        ...Object.fromEntries(
-          LOCALES.map((l) => [l, buildLocalizedUrl(l, path)])
-        ),
-        'x-default': buildLocalizedUrl(DEFAULT_LOCALE, path),
-      },
-    },
+    alternates: buildAlternates(locale, path),
   };
 
   if (seo?.keywords) {
@@ -176,7 +168,7 @@ export function parseHeroImages(raw: unknown): StrapiImage[] {
     .filter((img): img is StrapiImage => img !== null);
 }
 
-export function parseSEO(seoData: unknown): SEO | null {
+function parseSEO(seoData: unknown): SEO | null {
   if (!seoData) return null;
   const s = seoData as Record<string, unknown>;
 

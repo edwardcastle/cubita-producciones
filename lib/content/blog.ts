@@ -1,3 +1,4 @@
+import 'server-only';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import type { BlogPost } from './types';
@@ -7,7 +8,13 @@ const DRAFTS_DIR = join(process.cwd(), 'docs', 'blog-drafts');
 type Locale = 'es' | 'en' | 'fr' | 'it';
 const FIELD_SUFFIX: Record<Locale, string> = { es: 'Es', en: 'En', fr: 'Fr', it: 'It' };
 
-/** Extract the text under `### <label> (<base><Suffix>)` up to the next `### ` or `---` or EOF. */
+/**
+ * Extract the text under `### <label> (<base><Suffix>)` up to the next `### ` or `---` or EOF.
+ *
+ * CONSTRAINT: draft body content must use `##` headings only.
+ * Do NOT use `###` headings or `---` horizontal rules inside any field's content —
+ * the regex terminates field capture at the next `\n### ` or `\n---`.
+ */
 function extractField(text: string, base: string, suffix: string): string {
   const re = new RegExp(`###[^\\n]*\\(${base}${suffix}\\)\\s*\\n([\\s\\S]*?)(?=\\n###\\s|\\n---|$)`);
   const m = text.match(re);
@@ -37,8 +44,8 @@ function parseDraft(filename: string): BlogPost {
     excerpt: readLocale(text, 'excerpt'),
     content: readLocale(text, 'content'),
     coverImage: null, // original Strapi media is gone; owner can add a local path later
-    publishedAt: '2026-01-01T00:00:00.000Z',
-    updatedAt: '2026-01-01T00:00:00.000Z',
+    publishedAt: '2026-01-01T00:00:00.000Z', // TODO: drafts have no date field; add one to the draft format when the blog goes live
+    updatedAt: '2026-01-01T00:00:00.000Z',   // TODO: drafts have no date field; add one to the draft format when the blog goes live
     author,
     readingTime,
     seo: null,

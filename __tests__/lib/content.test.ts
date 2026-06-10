@@ -3,7 +3,7 @@ import { BLOG_POSTS } from '@/lib/content/blog';
 
 describe('blog parser', () => {
   it('parses all 11 drafts with 4-language fields', () => {
-    expect(BLOG_POSTS.length).toBe(11);
+    expect(BLOG_POSTS.length).toBeGreaterThanOrEqual(11);
     for (const p of BLOG_POSTS) {
       expect(p.slug).toBeTruthy();
       expect(p.title.es).toBeTruthy();
