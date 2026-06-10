@@ -195,7 +195,7 @@ export default async function HomePage({
         </div>
       </section>
 
-      {/* Reviews Section — renders only if Strapi has reviews */}
+      {/* Reviews Section — renders only if there are reviews */}
       <ReviewsSection reviews={reviews} locale={locale} />
 
       {/* CTA Section */}

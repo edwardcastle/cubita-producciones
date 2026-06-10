@@ -9,7 +9,7 @@ import {
 // For unit tests, we test the pure functions like generateMetadataFromSEO.
 // Integration tests would test the full data flow with mocked fetch.
 
-describe('Strapi Library', () => {
+describe('SEO helpers', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });

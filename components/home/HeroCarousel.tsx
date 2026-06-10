@@ -18,7 +18,7 @@ interface HeroCarouselLabels {
 }
 
 interface HeroCarouselProps {
-  /** Background images managed in Strapi; empty array renders the static fallback */
+  /** Background images; empty array renders the static fallback */
   images: StrapiImage[];
   /** Hero text (eyebrow, title, subtitle, CTA) rendered on top of the images */
   children: ReactNode;

@@ -3,7 +3,7 @@ import { getArtists } from '@/lib/content';
 import Marquee from '@/components/ui/Marquee';
 
 /**
- * Server component that fetches the artist roster from Strapi and renders
+ * Server component that reads the artist roster from the static content layer and renders
  * a slow horizontal marquee of their names. Decorative — aria-hidden.
  * Hidden below the md breakpoint.
  */

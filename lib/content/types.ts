@@ -1,5 +1,5 @@
 /**
- * Represents an image from Strapi media library
+ * Represents a media image (named StrapiImage for backwards-compatible imports)
  * @interface StrapiImage
  */
 export interface StrapiImage {
