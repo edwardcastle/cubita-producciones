@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { Award, Users, Globe, Music } from 'lucide-react';
 import { Link } from '@/i18n/routing';
-import { getAboutPage, generateMetadataFromSEO, buildAlternates } from '@/lib/strapi';
+import { getAboutPage, generateMetadataFromSEO, buildAlternates } from '@/lib/content';
 import FadeIn from '@/components/ui/FadeIn';
 import StaggerContainer, { StaggerItem } from '@/components/ui/StaggerContainer';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';

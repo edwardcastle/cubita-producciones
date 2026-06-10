@@ -9,7 +9,7 @@ import {
 } from '@/components/seo/JsonLd';
 
 // Mock getSiteSettings
-vi.mock('@/lib/strapi', () => ({
+vi.mock('@/lib/content', () => ({
   getSiteSettings: vi.fn(() =>
     Promise.resolve({
       logo: 'https://example.com/logo.png',

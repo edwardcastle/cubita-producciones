@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { getLocale } from 'next-intl/server';
-import { getArtists, getArtistsPage, getSiteSettings, generateMetadataFromSEO, buildAlternates } from '@/lib/strapi';
+import { getArtists, getArtistsPage, getSiteSettings, generateMetadataFromSEO, buildAlternates } from '@/lib/content';
 import { stripMarkdown } from '@/lib/utils';
 import Image from 'next/image';
 import { Link } from '@/i18n/routing';

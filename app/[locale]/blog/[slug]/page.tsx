@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { Link } from '@/i18n/routing';
 import Image from 'next/image';
 import { Calendar, ArrowLeft } from 'lucide-react';
-import { getBlogPostBySlug, getAllBlogPostSlugs, buildAlternates, generateMetadataFromSEO } from '@/lib/strapi';
+import { getBlogPostBySlug, getAllBlogPostSlugs, buildAlternates, generateMetadataFromSEO } from '@/lib/content';
 import { stripMarkdown } from '@/lib/utils';
 import FadeIn from '@/components/ui/FadeIn';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';

@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { getLocale } from 'next-intl/server';
 import { Mail, Phone, MapPin, Instagram } from 'lucide-react';
-import { getContactPage, getArtists, getSiteSettings, generateMetadataFromSEO, buildAlternates } from '@/lib/strapi';
+import { getContactPage, getArtists, getSiteSettings, generateMetadataFromSEO, buildAlternates } from '@/lib/content';
 import ContactForm from '@/components/ContactForm';
 import FadeIn from '@/components/ui/FadeIn';
 import { FAQJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';

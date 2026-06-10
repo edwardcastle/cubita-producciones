@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/routing';
 import { ArrowRight, Music2, Users, Award } from 'lucide-react';
-import { getHomePage, getReviews, getArtists, generateMetadataFromSEO, buildAlternates } from '@/lib/strapi';
+import { getHomePage, getReviews, getArtists, generateMetadataFromSEO, buildAlternates } from '@/lib/content';
 import FadeIn from '@/components/ui/FadeIn';
 import StaggerContainer, { StaggerItem } from '@/components/ui/StaggerContainer';
 import { FAQJsonLd, HOME_FAQS, AggregateRatingJsonLd } from '@/components/seo/JsonLd';

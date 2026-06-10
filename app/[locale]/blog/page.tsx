@@ -3,7 +3,7 @@ import { setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/routing';
 import Image from 'next/image';
 import { ArrowRight, Calendar } from 'lucide-react';
-import { getBlogPosts, buildAlternates } from '@/lib/strapi';
+import { getBlogPosts, buildAlternates } from '@/lib/content';
 import FadeIn from '@/components/ui/FadeIn';
 import StaggerContainer, { StaggerItem } from '@/components/ui/StaggerContainer';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';

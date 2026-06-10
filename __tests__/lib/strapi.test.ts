@@ -3,7 +3,7 @@ import {
   generateMetadataFromSEO,
   parseHeroImages,
   type SEO,
-} from '@/lib/strapi';
+} from '@/lib/content';
 
 // Note: The data fetcher functions use React's cache() and make actual API calls.
 // For unit tests, we test the pure functions like generateMetadataFromSEO.

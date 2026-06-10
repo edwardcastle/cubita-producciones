@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { DURATION, EASE, SPRING } from '@/lib/motion';
 import { useCursorParallax } from '@/lib/hooks/useCursorParallax';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import type { StrapiImage } from '@/lib/strapi';
+import type { StrapiImage } from '@/lib/content';
 
 interface HeroCarouselLabels {
   /** aria-label for the previous-slide button */

@@ -4,7 +4,7 @@ import { REVIEWS } from './reviews';
 import { BLOG_POSTS } from './blog';
 import { HOME_PAGE, ABOUT_PAGE, CONTACT_PAGE, ARTISTS_PAGE, SITE_SETTINGS } from './pages';
 
-// Re-export types and SEO helpers so `@/lib/content` is a drop-in for `@/lib/strapi`.
+// Re-export types and SEO helpers — `@/lib/content` is the drop-in replacement for the former `@/lib/strapi`.
 export type {
   StrapiImage, Artist, HomePage, AboutPage, ContactPage, ArtistsPage,
   SiteSettings, SEO, PageWithSEO, BlogPost, Review, SitemapData,

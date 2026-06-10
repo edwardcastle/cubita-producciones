@@ -1,7 +1,7 @@
 import { Star, Quote } from 'lucide-react';
 import FadeIn from '@/components/ui/FadeIn';
 import StaggerContainer, { StaggerItem } from '@/components/ui/StaggerContainer';
-import type { Review } from '@/lib/strapi';
+import type { Review } from '@/lib/content';
 
 type Locale = 'es' | 'en' | 'fr' | 'it';
 

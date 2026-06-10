@@ -14,7 +14,7 @@ vi.mock('@/components/home/Hero3D', () => ({
 }));
 
 // Mock the data fetchers
-vi.mock('@/lib/strapi', () => ({
+vi.mock('@/lib/content', () => ({
   getHomePage: vi.fn(() =>
     Promise.resolve({
       heroTitle: {

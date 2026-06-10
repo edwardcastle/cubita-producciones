@@ -1,4 +1,4 @@
-import { getSiteSettings } from '@/lib/strapi';
+import { getSiteSettings } from '@/lib/content';
 
 interface OrganizationJsonLdProps {
   locale: string;

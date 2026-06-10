@@ -1,5 +1,5 @@
 // components/home/ArtistMarquee.tsx
-import { getArtists } from '@/lib/strapi';
+import { getArtists } from '@/lib/content';
 import Marquee from '@/components/ui/Marquee';
 
 /**

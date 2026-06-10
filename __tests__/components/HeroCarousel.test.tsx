@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import HeroCarousel from '@/components/home/HeroCarousel';
-import type { StrapiImage } from '@/lib/strapi';
+import type { StrapiImage } from '@/lib/content';
 
 const images: StrapiImage[] = [
   { url: 'https://cdn.example.com/1.jpg', alternativeText: 'Slide one' },

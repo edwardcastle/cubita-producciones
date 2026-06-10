@@ -8,7 +8,7 @@ import LazyChat from '@/components/LazyChat';
 import type {Metadata} from 'next';
 import {Poppins} from 'next/font/google';
 import Script from 'next/script';
-import {getSiteSettings, buildLocalizedUrl} from '@/lib/strapi';
+import {getSiteSettings, buildLocalizedUrl} from '@/lib/content';
 import {OrganizationJsonLd, LocalBusinessJsonLd, WebsiteJsonLd} from '@/components/seo/JsonLd';
 import './globals.css';
 

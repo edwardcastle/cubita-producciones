@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 
 // Mock the data fetchers
-vi.mock('@/lib/strapi', () => ({
+vi.mock('@/lib/content', () => ({
   getContactPage: vi.fn(() =>
     Promise.resolve({
       title: {

@@ -1,4 +1,4 @@
-import { getArtists, getAboutPage, getHomePage, getContactPage, getSiteSettings } from './strapi';
+import { getArtists, getAboutPage, getHomePage, getContactPage, getSiteSettings } from './content';
 import { stripMarkdown } from './utils';
 
 type Locale = 'es' | 'en' | 'fr' | 'it';

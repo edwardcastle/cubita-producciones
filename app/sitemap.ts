@@ -1,5 +1,5 @@
 import {MetadataRoute} from 'next';
-import {getSitemapData, getAllBlogPostSlugs, buildLocalizedUrl} from '@/lib/strapi';
+import {getSitemapData, getAllBlogPostSlugs, buildLocalizedUrl} from '@/lib/content';
 import {BOOKING_LANDING_SLUGS, buildBookingLandingUrl, type LandingLocale} from '@/lib/booking-landing';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
