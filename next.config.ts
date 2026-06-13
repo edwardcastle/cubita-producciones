@@ -39,6 +39,23 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    // Artist slugs changed during the CMS→static migration. Permanently redirect
+    // the old, already-indexed URLs to the new slugs so search rankings transfer.
+    return [
+      {
+        source: '/:locale(es|en|fr|it)/artistas/manolin-el-medico-de-la-salsa',
+        destination: '/:locale/artistas/manolin',
+        permanent: true,
+      },
+      {
+        // Old slug had a typo ("jaco"); new slug is "jacob-forever".
+        source: '/:locale(es|en|fr|it)/artistas/jaco-forever',
+        destination: '/:locale/artistas/jacob-forever',
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {
