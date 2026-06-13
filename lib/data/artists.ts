@@ -27,7 +27,7 @@ export const artists: Artist[] = [
       fr: 'Figure de proue du reggaeton cubain avec des millions d\'écoutes et une énergie explosive sur scène. Sa musique touche des publics de tous âges.'
     },
     availability: '6-22 marzo / March / mars 2025',
-    image: '/artists/talent-fuego.jpg',
+    image: '/artists/talent-fuego.png',
     travelParty: 8
   },
   {
