@@ -16,10 +16,10 @@ export async function generateMetadata(): Promise<Metadata> {
   const locale = (await getLocale()) as Locale;
 
   const fallbacks: Record<Locale, { title: string; description: string }> = {
-    es: { title: 'Booking Artistas Cubanos para Festivales y Eventos | Cubita Producciones', description: 'Catálogo de artistas cubanos disponibles para booking. Contratar artistas de salsa y reguetón para festivales y eventos en Europa: Jacob Forever, Manolín, El Micha, Charly & Johayron.' },
-    en: { title: 'Booking Cuban Artists for Festivals & Events | Cubita Producciones', description: 'Browse Cuban artists available for booking. Book salsa and reggaeton artists for festivals and events in Europe: Jacob Forever, Manolín, El Micha, Charly & Johayron.' },
-    fr: { title: 'Booking Artistes Cubains pour Festivals et Événements | Cubita Producciones', description: 'Catalogue d\'artistes cubains disponibles pour booking. Réservez des artistes de salsa et reggaeton pour festivals et événements en Europe: Jacob Forever, Manolín, El Micha, Charly & Johayron.' },
-    it: { title: 'Booking Artisti Cubani per Festival ed Eventi | Cubita Producciones', description: 'Catalogo di artisti cubani disponibili per booking. Prenota artisti di salsa e reggaeton per festival ed eventi in Europa: Jacob Forever, Manolín, El Micha, Charly & Johayron.' },
+    es: { title: 'Catálogo de Artistas Cubanos para Booking en Europa | Cubita Producciones', description: 'Catálogo de artistas cubanos disponibles para booking. Contratar artistas de salsa y reguetón para festivales y eventos en Europa: Jacob Forever, Manolín, El Micha, Charly & Johayron.' },
+    en: { title: 'Cuban Artists Roster — Available to Book in Europe | Cubita Producciones', description: 'Browse Cuban artists available for booking. Book salsa and reggaeton artists for festivals and events in Europe: Jacob Forever, Manolín, El Micha, Charly & Johayron.' },
+    fr: { title: 'Catalogue d\'Artistes Cubains pour Booking en Europe | Cubita Producciones', description: 'Catalogue d\'artistes cubains disponibles pour booking. Réservez des artistes de salsa et reggaeton pour festivals et événements en Europe: Jacob Forever, Manolín, El Micha, Charly & Johayron.' },
+    it: { title: 'Catalogo di Artisti Cubani per Booking in Europa | Cubita Producciones', description: 'Catalogo di artisti cubani disponibili per booking. Prenota artisti di salsa e reggaeton per festival ed eventi in Europa: Jacob Forever, Manolín, El Micha, Charly & Johayron.' },
   };
 
   try {
@@ -45,6 +45,14 @@ export default async function ArtistasPage() {
     it: 'persone',
   };
 
+  // Keyword-rich H1 (the short pageContent.title stays in the breadcrumb + JSON-LD).
+  const h1Heading: Record<Locale, string> = {
+    es: 'Artistas Cubanos Disponibles para Booking en Europa',
+    en: 'Cuban Artists Available for Booking in Europe',
+    fr: 'Artistes Cubains Disponibles pour Booking en Europe',
+    it: 'Artisti Cubani Disponibili per Booking in Europa',
+  };
+
   const baseUrl = 'https://cubitaproducciones.com';
   const breadcrumbSchemaItems = [
     { name: 'Home', url: `${baseUrl}/${locale}` },
@@ -67,7 +75,7 @@ export default async function ArtistasPage() {
           </div>
           <FadeIn direction="down">
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 md:mb-4">
-              {pageContent.title[locale]}
+              {h1Heading[locale]}
             </h1>
           </FadeIn>
           <FadeIn direction="down" delay={0.15}>
@@ -79,7 +87,7 @@ export default async function ArtistasPage() {
       {/* Artists Grid */}
       <div className="max-w-7xl mx-auto px-4 py-6 md:py-16">
         <StaggerContainer className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6" staggerDelay={0.1}>
-          {artists.map((artist) => (
+          {artists.map((artist, index) => (
             <StaggerItem key={artist.id}>
               <Link
                 href={`/artistas/${artist.slug}`}
@@ -94,7 +102,7 @@ export default async function ArtistasPage() {
                       fill
                       className="object-cover object-top"
                       sizes="(max-width: 768px) 50vw, (max-width: 1024px) 50vw, 33vw"
-                      loading="lazy"
+                      priority={index < 3}
                     />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center">

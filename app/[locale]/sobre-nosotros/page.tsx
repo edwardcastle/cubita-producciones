@@ -41,6 +41,14 @@ export default async function SobreNosotrosPage() {
     { name: pageContent.title[locale], url: `${baseUrl}/${locale}/sobre-nosotros` },
   ];
 
+  // Keyword-rich H1 (short pageContent.title stays in breadcrumb + JSON-LD).
+  const h1Heading: Record<Locale, string> = {
+    es: 'Agencia de Booking de Artistas Cubanos en Europa',
+    en: 'Cuban Artist Booking Agency in Europe',
+    fr: 'Agence de Booking d\'Artistes Cubains en Europe',
+    it: 'Agenzia di Booking di Artisti Cubani in Europa',
+  };
+
   return (
     <>
     <BreadcrumbJsonLd items={breadcrumbItems} />
@@ -56,7 +64,7 @@ export default async function SobreNosotrosPage() {
           </div>
           <FadeIn direction="down">
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-6">
-              {pageContent.title[locale]}
+              {h1Heading[locale]}
             </h1>
           </FadeIn>
           <FadeIn direction="down" delay={0.15}>

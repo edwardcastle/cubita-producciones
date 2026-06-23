@@ -51,6 +51,14 @@ export default async function ContactoPage() {
     { name: pageContent.title[locale], url: `${baseUrl}/${locale}/contacto` },
   ];
 
+  // Keyword-rich H1 (short pageContent.title stays in breadcrumb + JSON-LD).
+  const h1Heading: Record<Locale, string> = {
+    es: 'Contacta para el Booking de Artistas Cubanos',
+    en: 'Contact Us to Book Cuban Artists',
+    fr: 'Contactez-nous pour le Booking d\'Artistes Cubains',
+    it: 'Contattaci per il Booking di Artisti Cubani',
+  };
+
   return (
     <>
     <FAQJsonLd locale={locale} />
@@ -67,7 +75,7 @@ export default async function ContactoPage() {
           </div>
           <FadeIn direction="down">
             <h1 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-bold mb-1 md:mb-4">
-              {pageContent.title[locale]}
+              {h1Heading[locale]}
             </h1>
           </FadeIn>
           <FadeIn direction="down" delay={0.15}>

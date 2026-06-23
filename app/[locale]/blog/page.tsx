@@ -13,7 +13,7 @@ type Locale = 'es' | 'en' | 'fr' | 'it';
 
 const COPY: Record<Locale, { title: string; subtitle: string; readMore: string; breadcrumb: string; empty: string; min: string }> = {
   es: {
-    title: 'Blog | Booking de Artistas en Europa',
+    title: 'Blog de Música Cubana: Guías de Booking para Promotores',
     subtitle: 'Guías, consejos y novedades sobre booking de artistas cubanos para festivales y eventos en Europa.',
     readMore: 'Leer más',
     breadcrumb: 'Blog',
@@ -21,7 +21,7 @@ const COPY: Record<Locale, { title: string; subtitle: string; readMore: string; 
     min: 'min',
   },
   en: {
-    title: 'Blog | Booking Artists in Europe',
+    title: 'Cuban Music Blog: Booking Guides for Promoters',
     subtitle: 'Guides, tips and news on booking Cuban artists for festivals and events in Europe.',
     readMore: 'Read more',
     breadcrumb: 'Blog',
@@ -29,7 +29,7 @@ const COPY: Record<Locale, { title: string; subtitle: string; readMore: string; 
     min: 'min',
   },
   fr: {
-    title: 'Blog | Booking d\'Artistes en Europe',
+    title: 'Blog Musique Cubaine : Guides de Booking pour Promoteurs',
     subtitle: 'Guides, conseils et actualités sur le booking d\'artistes cubains pour festivals et événements en Europe.',
     readMore: 'Lire plus',
     breadcrumb: 'Blog',
@@ -37,7 +37,7 @@ const COPY: Record<Locale, { title: string; subtitle: string; readMore: string; 
     min: 'min',
   },
   it: {
-    title: 'Blog | Booking di Artisti in Europa',
+    title: 'Blog di Musica Cubana: Guide al Booking per Promoter',
     subtitle: 'Guide, consigli e novità sul booking di artisti cubani per festival ed eventi in Europa.',
     readMore: 'Leggi di più',
     breadcrumb: 'Blog',
@@ -53,14 +53,34 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const c = COPY[locale];
+  const ogLocale = { es: 'es_ES', en: 'en_US', fr: 'fr_FR', it: 'it_IT' }[locale];
   return {
-    title: c.title,
+    title: `${c.title} | Cubita Producciones`,
     description: c.subtitle,
-    alternates: buildAlternates(locale, '/blog'),
+    alternates: {
+      ...buildAlternates(locale, '/blog'),
+      types: {
+        'application/rss+xml': [
+          { url: `https://cubitaproducciones.com/${locale}/blog/feed.xml`, title: c.title },
+        ],
+      },
+    },
     openGraph: {
       title: c.title,
       description: c.subtitle,
+      url: `https://cubitaproducciones.com/${locale}/blog`,
       type: 'website',
+      siteName: 'Cubita Producciones',
+      locale: ogLocale,
+      images: [
+        { url: 'https://cubitaproducciones.com/og-image.jpg', width: 1200, height: 630, alt: c.title },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: c.title,
+      description: c.subtitle,
+      images: ['https://cubitaproducciones.com/og-image.jpg'],
     },
   };
 }
