@@ -56,8 +56,9 @@ export function buildAlternates(locale: string, path: string = '') {
 export function generateMetadataFromSEO(
   seo: SEO | null,
   locale: 'es' | 'en' | 'fr' | 'it',
-  fallback: { title: string; description: string; keywords?: string },
-  path: string = ''
+  fallback: { title: string; description: string; keywords?: string; image?: string },
+  path: string = '',
+  article?: { publishedTime?: string; modifiedTime?: string; authors?: string[] }
 ): {
   title: string;
   description: string;
@@ -66,10 +67,14 @@ export function generateMetadataFromSEO(
     title: string;
     description: string;
     url: string;
-    type: string;
+    type: 'website' | 'article';
     siteName: string;
     locale: string;
-    images?: Array<{ url: string; width: number; height: number; alt: string }>;
+    alternateLocale?: string[];
+    images?: Array<{ url: string; width?: number; height?: number; alt: string }>;
+    publishedTime?: string;
+    modifiedTime?: string;
+    authors?: string[];
   };
   twitter?: {
     card: string;
@@ -83,7 +88,8 @@ export function generateMetadataFromSEO(
   const title = seo?.metaTitle?.[locale] || fallback.title;
   const description = seo?.metaDescription?.[locale] || fallback.description;
   const pageUrl = buildLocalizedUrl(locale, path);
-  const ogImage = seo?.ogImage || `${BASE_URL}/og-image.jpg`;
+  const customImage = seo?.ogImage || fallback.image; // per-page (often portrait) image
+  const ogImage = customImage || `${BASE_URL}/og-image.jpg`;
 
   const metadata: ReturnType<typeof generateMetadataFromSEO> = {
     title,
@@ -92,17 +98,18 @@ export function generateMetadataFromSEO(
       title,
       description,
       url: pageUrl,
-      type: 'website',
+      type: article ? 'article' : 'website',
       siteName: 'Cubita Producciones',
       locale: OG_LOCALES[locale] || 'es_ES',
-      images: [
-        {
-          url: ogImage,
-          width: 1200,
-          height: 630,
-          alt: title,
-        },
-      ],
+      alternateLocale: LOCALES.filter((l) => l !== locale).map((l) => OG_LOCALES[l]),
+      // Only the default 1200x630 asset has known dimensions; omit them for custom
+      // (portrait) images so consumers infer the real aspect ratio.
+      images: customImage
+        ? [{ url: ogImage, alt: title }]
+        : [{ url: ogImage, width: 1200, height: 630, alt: title }],
+      ...(article?.publishedTime ? { publishedTime: article.publishedTime } : {}),
+      ...(article?.modifiedTime ? { modifiedTime: article.modifiedTime } : {}),
+      ...(article?.authors ? { authors: article.authors } : {}),
     },
     twitter: {
       card: 'summary_large_image',
