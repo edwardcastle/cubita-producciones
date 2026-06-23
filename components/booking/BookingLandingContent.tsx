@@ -33,7 +33,7 @@ const COPY = {
     ],
     artistsTitle: 'Artistas disponibles para booking',
     artistsIntro: 'Algunos de los artistas cubanos que representamos para festivales y eventos en Europa:',
-    artistsList: ['Jacob Forever', 'Manolín "El Médico de la Salsa"', 'El Micha', 'Charly & Johayron', 'Ja Rulay', 'Y muchos más'],
+    artistsList: [{ name: 'Jacob Forever', slug: 'jacob-forever' }, { name: 'Manolín "El Médico de la Salsa"', slug: 'manolin' }, { name: 'El Micha', slug: 'el-micha' }, { name: 'Charly & Johayron', slug: 'charly-johayron' }, { name: 'Ja Rulay', slug: 'ja-rulay' }, { name: 'Y muchos más' }],
     artistsCta: 'Ver catálogo completo',
     howTitle: 'Cómo funciona el booking',
     howSteps: [
@@ -84,7 +84,7 @@ const COPY = {
     ],
     artistsTitle: 'Artists available for booking',
     artistsIntro: 'Some of the Cuban artists we represent for festivals and events in Europe:',
-    artistsList: ['Jacob Forever', 'Manolín "El Médico de la Salsa"', 'El Micha', 'Charly & Johayron', 'Ja Rulay', 'And many more'],
+    artistsList: [{ name: 'Jacob Forever', slug: 'jacob-forever' }, { name: 'Manolín "El Médico de la Salsa"', slug: 'manolin' }, { name: 'El Micha', slug: 'el-micha' }, { name: 'Charly & Johayron', slug: 'charly-johayron' }, { name: 'Ja Rulay', slug: 'ja-rulay' }, { name: 'And many more' }],
     artistsCta: 'View full roster',
     howTitle: 'How the booking works',
     howSteps: [
@@ -135,7 +135,7 @@ const COPY = {
     ],
     artistsTitle: 'Artistes disponibles pour booking',
     artistsIntro: 'Quelques-uns des artistes cubains que nous représentons pour festivals et événements en Europe :',
-    artistsList: ['Jacob Forever', 'Manolín "El Médico de la Salsa"', 'El Micha', 'Charly & Johayron', 'Ja Rulay', 'Et bien plus'],
+    artistsList: [{ name: 'Jacob Forever', slug: 'jacob-forever' }, { name: 'Manolín "El Médico de la Salsa"', slug: 'manolin' }, { name: 'El Micha', slug: 'el-micha' }, { name: 'Charly & Johayron', slug: 'charly-johayron' }, { name: 'Ja Rulay', slug: 'ja-rulay' }, { name: 'Et bien plus' }],
     artistsCta: 'Voir le catalogue complet',
     howTitle: 'Comment fonctionne le booking',
     howSteps: [
@@ -186,7 +186,7 @@ const COPY = {
     ],
     artistsTitle: 'Artisti disponibili per booking',
     artistsIntro: 'Alcuni degli artisti cubani che rappresentiamo per festival ed eventi in Europa:',
-    artistsList: ['Jacob Forever', 'Manolín "El Médico de la Salsa"', 'El Micha', 'Charly & Johayron', 'Ja Rulay', 'E molti altri'],
+    artistsList: [{ name: 'Jacob Forever', slug: 'jacob-forever' }, { name: 'Manolín "El Médico de la Salsa"', slug: 'manolin' }, { name: 'El Micha', slug: 'el-micha' }, { name: 'Charly & Johayron', slug: 'charly-johayron' }, { name: 'Ja Rulay', slug: 'ja-rulay' }, { name: 'E molti altri' }],
     artistsCta: 'Vedi catalogo completo',
     howTitle: 'Come funziona il booking',
     howSteps: [
@@ -321,15 +321,20 @@ export default function BookingLandingContent({ locale }: { locale: Locale }) {
             </p>
           </FadeIn>
           <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 mb-8 md:mb-10">
-            {c.artistsList.map((name) => (
-              <li
-                key={name}
-                className="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-4 py-3"
-              >
-                <Music2 className="w-4 h-4 md:w-5 md:h-5 text-amber-600 shrink-0" />
-                <span className="text-sm md:text-base font-semibold text-gray-900">{name}</span>
-              </li>
-            ))}
+            {c.artistsList.map((a) => {
+              const href = 'slug' in a ? `/artistas/${a.slug}` : '/artistas';
+              return (
+                <li key={a.name}>
+                  <Link
+                    href={href}
+                    className="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-4 py-3 hover:shadow-md hover:border-amber-300 transition-all"
+                  >
+                    <Music2 className="w-4 h-4 md:w-5 md:h-5 text-amber-600 shrink-0" />
+                    <span className="text-sm md:text-base font-semibold text-gray-900">{a.name}</span>
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
           <div className="text-center">
             <Link

@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { Link } from '@/i18n/routing';
 import Image from 'next/image';
 import { Calendar, ArrowLeft } from 'lucide-react';
-import { getBlogPostBySlug, getAllBlogPostSlugs, buildAlternates, generateMetadataFromSEO } from '@/lib/content';
+import { getBlogPostBySlug, getAllBlogPostSlugs, getBlogPosts, getArtists, buildAlternates, generateMetadataFromSEO } from '@/lib/content';
 import { stripMarkdown } from '@/lib/utils';
 import FadeIn from '@/components/ui/FadeIn';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -13,11 +13,11 @@ import RichText from '@/components/RichText';
 
 type Locale = 'es' | 'en' | 'fr' | 'it';
 
-const COPY: Record<Locale, { breadcrumb: string; back: string; min: string; share: string }> = {
-  es: { breadcrumb: 'Blog', back: 'Volver al Blog', min: 'min de lectura', share: 'Compartir' },
-  en: { breadcrumb: 'Blog', back: 'Back to Blog', min: 'min read', share: 'Share' },
-  fr: { breadcrumb: 'Blog', back: 'Retour au Blog', min: 'min de lecture', share: 'Partager' },
-  it: { breadcrumb: 'Blog', back: 'Torna al Blog', min: 'min di lettura', share: 'Condividi' },
+const COPY: Record<Locale, { breadcrumb: string; back: string; min: string; share: string; related: string; requestBooking: string; artistProfile: string }> = {
+  es: { breadcrumb: 'Blog', back: 'Volver al Blog', min: 'min de lectura', share: 'Compartir', related: 'Artículos relacionados', requestBooking: 'Solicitar booking', artistProfile: 'Ver el perfil de {name}' },
+  en: { breadcrumb: 'Blog', back: 'Back to Blog', min: 'min read', share: 'Share', related: 'Related articles', requestBooking: 'Request booking', artistProfile: 'View {name} profile' },
+  fr: { breadcrumb: 'Blog', back: 'Retour au Blog', min: 'min de lecture', share: 'Partager', related: 'Articles liés', requestBooking: 'Demander un booking', artistProfile: 'Voir le profil de {name}' },
+  it: { breadcrumb: 'Blog', back: 'Torna al Blog', min: 'min di lettura', share: 'Condividi', related: 'Articoli correlati', requestBooking: 'Richiedi un booking', artistProfile: 'Vedi il profilo di {name}' },
 };
 
 export async function generateStaticParams() {
@@ -44,7 +44,11 @@ export async function generateMetadata({
   return generateMetadataFromSEO(post.seo, locale, {
     title: `${titleFallback} | Cubita Producciones`,
     description: descFallback,
-  }, `/blog/${slug}`);
+  }, `/blog/${slug}`, {
+    publishedTime: post.publishedAt,
+    modifiedTime: post.updatedAt,
+    authors: [post.author],
+  });
 }
 
 export default async function BlogPostPage({
@@ -58,6 +62,11 @@ export default async function BlogPostPage({
 
   const post = await getBlogPostBySlug(slug);
   if (!post) notFound();
+
+  // Related posts + the artist this guide is about (slug like "...-manolin-..." → artist "manolin").
+  const [allPosts, artists] = await Promise.all([getBlogPosts(), getArtists()]);
+  const related = allPosts.filter((p) => p.slug !== slug).slice(0, 3);
+  const relatedArtist = artists.find((a) => slug.includes(a.slug)) ?? null;
 
   const c = COPY[locale];
   const baseUrl = 'https://cubitaproducciones.com';
@@ -135,6 +144,45 @@ export default async function BlogPostPage({
 
         <div className="max-w-3xl mx-auto px-4 py-8 md:py-12">
           <RichText content={content} />
+
+          {/* Conversion + crawl path: link to the artist this guide covers and to booking. */}
+          <div className="mt-10 flex flex-wrap gap-3">
+            {relatedArtist && (
+              <Link
+                href={`/artistas/${relatedArtist.slug}`}
+                className="inline-flex items-center gap-2 rounded-lg border border-amber-600 px-5 py-3 text-sm font-semibold text-amber-700 hover:bg-amber-50 transition-colors"
+              >
+                {c.artistProfile.replace('{name}', relatedArtist.name)}
+              </Link>
+            )}
+            <Link
+              href="/contacto"
+              className="inline-flex items-center gap-2 rounded-lg bg-amber-500 px-5 py-3 text-sm font-semibold text-black hover:bg-amber-400 transition-colors"
+            >
+              {c.requestBooking}
+            </Link>
+          </div>
+
+          {/* Related articles — keeps readers (and crawlers) moving through the content. */}
+          {related.length > 0 && (
+            <section className="mt-12 pt-8 border-t border-gray-200">
+              <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">{c.related}</h2>
+              <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {related.map((p) => (
+                  <li key={p.id}>
+                    <Link
+                      href={`/blog/${p.slug}`}
+                      className="block h-full rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow"
+                    >
+                      <span className="font-semibold text-gray-900 hover:text-amber-700 transition-colors">
+                        {p.title[locale] || p.title.es}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
 
           <div className="mt-12 pt-8 border-t border-gray-200">
             <Link

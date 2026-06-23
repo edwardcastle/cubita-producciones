@@ -2,6 +2,8 @@
   "nav": {
     "home": "Inicio",
     "artists": "Artistas",
+    "news": "Noticias",
+    "blog": "Blog",
     "about": "Sobre Nosotros",
     "contact": "Contacto"
   },

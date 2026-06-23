@@ -48,6 +48,8 @@ export default function Navigation({ logo }: NavigationProps) {
   const navigation = [
     { name: t('home'), href: '/' },
     { name: t('artists'), href: '/artistas' },
+    { name: t('blog'), href: '/blog' },
+    { name: t('news'), href: '/noticias' },
     { name: t('about'), href: '/sobre-nosotros' },
     { name: t('contact'), href: '/contacto' },
   ];

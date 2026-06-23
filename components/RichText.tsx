@@ -1,6 +1,7 @@
 'use client';
 
 import ReactMarkdown from 'react-markdown';
+import { Link } from '@/i18n/routing';
 
 interface RichTextProps {
   content: string;
@@ -38,17 +39,22 @@ export default function RichText({ content, className = '' }: RichTextProps) {
           li: ({ children }) => (
             <li className="text-sm md:text-base">{children}</li>
           ),
-          // Link styling
-          a: ({ href, children }) => (
-            <a
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-amber-600 hover:text-amber-700 underline transition-colors"
-            >
-              {children}
-            </a>
-          ),
+          // Link styling. Internal links (href starting with "/") use the locale-aware
+          // <Link> so they resolve to the reader's locale (routing is localePrefix:'always',
+          // so a bare "/contacto" would otherwise 302 to the default-locale page) and open
+          // in the same tab. External links keep target=_blank + rel.
+          a: ({ href, children }) => {
+            const url = href ?? '';
+            const className = 'text-amber-600 hover:text-amber-700 underline transition-colors';
+            if (url.startsWith('/')) {
+              return <Link href={url} className={className}>{children}</Link>;
+            }
+            return (
+              <a href={url} target="_blank" rel="noopener noreferrer" className={className}>
+                {children}
+              </a>
+            );
+          },
           // Strong/bold
           strong: ({ children }) => (
             <strong className="font-semibold text-gray-900">{children}</strong>

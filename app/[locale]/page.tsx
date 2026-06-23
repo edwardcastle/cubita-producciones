@@ -2,7 +2,8 @@ import { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/routing';
 import { ArrowRight, Music2, Users, Award } from 'lucide-react';
-import { getHomePage, getReviews, getArtists, generateMetadataFromSEO, buildAlternates } from '@/lib/content';
+import { getHomePage, getReviews, getArtists, getBlogPosts, generateMetadataFromSEO, buildAlternates } from '@/lib/content';
+import { BOOKING_LANDING_SLUGS, type LandingLocale } from '@/lib/booking-landing';
 import FadeIn from '@/components/ui/FadeIn';
 import StaggerContainer, { StaggerItem } from '@/components/ui/StaggerContainer';
 import { FAQJsonLd, HOME_FAQS, AggregateRatingJsonLd } from '@/components/seo/JsonLd';
@@ -44,16 +45,25 @@ export default async function HomePage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const [pageContent, t, reviews, artists] = await Promise.all([
+  const [pageContent, t, reviews, artists, blogPosts] = await Promise.all([
     getHomePage(),
     getTranslations(),
     getReviews(),
     getArtists(),
+    getBlogPosts(),
   ]);
 
+  // Keyword-rich, localized alt for the hero photos — the mobile carousel's first photo
+  // is the crawlable LCP image (desktop renders them as WebGL textures).
+  const heroAlt: Record<Locale, (name: string) => string> = {
+    es: (n) => `${n} — artista cubano disponible para booking en festivales y eventos en Europa`,
+    en: (n) => `${n} — Cuban artist available for booking at festivals and events in Europe`,
+    fr: (n) => `${n} — artiste cubain disponible pour booking en festivals et événements en Europe`,
+    it: (n) => `${n} — artista cubano disponibile per booking in festival ed eventi in Europa`,
+  };
   const heroPhotos = artists
     .filter((a) => a.image)
-    .map((a) => ({ id: a.id, url: a.image!, alt: a.name, slug: a.slug }));
+    .map((a) => ({ id: a.id, url: a.image!, alt: heroAlt[locale](a.name), slug: a.slug }));
   const photosForHero =
     heroPhotos.length > 0
       ? heroPhotos
@@ -65,6 +75,22 @@ export default async function HomePage({
     en: 'Frequently asked questions about booking Cuban artists',
     fr: 'Questions fréquentes sur le booking d\'artistes cubains',
     it: 'Domande frequenti sul booking di artisti cubani',
+  };
+
+  // Latest posts + booking-hub link: contextual internal links from the strongest page.
+  const latestPosts = [...blogPosts]
+    .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
+    .slice(0, 3);
+  const bookingHubSlug = BOOKING_LANDING_SLUGS[locale as LandingLocale] ?? BOOKING_LANDING_SLUGS.es;
+  const blogHeading: Record<Locale, string> = {
+    es: 'Últimos artículos del blog', en: 'Latest from the blog', fr: 'Derniers articles du blog', it: 'Ultimi articoli dal blog',
+  };
+  const seeAll: Record<Locale, string> = { es: 'Ver todos', en: 'See all', fr: 'Tout voir', it: 'Vedi tutti' };
+  const bookingHubCta: Record<Locale, string> = {
+    es: 'Cómo contratar artistas cubanos en Europa',
+    en: 'How to book Cuban artists in Europe',
+    fr: 'Comment réserver des artistes cubains en Europe',
+    it: 'Come prenotare artisti cubani in Europa',
   };
 
   return (
@@ -176,6 +202,46 @@ export default async function HomePage({
           </FadeIn>
         </div>
       </section>
+
+      {/* Latest from the blog + booking-hub link */}
+      {latestPosts.length > 0 && (
+        <section className="py-10 md:py-20 px-4 bg-gray-50">
+          <div className="max-w-6xl mx-auto">
+            <FadeIn direction="up">
+              <div className="flex items-end justify-between gap-4 mb-6 md:mb-10">
+                <h2 className="text-2xl md:text-4xl font-bold text-gray-900">{blogHeading[locale]}</h2>
+                <Link href="/blog" className="text-amber-700 font-semibold hover:text-amber-900 whitespace-nowrap link-underline">
+                  {seeAll[locale]}
+                </Link>
+              </div>
+            </FadeIn>
+            <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6" staggerDelay={0.08}>
+              {latestPosts.map((p) => (
+                <StaggerItem key={p.id}>
+                  <Link
+                    href={`/blog/${p.slug}`}
+                    className="block h-full rounded-xl border border-gray-200 bg-white p-5 md:p-6 hover:shadow-lg transition-shadow"
+                  >
+                    <h3 className="text-base md:text-lg font-bold text-gray-900 mb-2 hover:text-amber-700 transition-colors">
+                      {p.title[locale] || p.title.es}
+                    </h3>
+                    <p className="text-sm text-gray-600 line-clamp-3">{p.excerpt[locale] || p.excerpt.es}</p>
+                  </Link>
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+            <div className="mt-8 text-center">
+              <a
+                href={`/${locale}/${bookingHubSlug}`}
+                className="inline-flex items-center gap-2 text-amber-800 font-semibold hover:text-amber-900 link-underline"
+              >
+                {bookingHubCta[locale]}
+                <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
+              </a>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* FAQ Section */}
       <section className="py-10 md:py-20 bg-white px-4">

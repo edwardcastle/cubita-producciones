@@ -115,6 +115,11 @@ export default function Footer({
                 </Link>
               </li>
               <li>
+                <Link href="/noticias" className="text-gray-400 hover:text-white transition-colors link-underline">
+                  {t('nav.news')}
+                </Link>
+              </li>
+              <li>
                 <Link href="/sobre-nosotros" className="text-gray-400 hover:text-white transition-colors link-underline">
                   {t('nav.about')}
                 </Link>

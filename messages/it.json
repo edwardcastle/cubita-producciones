@@ -2,6 +2,8 @@
   "nav": {
     "home": "Home",
     "artists": "Artisti",
+    "news": "Notizie",
+    "blog": "Blog",
     "about": "Chi Siamo",
     "contact": "Contatto"
   },
@@ -14,7 +16,7 @@
     "about": {
       "title": "Su Cubita Producciones",
       "description": "Siamo un'agenzia di booking con oltre 30 anni di esperienza nel mercato europeo, specializzata nella rappresentanza e promozione di artisti internazionali nei generi salsa e reggaeton.",
-      "learnMore": "Scopri di pi\u00f9 sulla nostra agenzia"
+      "learnMore": "Scopri di più sulla nostra agenzia"
     },
     "stats": {
       "festivals": "Festival",
