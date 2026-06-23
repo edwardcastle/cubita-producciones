@@ -86,7 +86,7 @@ describe('ContactoPage', () => {
 
       render(await ContactoPage());
 
-      expect(screen.getByRole('heading', { level: 1, name: 'Contacto' })).toBeInTheDocument();
+      expect(screen.getByRole('heading', { level: 1, name: 'Contacta para el Booking de Artistas Cubanos' })).toBeInTheDocument();
     });
 
     it('renders page subtitle', async () => {
@@ -202,7 +202,7 @@ describe('ContactoPage', () => {
       render(await ContactoPage());
 
       const heading = screen.getByRole('heading', { level: 1 });
-      expect(heading).toHaveTextContent('Contacto');
+      expect(heading).toHaveTextContent('Contacta para el Booking de Artistas Cubanos');
     });
 
     it('has two column layout on desktop', async () => {

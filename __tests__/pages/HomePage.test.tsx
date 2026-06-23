@@ -64,6 +64,7 @@ vi.mock('@/lib/content', () => ({
   buildAlternates: vi.fn(() => ({})),
   getReviews: vi.fn(() => Promise.resolve([])),
   getArtists: vi.fn(() => Promise.resolve([])),
+  getBlogPosts: vi.fn(() => Promise.resolve([])),
 }));
 
 // Mock next-intl/server

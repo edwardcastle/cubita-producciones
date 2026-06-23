@@ -92,7 +92,7 @@ describe('SobreNosotrosPage', () => {
 
       render(await SobreNosotrosPage());
 
-      expect(screen.getByRole('heading', { level: 1, name: 'Sobre Nosotros' })).toBeInTheDocument();
+      expect(screen.getByRole('heading', { level: 1, name: 'Agencia de Booking de Artistas Cubanos en Europa' })).toBeInTheDocument();
     });
 
     it('renders page subtitle', async () => {
@@ -201,7 +201,7 @@ describe('SobreNosotrosPage', () => {
       render(await SobreNosotrosPage());
 
       const heading = screen.getByRole('heading', { level: 1 });
-      expect(heading).toHaveTextContent('Sobre Nosotros');
+      expect(heading).toHaveTextContent('Agencia de Booking de Artistas Cubanos en Europa');
     });
 
     it('has services grid with 3 services', async () => {

@@ -118,7 +118,7 @@ describe('ArtistasPage', () => {
 
       render(await ArtistasPage());
 
-      expect(screen.getByRole('heading', { level: 1, name: 'Nuestros Artistas' })).toBeInTheDocument();
+      expect(screen.getByRole('heading', { level: 1, name: 'Artistas Cubanos Disponibles para Booking en Europa' })).toBeInTheDocument();
     });
 
     it('renders page subtitle', async () => {
@@ -235,7 +235,7 @@ describe('ArtistasPage', () => {
       render(await ArtistasPage());
 
       const heading = screen.getByRole('heading', { level: 1 });
-      expect(heading).toHaveTextContent('Nuestros Artistas');
+      expect(heading).toHaveTextContent('Artistas Cubanos Disponibles para Booking en Europa');
     });
 
     it('has artists grid', async () => {
