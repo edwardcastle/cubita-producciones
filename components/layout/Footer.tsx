@@ -187,7 +187,7 @@ export default function Footer({
           {otherLocales.map((l) => (
             <a
               key={l}
-              href={`/${l}${pathname}`}
+              href={`/${l}${pathname === '/' ? '' : pathname}`}
               className="hover:text-gray-300 transition-colors"
               hrefLang={l}
             >
