@@ -527,6 +527,7 @@ export function VideoObjectJsonLd({ name, description, thumbnailUrl, uploadDate,
 interface ArtistEventsJsonLdProps {
   artistName: string;
   artistUrl: string;
+  image?: string;
   events: Array<{
     name: string;
     startDate: string;
@@ -537,7 +538,7 @@ interface ArtistEventsJsonLdProps {
   }>;
 }
 
-export function ArtistEventsJsonLd({ artistName, artistUrl, events }: ArtistEventsJsonLdProps) {
+export function ArtistEventsJsonLd({ artistName, artistUrl, image, events }: ArtistEventsJsonLdProps) {
   if (!events.length) return null;
 
   const jsonLds = events.map((event, i) => ({
@@ -550,13 +551,15 @@ export function ArtistEventsJsonLd({ artistName, artistUrl, events }: ArtistEven
     endDate: event.endDate,
     eventStatus: 'https://schema.org/EventScheduled',
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    ...(image ? { image: [image] } : {}),
     location: {
       '@type': 'Place',
       name: event.locationName,
       address: {
         '@type': 'PostalAddress',
+        // No addressCountry: these are multi-country European tour windows, and 'EU'
+        // is not a valid ISO 3166-1 country code (it triggered Search Console warnings).
         addressRegion: event.locationRegion,
-        addressCountry: 'EU',
       },
     },
     performer: {
@@ -567,12 +570,12 @@ export function ArtistEventsJsonLd({ artistName, artistUrl, events }: ArtistEven
     organizer: {
       '@id': 'https://cubitaproducciones.com/#organization',
     },
+    // Fees are quote-based, so the Offer omits price/priceCurrency (an Offer with a
+    // currency but no price is incomplete markup).
     offers: {
       '@type': 'Offer',
       url: 'https://cubitaproducciones.com/contacto',
       availability: 'https://schema.org/InStock',
-      priceCurrency: 'EUR',
-      validFrom: new Date().toISOString().split('T')[0],
     },
   }));
 
@@ -658,6 +661,50 @@ export function BlogPostJsonLd({ title, description, image, publishedAt, updated
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     '@id': `${url}#post`,
+    headline: title,
+    description,
+    image: image || 'https://cubitaproducciones.com/og-image.jpg',
+    datePublished: publishedAt,
+    dateModified: updatedAt,
+    inLanguage: locale,
+    author: {
+      '@type': 'Organization',
+      name: author,
+      '@id': 'https://cubitaproducciones.com/#organization',
+    },
+    publisher: {
+      '@id': 'https://cubitaproducciones.com/#organization',
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': url,
+    },
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}
+
+interface NewsArticleJsonLdProps {
+  title: string;
+  description: string;
+  image: string | null;
+  publishedAt: string;
+  updatedAt: string;
+  author: string;
+  url: string;
+  locale: string;
+}
+
+export function NewsArticleJsonLd({ title, description, image, publishedAt, updatedAt, author, url, locale }: NewsArticleJsonLdProps) {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'NewsArticle',
+    '@id': `${url}#news`,
     headline: title,
     description,
     image: image || 'https://cubitaproducciones.com/og-image.jpg',
