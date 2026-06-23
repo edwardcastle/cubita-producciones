@@ -2,6 +2,7 @@ import type { Artist, BlogPost, Review } from './types';
 import { ARTISTS } from './artists';
 import { REVIEWS } from './reviews';
 import { BLOG_POSTS } from './blog';
+import { NEWS_ITEMS } from './news';
 import { HOME_PAGE, ABOUT_PAGE, CONTACT_PAGE, ARTISTS_PAGE, SITE_SETTINGS } from './pages';
 
 // Re-export types and SEO helpers — `@/lib/content` is the drop-in replacement for the former `@/lib/strapi`.
@@ -38,4 +39,12 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
 }
 export async function getAllBlogPostSlugs(): Promise<Array<{ slug: string; updatedAt: string }>> {
   return BLOG_POSTS.map((p) => ({ slug: p.slug, updatedAt: p.updatedAt }));
+}
+
+export async function getNews(): Promise<BlogPost[]> { return NEWS_ITEMS; }
+export async function getNewsBySlug(slug: string): Promise<BlogPost | null> {
+  return NEWS_ITEMS.find((n) => n.slug === slug) ?? null;
+}
+export async function getAllNewsSlugs(): Promise<Array<{ slug: string; updatedAt: string }>> {
+  return NEWS_ITEMS.map((n) => ({ slug: n.slug, updatedAt: n.updatedAt }));
 }
