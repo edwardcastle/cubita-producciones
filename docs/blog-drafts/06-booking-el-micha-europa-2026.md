@@ -3,6 +3,7 @@
 **Slug:** `como-contratar-el-micha-europa-2026`
 **Author:** Cubita Producciones
 **Reading Time:** 5
+**Date:** 2026-03-25
 **Cover Image ID:** 27
 
 ---

@@ -3,6 +3,7 @@
 **Slug:** `como-contratar-ja-rulay-europa-2026`
 **Author:** Cubita Producciones
 **Reading Time:** 4
+**Date:** 2026-05-20
 **Cover Image ID:** 19
 
 ---

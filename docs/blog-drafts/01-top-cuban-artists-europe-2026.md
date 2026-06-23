@@ -3,6 +3,7 @@
 **Slug:** `top-cuban-artists-europe-2026`
 **Author:** Cubita Producciones
 **Reading Time:** 10
+**Date:** 2026-01-14
 
 > Sources used (kept here for your reference, not part of the post body):
 > Manolín: Wikipedia, OnCuba News, Prensa Latina (2024 La Calentura coverage). El Micha: Cultura Cubana, CiberCuba, CubaEnMiami. Jacob Forever: Latin Times, FamousBirthdays, EverybodyWiki. Charly & Johayron: CiberCuba, Shazam (JLKC concert), CubaHeadlines (El Punto). Ja Rulay / Fixty Ordara: CiberCuba, Cubacute, periodicocubano. Wildey: CiberCuba (Normalmente). Talent Fuego: Billboard reparto coverage, YouTube official channel.

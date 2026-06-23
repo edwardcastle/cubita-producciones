@@ -3,6 +3,7 @@
 **Slug:** `salsa-timba-cubana-europa-manolin-medico-salsa`
 **Author:** Cubita Producciones
 **Reading Time:** 7
+**Date:** 2026-02-25
 **Cover Image ID:** 18
 
 ---

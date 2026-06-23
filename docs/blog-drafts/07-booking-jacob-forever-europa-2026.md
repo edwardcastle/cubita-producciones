@@ -3,6 +3,7 @@
 **Slug:** `como-contratar-jacob-forever-europa-2026`
 **Author:** Cubita Producciones
 **Reading Time:** 5
+**Date:** 2026-04-08
 **Cover Image ID:** 25
 
 ---

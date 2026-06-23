@@ -3,6 +3,7 @@
 **Slug:** `como-contratar-artista-cubano-europa-guia-completa`
 **Author:** Cubita Producciones
 **Reading Time:** 8
+**Date:** 2026-02-11
 
 ---
 

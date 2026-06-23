@@ -3,6 +3,7 @@
 **Slug:** `como-contratar-manolin-medico-salsa-europa-2026`
 **Author:** Cubita Producciones
 **Reading Time:** 5
+**Date:** 2026-03-11
 **Cover Image ID:** 18
 
 ---

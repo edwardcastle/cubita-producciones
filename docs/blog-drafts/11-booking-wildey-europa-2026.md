@@ -3,6 +3,7 @@
 **Slug:** `como-contratar-wildey-europa-2026`
 **Author:** Cubita Producciones
 **Reading Time:** 4
+**Date:** 2026-06-03
 **Cover Image ID:** 17
 
 ---

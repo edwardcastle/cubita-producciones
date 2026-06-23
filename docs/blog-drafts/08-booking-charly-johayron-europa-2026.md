@@ -3,6 +3,7 @@
 **Slug:** `como-contratar-charly-johayron-europa-2026`
 **Author:** Cubita Producciones
 **Reading Time:** 5
+**Date:** 2026-04-22
 **Cover Image ID:** 21
 
 ---

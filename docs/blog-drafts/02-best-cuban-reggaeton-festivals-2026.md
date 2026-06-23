@@ -3,6 +3,7 @@
 **Slug:** `mejores-artistas-reggaeton-cubano-europa-2026`
 **Author:** Cubita Producciones
 **Reading Time:** 8
+**Date:** 2026-01-28
 
 ---
 
