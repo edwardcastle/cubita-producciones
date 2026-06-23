@@ -1,12 +1,13 @@
 'use client';
 
-import { Suspense, ReactNode, useEffect, useState, useSyncExternalStore } from 'react';
+import { ReactNode, useEffect, useState, useSyncExternalStore } from 'react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import { Canvas } from '@react-three/fiber';
-import * as THREE from 'three';
 
-const Hero3DScene = dynamic(() => import('./Hero3DScene'), { ssr: false });
+// The WebGL hero (three.js + @react-three/fiber) is code-split into its own chunk and
+// only loaded on desktop when it actually mounts — keeping it out of the initial bundle
+// and off mobile entirely.
+const Hero3DCanvas = dynamic(() => import('./Hero3DCanvas'), { ssr: false });
 
 interface Photo {
   id: string;
@@ -41,11 +42,19 @@ function useMediaQuery(query: string): boolean {
  */
 function MobileCarousel({ photos, reducedMotion }: { photos: Photo[]; reducedMotion: boolean }) {
   const [activeIndex, setActiveIndex] = useState(0);
+  // Track which slides have been shown so we only download images on demand. All slides
+  // sit stacked at inset-0, so without this every full-screen photo downloads at once
+  // (opacity:0 does not stop the fetch) — wasteful on the mobile hero where LCP matters.
+  const [loaded, setLoaded] = useState<Set<number>>(() => new Set([0]));
 
   useEffect(() => {
     if (reducedMotion || photos.length <= 1) return;
     const id = window.setInterval(() => {
-      setActiveIndex((i) => (i + 1) % photos.length);
+      setActiveIndex((i) => {
+        const next = (i + 1) % photos.length;
+        setLoaded((s) => (s.has(next) ? s : new Set(s).add(next)));
+        return next;
+      });
     }, 4000);
     return () => window.clearInterval(id);
   }, [photos.length, reducedMotion]);
@@ -60,14 +69,16 @@ function MobileCarousel({ photos, reducedMotion }: { photos: Photo[]; reducedMot
           className="absolute inset-0 transition-opacity duration-1000 ease-out"
           style={{ opacity: i === activeIndex ? 1 : 0 }}
         >
-          <Image
-            src={photo.url}
-            alt={photo.alt}
-            fill
-            priority={i === 0}
-            sizes="100vw"
-            className="object-cover"
-          />
+          {loaded.has(i) && (
+            <Image
+              src={photo.url}
+              alt={photo.alt}
+              fill
+              priority={i === 0}
+              sizes="100vw"
+              className="object-cover"
+            />
+          )}
         </div>
       ))}
     </div>
@@ -86,21 +97,7 @@ export default function Hero3D({ photos, children }: Hero3DProps) {
         <MobileCarousel photos={photos} reducedMotion={reducedMotion} />
 
         {!isMobile && photos.length > 0 && (
-          <Canvas
-            dpr={[1, 1.5]}
-            gl={{
-              antialias: true,
-              toneMapping: THREE.ACESFilmicToneMapping,
-              outputColorSpace: THREE.SRGBColorSpace,
-              powerPreference: 'high-performance',
-            }}
-            camera={{ position: [0, 0, 4.5], fov: 45 }}
-            className="absolute inset-0"
-          >
-            <Suspense fallback={null}>
-              <Hero3DScene photos={photos} reducedMotion={reducedMotion} />
-            </Suspense>
-          </Canvas>
+          <Hero3DCanvas photos={photos} reducedMotion={reducedMotion} />
         )}
         {/* Two-layer scrim:
             1) A soft full-frame darkening (low alpha) restores overall mood without

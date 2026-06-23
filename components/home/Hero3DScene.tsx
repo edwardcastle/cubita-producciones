@@ -3,7 +3,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
-import { Image as DreiImage, Environment, ContactShadows, Billboard, Sparkles, SpotLight, Text } from '@react-three/drei';
+import { Image as DreiImage, ContactShadows, Billboard, Sparkles, SpotLight, Text } from '@react-three/drei';
 import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing';
 import { easing } from 'maath';
 import * as THREE from 'three';
@@ -189,6 +189,7 @@ function ActiveNameLabel({
     <group ref={meshRef} position={[0, -1.55, 1.2]}>
       <Billboard>
         <Text
+          font="/fonts/Poppins-SemiBold.ttf"
           fontSize={0.28}
           color="#fff7e8"
           anchorX="center"
@@ -326,7 +327,13 @@ export default function Hero3DScene({ photos, reducedMotion }: Hero3DSceneProps)
       <ambientLight intensity={0.35} />
       <directionalLight position={[4, 5, 5]} intensity={0.85} color="#ffb380" />
       <directionalLight position={[-5, -2, -3]} intensity={0.25} color="#3b2a4a" />
-      <Environment preset="sunset" />
+      {/* No <Environment> HDRI: it previously fetched venice_sunset_1k.hdr from a third-party
+          CDN at runtime (raw.githack.com) and crashed the hero when unreachable. It was also
+          inert here — image-based lighting only affects PBR materials (MeshStandard/Physical),
+          and this scene has none (DreiImage uses its own shader; the hit plane is meshBasic).
+          A/B-tested headed: removing it leaves the look identical. The warm mood is carried by
+          the spotlights + Bloom + Vignette + ACES tone mapping below. If a reflective PBR
+          surface is ever added, reintroduce a small COMPRESSED, self-hosted HDR (not a preset). */}
 
       <ConcertSpotlights reducedMotion={reducedMotion} />
 
