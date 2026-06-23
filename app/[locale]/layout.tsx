@@ -167,6 +167,9 @@ export default async function LocaleLayout({
         {/* Meta Pixel */}
         {pixelId && (
           <>
+            {/* Warm up the pixel origin's DNS/TLS before fbevents.js loads (React hoists these to <head>). */}
+            <link rel="preconnect" href="https://connect.facebook.net" crossOrigin="anonymous" />
+            <link rel="dns-prefetch" href="https://connect.facebook.net" />
             <Script id="meta-pixel" strategy="afterInteractive">
               {`!function(f,b,e,v,n,t,s)
               {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
