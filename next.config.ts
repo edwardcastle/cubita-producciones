@@ -32,11 +32,13 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   images: {
+    // Prefer AVIF (smaller than WebP on photographic content), fall back to WebP.
+    formats: ['image/avif', 'image/webp'],
+    // Only the hosts we actually load remote images from (YouTube thumbnails).
+    // Avoids turning the image optimizer into an open proxy (`hostname: '**'`).
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '**',
-      },
+      { protocol: 'https', hostname: 'i.ytimg.com' },
+      { protocol: 'https', hostname: 'img.youtube.com' },
     ],
   },
   async redirects() {
@@ -72,7 +74,7 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        source: '/(.*)\\.(js|css|woff|woff2)',
+        source: '/(.*)\\.(js|css|woff|woff2|ttf)',
         headers: [
           {
             key: 'Cache-Control',
