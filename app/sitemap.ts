@@ -1,6 +1,6 @@
 import {MetadataRoute} from 'next';
-import {getSitemapData, getAllBlogPostSlugs, buildLocalizedUrl} from '@/lib/content';
-import {BOOKING_LANDING_SLUGS, buildBookingLandingUrl, type LandingLocale} from '@/lib/booking-landing';
+import {getSitemapData, getAllBlogPostSlugs, getAllNewsSlugs, buildLocalizedUrl} from '@/lib/content';
+import {BOOKING_LANDING_SLUGS, BOOKING_LANDING_LAST_MODIFIED, buildBookingLandingUrl, type LandingLocale} from '@/lib/booking-landing';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const locales = ['es', 'en', 'fr', 'it'];
@@ -16,13 +16,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     };
   }
 
-  const [data, blogSlugs] = await Promise.all([getSitemapData(), getAllBlogPostSlugs()]);
+  const [data, blogSlugs, newsSlugs] = await Promise.all([getSitemapData(), getAllBlogPostSlugs(), getAllNewsSlugs()]);
   const fallback = new Date();
+
+  // Newest item drives each index's lastModified (freshness signal), instead of build time.
+  const newestNews = newsSlugs.reduce<string | null>(
+    (max, n) => (max === null || n.updatedAt > max ? n.updatedAt : max),
+    null,
+  );
+  const newestBlog = blogSlugs.reduce<string | null>(
+    (max, b) => (max === null || b.updatedAt > max ? b.updatedAt : max),
+    null,
+  );
 
   const routeConfig = [
     { path: '', priority: 1.0, changeFrequency: 'weekly' as const, lastModified: data.home ?? fallback },
     { path: '/artistas', priority: 0.9, changeFrequency: 'weekly' as const, lastModified: data.artistsList ?? fallback },
-    { path: '/blog', priority: 0.8, changeFrequency: 'weekly' as const, lastModified: fallback },
+    { path: '/noticias', priority: 0.8, changeFrequency: 'daily' as const, lastModified: newestNews ? new Date(newestNews) : fallback },
+    { path: '/blog', priority: 0.8, changeFrequency: 'weekly' as const, lastModified: newestBlog ? new Date(newestBlog) : fallback },
     { path: '/contacto', priority: 0.8, changeFrequency: 'monthly' as const, lastModified: data.contact ?? fallback },
     { path: '/sobre-nosotros', priority: 0.7, changeFrequency: 'monthly' as const, lastModified: data.about ?? fallback },
   ];
@@ -61,7 +72,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const bookingLandingPages = (Object.keys(BOOKING_LANDING_SLUGS) as LandingLocale[]).map((l) => ({
     url: buildBookingLandingUrl(l),
-    lastModified: fallback,
+    lastModified: BOOKING_LANDING_LAST_MODIFIED,
     changeFrequency: 'monthly' as const,
     priority: 0.85,
     alternates: bookingLandingAlternates,
@@ -77,5 +88,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }))
   );
 
-  return [...staticPages, ...bookingLandingPages, ...artistPages, ...blogPostPages];
+  const newsPages = locales.flatMap((locale) =>
+    newsSlugs.map(({slug, updatedAt}) => ({
+      url: buildLocalizedUrl(locale, `/noticias/${slug}`),
+      lastModified: new Date(updatedAt),
+      changeFrequency: 'weekly' as const,
+      priority: 0.6,
+      alternates: buildAlternates(`/noticias/${slug}`),
+    }))
+  );
+
+  return [...staticPages, ...bookingLandingPages, ...artistPages, ...blogPostPages, ...newsPages];
 }

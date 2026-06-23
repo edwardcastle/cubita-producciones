@@ -9,6 +9,10 @@ export const BOOKING_LANDING_SLUGS: Record<LandingLocale, string> = {
   it: 'booking-artisti-cubani',
 };
 
+/** Stable lastmod for the static booking landing pages — bump only when the copy
+ *  actually changes (avoids churning the sitemap lastmod on every build). */
+export const BOOKING_LANDING_LAST_MODIFIED = new Date('2026-06-01T00:00:00.000Z');
+
 const BASE_URL = 'https://cubitaproducciones.com';
 
 const OG_LOCALES: Record<LandingLocale, string> = {
