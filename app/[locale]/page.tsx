@@ -63,11 +63,11 @@ export default async function HomePage({
   };
   const heroPhotos = artists
     .filter((a) => a.image)
-    .map((a) => ({ id: a.id, url: a.image!, alt: heroAlt[locale](a.name), slug: a.slug }));
+    .map((a) => ({ id: a.id, url: a.image!, alt: heroAlt[locale](a.name), name: a.name, slug: a.slug }));
   const photosForHero =
     heroPhotos.length > 0
       ? heroPhotos
-      : pageContent.heroImages.map((img, i) => ({ id: `hero-${i}`, url: img.url, alt: 'Cubita Producciones' }));
+      : pageContent.heroImages.map((img, i) => ({ id: `hero-${i}`, url: img.url, alt: 'Cubita Producciones', name: '' }));
 
   const faqs = HOME_FAQS[locale] || HOME_FAQS.es;
   const faqHeading: Record<Locale, string> = {

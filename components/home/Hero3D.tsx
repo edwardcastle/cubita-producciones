@@ -12,7 +12,10 @@ const Hero3DCanvas = dynamic(() => import('./Hero3DCanvas'), { ssr: false });
 interface Photo {
   id: string;
   url: string;
+  /** Image alt text (kept keyword-rich for SEO) — used by the <img>, not the 3D label. */
   alt: string;
+  /** Short label shown on the 3D card (artist name only). */
+  name: string;
   slug?: string;
 }
 
@@ -34,6 +37,26 @@ function useMediaQuery(query: string): boolean {
     () => window.matchMedia(query).matches,
     () => false,
   );
+}
+
+/**
+ * Returns true once the browser is idle, so we can defer mounting the heavy WebGL hero
+ * (three.js parse + scene/postprocessing init) out of the page's critical path. This
+ * keeps Total Blocking Time down without hurting LCP — the hero text/CTA paint immediately
+ * and the 3D scene fades in a beat later.
+ */
+function useIdleReady(): boolean {
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    const ric = (window as Window & { requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number }).requestIdleCallback;
+    if (ric) {
+      const id = ric(() => setReady(true), { timeout: 2500 });
+      return () => (window as Window & { cancelIdleCallback?: (id: number) => void }).cancelIdleCallback?.(id);
+    }
+    const t = window.setTimeout(() => setReady(true), 300);
+    return () => window.clearTimeout(t);
+  }, []);
+  return ready;
 }
 
 /**
@@ -88,6 +111,7 @@ function MobileCarousel({ photos, reducedMotion }: { photos: Photo[]; reducedMot
 export default function Hero3D({ photos, children }: Hero3DProps) {
   const reducedMotion = useMediaQuery(REDUCED_MOTION_QUERY);
   const isMobile = useMediaQuery(MOBILE_QUERY);
+  const idleReady = useIdleReady();
 
   return (
     <section className="relative flex flex-col overflow-hidden bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white md:min-h-screen">
@@ -96,7 +120,7 @@ export default function Hero3D({ photos, children }: Hero3DProps) {
             Hidden on md+ via the inner div's md:hidden class. */}
         <MobileCarousel photos={photos} reducedMotion={reducedMotion} />
 
-        {!isMobile && photos.length > 0 && (
+        {!isMobile && photos.length > 0 && idleReady && (
           <Hero3DCanvas photos={photos} reducedMotion={reducedMotion} />
         )}
         {/* Two-layer scrim:

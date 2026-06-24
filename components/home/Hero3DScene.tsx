@@ -13,6 +13,7 @@ interface Photo {
   id: string;
   url: string;
   alt: string;
+  name: string;
   slug?: string;
 }
 
@@ -246,7 +247,7 @@ function CardStack({ photos, reducedMotion }: { photos: Photo[]; reducedMotion: 
           />
         );
       })}
-      <ActiveNameLabel text={photos[activeIndex]?.alt ?? ''} reducedMotion={reducedMotion} />
+      <ActiveNameLabel text={photos[activeIndex]?.name ?? ''} reducedMotion={reducedMotion} />
     </>
   );
 }
