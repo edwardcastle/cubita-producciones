@@ -233,7 +233,7 @@ export default function BookingLandingContent({ locale }: { locale: Locale }) {
             <p className="text-amber-500 text-sm md:text-base font-semibold tracking-widest uppercase mb-3 md:mb-4">
               Cubita Producciones
             </p>
-            <FadeIn direction="down">
+            <FadeIn direction="down" eager>
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6">
                 {c.h1}
               </h1>

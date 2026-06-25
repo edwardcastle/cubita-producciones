@@ -111,7 +111,7 @@ export default async function NewsItemPage({
                 ]}
               />
             </div>
-            <FadeIn direction="down">
+            <FadeIn direction="down" eager>
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 md:mb-6">{title}</h1>
             </FadeIn>
             <FadeIn direction="down" delay={0.15}>

@@ -255,3 +255,15 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .cubita-grain { animation: none; will-change: auto; }
 }
+
+/* FadeIn / StaggerItem reveal scroll-entrances. These components set their hidden
+   initial state via inline styles, so the override needs !important to win. This
+   keeps all content immediately visible (no opacity/transform animation) for users
+   who ask for reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  .cubita-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

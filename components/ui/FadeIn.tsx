@@ -13,6 +13,13 @@ interface FadeInProps {
   className?: string;
   once?: boolean;
   amount?: number;
+  /**
+   * Render the final (visible) state on the server / first paint instead of
+   * fading in. Use for above-the-fold LCP content — an `opacity:0` element does
+   * NOT count toward Largest Contentful Paint, so gating a `priority` image or an
+   * H1 behind the JS reveal delays LCP and wastes the preload.
+   */
+  eager?: boolean;
 }
 
 const initialTransforms: Record<Direction, string> = {
@@ -33,11 +40,17 @@ export default function FadeIn({
   className = '',
   once = true,
   amount = 0.2,
+  eager = false,
 }: FadeInProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
+  // `eager` paints the final state on the server / first frame, so above-the-fold
+  // LCP content is never hidden. Reduced motion is handled in CSS (.cubita-reveal),
+  // which overrides the inline styles below without a JS flash.
+  const [visible, setVisible] = useState(eager);
 
   useEffect(() => {
+    if (eager) return;
+
     const el = ref.current;
     if (!el) return;
 
@@ -55,12 +68,12 @@ export default function FadeIn({
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, [once, amount]);
+  }, [once, amount, eager]);
 
   return (
     <div
       ref={ref}
-      className={className}
+      className={`cubita-reveal${className ? ` ${className}` : ''}`}
       style={{
         opacity: visible ? 1 : 0,
         transform: visible ? 'none' : initialTransforms[direction],

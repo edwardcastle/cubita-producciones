@@ -290,7 +290,7 @@ export default async function ArtistaPage({
                   {genreLabel}
                 </div>
               </FadeIn>
-              <FadeIn direction="left" delay={0.2}>
+              <FadeIn direction="left" eager>
                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-3 md:mb-4">{artist.name}</h1>
               </FadeIn>
               <FadeIn direction="left" delay={0.25}>
@@ -348,7 +348,7 @@ export default async function ArtistaPage({
             </div>
 
             {/* Artist Image */}
-            <FadeIn direction="right" delay={0.3}>
+            <FadeIn direction="right" eager>
               <div className="relative h-[280px] sm:h-[350px] md:h-[500px] rounded-xl md:rounded-2xl overflow-hidden shadow-2xl img-zoom">
                 {artist.image ? (
                   <Image
