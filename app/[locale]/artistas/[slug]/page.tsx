@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { getLocale } from 'next-intl/server';
 import { getArtistBySlug, getAllArtistSlugs, getArtistsPage, generateMetadataFromSEO } from '@/lib/content';
-import { stripMarkdown } from '@/lib/utils';
+import { stripMarkdown, artistImageAlt } from '@/lib/utils';
 import { notFound } from 'next/navigation';
 import { Link } from '@/i18n/routing';
 import Image from 'next/image';
@@ -353,7 +353,7 @@ export default async function ArtistaPage({
                 {artist.image ? (
                   <Image
                     src={artist.image}
-                    alt={`Booking ${artist.name} - ${genreLabel} artist available for festivals and events in Europe`}
+                    alt={artistImageAlt(locale, artist.name, genreLabel)}
                     fill
                     className="object-cover"
                     priority
