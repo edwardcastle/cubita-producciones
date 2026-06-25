@@ -66,7 +66,11 @@ export default async function NewsItemPage({
 
   const c = COPY[locale];
   const baseUrl = 'https://cubitaproducciones.com';
-  const localePrefix = locale === 'es' ? '' : `/${locale}`;
+  // localePrefix is ALWAYS `/${locale}` because routing uses localePrefix:'always'
+  // (the bare `/noticias/...` URL 301-redirects). Keeping the prefix here makes the
+  // NewsArticle @id / mainEntityOfPage and BreadcrumbList URLs match the head
+  // canonical + hreflang for the default (es) locale.
+  const localePrefix = `/${locale}`;
   const url = `${baseUrl}${localePrefix}/noticias/${slug}`;
 
   const title = item.title[locale] || item.title.es;

@@ -70,7 +70,11 @@ export default async function BlogPostPage({
 
   const c = COPY[locale];
   const baseUrl = 'https://cubitaproducciones.com';
-  const localePrefix = locale === 'es' ? '' : `/${locale}`;
+  // localePrefix is ALWAYS `/${locale}` because routing uses localePrefix:'always'
+  // (the bare `/blog/...` URL 301-redirects). Keeping the prefix here makes the
+  // BlogPosting @id / mainEntityOfPage and BreadcrumbList URLs match the head
+  // canonical + hreflang for the default (es) locale.
+  const localePrefix = `/${locale}`;
   const url = `${baseUrl}${localePrefix}/blog/${slug}`;
 
   const title = post.title[locale] || post.title.es;
