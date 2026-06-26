@@ -43,6 +43,7 @@ export async function generateMetadata({
   return generateMetadataFromSEO(item.seo, locale, {
     title: `${titleFallback} | Cubita Producciones`,
     description: descFallback,
+    image: item.coverImage ?? undefined,
   }, `/noticias/${slug}`, {
     publishedTime: item.publishedAt,
     modifiedTime: item.updatedAt,

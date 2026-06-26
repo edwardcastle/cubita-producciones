@@ -44,6 +44,7 @@ export async function generateMetadata({
   return generateMetadataFromSEO(post.seo, locale, {
     title: `${titleFallback} | Cubita Producciones`,
     description: descFallback,
+    image: post.coverImage ?? undefined,
   }, `/blog/${slug}`, {
     publishedTime: post.publishedAt,
     modifiedTime: post.updatedAt,
@@ -139,7 +140,7 @@ export default async function BlogPostPage({
                 alt={title}
                 fill
                 priority
-                className="object-cover"
+                className="object-cover object-top"
                 sizes="(min-width: 1024px) 1024px, 100vw"
               />
             </div>
