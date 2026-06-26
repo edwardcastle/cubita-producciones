@@ -314,6 +314,9 @@ function ResponsiveCamera() {
     else if (aspect < 1.9) z = 5.0;   // standard 16:9
     else z = 4.5;                     // ultrawide
     if (camera instanceof THREE.PerspectiveCamera) {
+      // Mutating the three.js camera is the required R3F pattern — a side effect
+      // on an external object, not React state.
+      // eslint-disable-next-line react-hooks/immutability
       camera.position.z = z;
       camera.updateProjectionMatrix();
     }
