@@ -13,6 +13,7 @@ interface Photo {
   id: string;
   url: string;
   alt: string;
+  name: string;
   slug?: string;
 }
 

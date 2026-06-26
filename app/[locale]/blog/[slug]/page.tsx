@@ -44,6 +44,7 @@ export async function generateMetadata({
   return generateMetadataFromSEO(post.seo, locale, {
     title: `${titleFallback} | Cubita Producciones`,
     description: descFallback,
+    image: post.coverImage ?? undefined,
   }, `/blog/${slug}`, {
     publishedTime: post.publishedAt,
     modifiedTime: post.updatedAt,
@@ -70,7 +71,11 @@ export default async function BlogPostPage({
 
   const c = COPY[locale];
   const baseUrl = 'https://cubitaproducciones.com';
-  const localePrefix = locale === 'es' ? '' : `/${locale}`;
+  // localePrefix is ALWAYS `/${locale}` because routing uses localePrefix:'always'
+  // (the bare `/blog/...` URL 301-redirects). Keeping the prefix here makes the
+  // BlogPosting @id / mainEntityOfPage and BreadcrumbList URLs match the head
+  // canonical + hreflang for the default (es) locale.
+  const localePrefix = `/${locale}`;
   const url = `${baseUrl}${localePrefix}/blog/${slug}`;
 
   const title = post.title[locale] || post.title.es;
@@ -111,7 +116,7 @@ export default async function BlogPostPage({
                 ]}
               />
             </div>
-            <FadeIn direction="down">
+            <FadeIn direction="down" eager>
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 md:mb-6">{title}</h1>
             </FadeIn>
             <FadeIn direction="down" delay={0.15}>
@@ -135,7 +140,7 @@ export default async function BlogPostPage({
                 alt={title}
                 fill
                 priority
-                className="object-cover"
+                className="object-cover object-top"
                 sizes="(min-width: 1024px) 1024px, 100vw"
               />
             </div>

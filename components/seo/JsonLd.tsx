@@ -1,5 +1,18 @@
 import { getSiteSettings } from '@/lib/content';
 
+const SITE_URL = 'https://cubitaproducciones.com';
+const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.jpg`;
+
+/**
+ * schema.org image URLs must be absolute. Article cover images are stored as
+ * relative public paths (e.g. "/artists/manolin.png") so next/image and OG can
+ * use them; absolutize them here, and fall back to the generic OG image.
+ */
+function absoluteImage(image: string | null | undefined): string {
+  if (!image) return DEFAULT_OG_IMAGE;
+  return image.startsWith('http') ? image : `${SITE_URL}${image}`;
+}
+
 interface OrganizationJsonLdProps {
   locale: string;
 }
@@ -663,7 +676,7 @@ export function BlogPostJsonLd({ title, description, image, publishedAt, updated
     '@id': `${url}#post`,
     headline: title,
     description,
-    image: image || 'https://cubitaproducciones.com/og-image.jpg',
+    image: absoluteImage(image),
     datePublished: publishedAt,
     dateModified: updatedAt,
     inLanguage: locale,
@@ -707,7 +720,7 @@ export function NewsArticleJsonLd({ title, description, image, publishedAt, upda
     '@id': `${url}#news`,
     headline: title,
     description,
-    image: image || 'https://cubitaproducciones.com/og-image.jpg',
+    image: absoluteImage(image),
     datePublished: publishedAt,
     dateModified: updatedAt,
     inLanguage: locale,

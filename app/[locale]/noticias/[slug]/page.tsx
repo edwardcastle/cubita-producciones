@@ -43,6 +43,7 @@ export async function generateMetadata({
   return generateMetadataFromSEO(item.seo, locale, {
     title: `${titleFallback} | Cubita Producciones`,
     description: descFallback,
+    image: item.coverImage ?? undefined,
   }, `/noticias/${slug}`, {
     publishedTime: item.publishedAt,
     modifiedTime: item.updatedAt,
@@ -66,7 +67,11 @@ export default async function NewsItemPage({
 
   const c = COPY[locale];
   const baseUrl = 'https://cubitaproducciones.com';
-  const localePrefix = locale === 'es' ? '' : `/${locale}`;
+  // localePrefix is ALWAYS `/${locale}` because routing uses localePrefix:'always'
+  // (the bare `/noticias/...` URL 301-redirects). Keeping the prefix here makes the
+  // NewsArticle @id / mainEntityOfPage and BreadcrumbList URLs match the head
+  // canonical + hreflang for the default (es) locale.
+  const localePrefix = `/${locale}`;
   const url = `${baseUrl}${localePrefix}/noticias/${slug}`;
 
   const title = item.title[locale] || item.title.es;
@@ -107,7 +112,7 @@ export default async function NewsItemPage({
                 ]}
               />
             </div>
-            <FadeIn direction="down">
+            <FadeIn direction="down" eager>
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 md:mb-6">{title}</h1>
             </FadeIn>
             <FadeIn direction="down" delay={0.15}>

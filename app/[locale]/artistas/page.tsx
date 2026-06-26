@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { getLocale } from 'next-intl/server';
 import { getArtists, getArtistsPage, getSiteSettings, generateMetadataFromSEO, buildAlternates } from '@/lib/content';
-import { stripMarkdown } from '@/lib/utils';
+import { stripMarkdown, artistImageAlt } from '@/lib/utils';
 import Image from 'next/image';
 import { Link } from '@/i18n/routing';
 import { Music, Calendar, Users } from 'lucide-react';
@@ -73,7 +73,7 @@ export default async function ArtistasPage() {
               { label: pageContent.title[locale] },
             ]} />
           </div>
-          <FadeIn direction="down">
+          <FadeIn direction="down" eager>
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 md:mb-4">
               {h1Heading[locale]}
             </h1>
@@ -86,7 +86,7 @@ export default async function ArtistasPage() {
 
       {/* Artists Grid */}
       <div className="max-w-7xl mx-auto px-4 py-6 md:py-16">
-        <StaggerContainer className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6" staggerDelay={0.1}>
+        <StaggerContainer className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6" staggerDelay={0.1} eager>
           {artists.map((artist, index) => (
             <StaggerItem key={artist.id}>
               <Link
@@ -98,7 +98,7 @@ export default async function ArtistasPage() {
                   {artist.image ? (
                     <Image
                       src={artist.image}
-                      alt={`Booking ${artist.name} - artista cubano de ${artist.genre === 'salsa' ? pageContent.salsaLabel[locale] : pageContent.reggaetonLabel[locale]} disponible para eventos en Europa`}
+                      alt={artistImageAlt(locale, artist.name, artist.genre === 'salsa' ? pageContent.salsaLabel[locale] : pageContent.reggaetonLabel[locale])}
                       fill
                       className="object-cover object-top"
                       sizes="(max-width: 768px) 50vw, (max-width: 1024px) 50vw, 33vw"

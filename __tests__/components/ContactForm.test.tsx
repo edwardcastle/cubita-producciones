@@ -202,7 +202,7 @@ describe('ContactForm', () => {
 
     it('shows sending text while submitting', async () => {
       const user = userEvent.setup();
-      let resolvePromise: (value: any) => void;
+      let resolvePromise: (value: unknown) => void;
       const fetchPromise = new Promise((resolve) => {
         resolvePromise = resolve;
       });
@@ -228,7 +228,7 @@ describe('ContactForm', () => {
 
     it('disables submit button while sending', async () => {
       const user = userEvent.setup();
-      let resolvePromise: (value: any) => void;
+      let resolvePromise: (value: unknown) => void;
       const fetchPromise = new Promise((resolve) => {
         resolvePromise = resolve;
       });

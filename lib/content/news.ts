@@ -3,6 +3,7 @@ import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import type { BlogPost } from './types';
 import { readLocale, parseMeta } from './draft-parser';
+import { articleCoverImage } from './artists';
 
 /**
  * News / announcements stream. Same markdown-draft format as the blog
@@ -24,7 +25,8 @@ function parseDraft(filename: string): BlogPost {
     title: readLocale(text, 'title'),
     excerpt: readLocale(text, 'excerpt'),
     content: readLocale(text, 'content'),
-    coverImage: null,
+    // Derive a per-item image from the artist the news is about (null → generic).
+    coverImage: articleCoverImage(meta.slug),
     publishedAt: meta.publishedAt,
     updatedAt: meta.updatedAt,
     author: meta.author,

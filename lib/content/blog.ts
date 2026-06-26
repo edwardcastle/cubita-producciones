@@ -3,6 +3,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import type { BlogPost } from './types';
 import { readLocale, parseMeta } from './draft-parser';
+import { articleCoverImage } from './artists';
 
 const DRAFTS_DIR = join(process.cwd(), 'docs', 'blog-drafts');
 
@@ -16,7 +17,8 @@ function parseDraft(filename: string): BlogPost {
     title: readLocale(text, 'title'),
     excerpt: readLocale(text, 'excerpt'),
     content: readLocale(text, 'content'),
-    coverImage: null, // original Strapi media is gone; owner can add a local path later
+    // Derive a per-post image from the artist the post is about (null → generic).
+    coverImage: articleCoverImage(meta.slug),
     publishedAt: meta.publishedAt,
     updatedAt: meta.updatedAt,
     author: meta.author,

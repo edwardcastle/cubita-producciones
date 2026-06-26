@@ -19,6 +19,13 @@ interface StaggerContainerProps {
   className?: string;
   once?: boolean;
   amount?: number;
+  /**
+   * Render items in their final (visible) state on the server / first paint
+   * instead of staggering them in. Use for above-the-fold LCP content — an
+   * `opacity:0` element does NOT count toward Largest Contentful Paint, so gating
+   * a `priority` image grid behind the JS reveal delays LCP.
+   */
+  eager?: boolean;
 }
 
 const easeCss = `cubic-bezier(${EASE.standard.join(',')})`;
@@ -29,11 +36,17 @@ export default function StaggerContainer({
   className = '',
   once = true,
   amount = 0.1,
+  eager = false,
 }: StaggerContainerProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
+  // `eager` paints items in their final state on the server / first frame, so
+  // above-the-fold LCP content is never hidden. Reduced motion is handled in CSS
+  // (.cubita-reveal on each item), overriding the inline styles without a flash.
+  const [visible, setVisible] = useState(eager);
 
   useEffect(() => {
+    if (eager) return;
+
     const el = ref.current;
     if (!el) return;
 
@@ -51,7 +64,7 @@ export default function StaggerContainer({
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, [once, amount]);
+  }, [once, amount, eager]);
 
   return (
     <StaggerContext.Provider value={{ visible, staggerDelay }}>
@@ -85,7 +98,7 @@ export function StaggerItem({
   return (
     <div
       ref={ref}
-      className={className}
+      className={`cubita-reveal${className ? ` ${className}` : ''}`}
       style={{
         opacity: visible ? 1 : 0,
         transform: visible ? 'none' : 'translateY(30px)',

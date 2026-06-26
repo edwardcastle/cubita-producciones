@@ -135,3 +135,17 @@ export const ARTISTS: Artist[] = [
     seo: null,
   },
 ];
+
+/**
+ * Resolves a cover image for an article (blog post or news item) by matching the
+ * article slug against an artist slug. Most posts are artist-specific
+ * (e.g. "booking-manolin-europa-2026", "como-contratar-el-micha-..."), so this
+ * gives each of those a unique, relevant image for OG/Twitter cards, the
+ * BlogPosting/NewsArticle schema and the on-page hero — instead of every post
+ * sharing the generic site image. Returns a relative public path (for next/image)
+ * or null for non-artist guides, where the caller falls back to the generic image.
+ */
+export function articleCoverImage(slug: string): string | null {
+  const artist = ARTISTS.find((a) => slug.includes(a.slug));
+  return artist?.image ?? null;
+}
